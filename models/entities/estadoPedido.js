@@ -1,4 +1,4 @@
-const EstadoPedido = Object.freeze({
+export const EstadoPedido = Object.freeze({
   Pendiente: "Pendiente",
   Confirmado: "Confirmado",
   EnPreparacion: "EnPreparacion",
