@@ -45,6 +45,7 @@ export default class PedidoService {
             };
         });
     }
+
     postPedido(pedidoData) {
         const nuevoPedido = new Pedido(
             pedidoData.comprador,
@@ -61,6 +62,18 @@ export default class PedidoService {
         return Promise.resolve({
             data: pedidoGuardado,
             status: 201
+        });
+    }
+
+    getPedidosUsuario(usuarioId) {
+        return Promise.all([this.pedidoRepository.findByUser(usuarioId)])
+        .then((listaPedidos) => {
+            return {
+                data: {
+                    pedidos: listaPedidos
+                },
+                status: 200
+            };
         });
     }
 }
