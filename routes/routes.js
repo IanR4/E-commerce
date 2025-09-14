@@ -17,6 +17,10 @@ routes.post("/pedido", (req, res, next) => {
   PedidoController.postPedido(req, res, next);
 });
 
+routes.patch("/pedido/:pedidoId", (req, res, next) => {
+  PedidoController.patchPedido(req, res, next);
+});
+
 routes.use((err, req, res, next) => {
   if (err?.name === "ZodError") {
     return res.status(400).json({
