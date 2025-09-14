@@ -17,6 +17,15 @@ routes.post("/pedido", (req, res, next) => {
   PedidoController.postPedido(req, res, next);
 });
 
+routes.get("/usuario/:usuarioId", (req, res, next) => {
+  UsuarioController.getUsuario(req, res, next);
+});
+
+routes.post("/usuario", (req, res, next) => {
+  UsuarioController.postUsuario(req, res, next);
+});
+
+
 routes.use((err, req, res, next) => {
   if (err?.name === "ZodError") {
     return res.status(400).json({
