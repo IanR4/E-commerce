@@ -16,6 +16,14 @@ export class PedidoRepository {
         return this.pedidos.filter(pedido => pedido.id === pedidoId)[0]
     }
 
+
+    actualizarPedido(pedidoId, pedidoData) {
+        const indice = this.pedidos.findIndex(pedido => pedido.id === pedidoId)
+        if (indice === -1) return null
+        const pedidoActualizado = {...this.pedidos[indice], ...pedidoData}
+        this.pedidos[indice] = pedidoActualizado
+        return pedidoActualizado
+    }
     findByUser(usuarioId) {
         return this.pedidos.filter(pedido => pedido.comprador === usuarioId)
     }

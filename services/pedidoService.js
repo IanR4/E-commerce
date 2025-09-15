@@ -1,34 +1,7 @@
 import {Pedido} from "../models/entities/pedido.js"
 import { PedidoRepository } from "../models/repositories/pedidoRepository.js";
-/*
-export class PedidoService {
-    constructor(pedidoRepository) {
-        this.pedidoRepository = pedidoRepository
-    }
+import { CambioEstadoPedido } from "../models/entities/cambioEstadoPedido.js";
 
-    crear(nuevoPedidoJSON) {
-
-        const nuevoPedido = new Pedido(
-            nuevoPedidoJSON.comprador,
-            nuevoPedidoJSON.items,
-            nuevoPedidoJSON.moneda,
-            nuevoPedidoJSON.direccionEntrega,
-            nuevoPedidoJSON.fechaCreacion
-        )
-
-        // Ver despues
-        if(!nuevoPedido.validarStock()) {
-            return
-        }
-        
-        nuevoPedido.notificarCreacion()
-
-        const pedidoGuardado = this.pedidoRepository.crear(nuevoPedido)
-        
-        return pedidoGuardado
-    }
-} 
-*/
 export default class PedidoService {
     constructor() {
         this.pedidoRepository = new PedidoRepository();
@@ -64,6 +37,30 @@ export default class PedidoService {
             status: 201
         });
     }
+
+
+    patchPedido(pedidoId, pedidoData) {
+        const pedido = this.pedidoRepository.findById(pedidoId);
+            if(!pedido) {
+                return Promise.reject({name: "NotFoundError", message: "Pedido no encontrado"});
+            }
+        
+        if(pedidoData.estado) {
+            const cambioEstado = new CambioEstadoPedido(
+                new Date(),
+                pedidoData.estado,
+                pedido,
+                pedidoData.motivo
+            );
+        }
+
+        return Promise.all([this.pedidoRepository.actualizarPedido(pedidoId, pedidoData)])
+         .then((pedidoRes) => {
+             return {
+                 data: pedidoRes,
+                 status: 200
+             };
+         });
 
     getPedidosUsuario(usuarioId) {
         return Promise.all([this.pedidoRepository.findByUser(usuarioId)])
