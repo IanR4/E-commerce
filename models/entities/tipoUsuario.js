@@ -1,6 +1,6 @@
 
 
-const TipoUsuario = Object.freeze({
+export const TipoUsuario = Object.freeze({
   Comprador: "Comprador",
   Vendedor: "Vendedor",
   Admin: "Admin",

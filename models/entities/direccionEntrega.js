@@ -10,6 +10,5 @@ class DireccionEntrega {
         this.pais = pais
         this.lat = lat
         this.lon = lon
-        this
     }
 }

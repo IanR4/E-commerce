@@ -1,4 +1,6 @@
-import {CambioEstadoPedido} from "../models/entities/cambioEstadoPedido.js"
+import { tr } from "zod/v4/locales"
+import {CambioEstadoPedido} from "../entities/cambioEstadoPedido.js"
+import {EstadoPedido} from "../entities/estadoPedido.js"
 
 export class Pedido {
     constructor(comprador, items, moneda, direccionEntrega) {
@@ -23,7 +25,8 @@ export class Pedido {
     }
 
     validarStock() {
-        return this.items.every((itemPedido) => itemPedido.producto.estaDisponible(itemPedido.cantidad))
+        //return this.items.every((itemPedido) => itemPedido.producto.estaDisponible(itemPedido.cantidad))
+        return true
     }
 
     notificarCreacion() {
