@@ -1,7 +1,7 @@
 import { z } from "zod"
 
 export class Usuario {
-    constructor(id, nombre, email, telefono, tipo, fechaAlta) {
+    constructor(nombre, email, telefono, tipo) {
         //Ver despues
         z.object({
             id: z.number().nonnegative(),
@@ -10,11 +10,10 @@ export class Usuario {
             telefono: z.number().nonnegative(),
             
         })
-        this.id = id
-        this.nombre = nombre;
+        this.nombre = nombre
         this.email = email
         this.telefono = telefono
         this.tipo = tipo
-        this.fechaAlta = fechaAlta
+        this.fechaAlta = new Date()
     }
 }

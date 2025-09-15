@@ -17,10 +17,17 @@ routes.post("/pedido", (req, res, next) => {
   PedidoController.postPedido(req, res, next);
 });
 
+routes.get("/usuario/:usuarioId", (req, res, next) => {
+  UsuarioController.getUsuario(req, res, next);
+});
+
+routes.post("/usuario", (req, res, next) => {
+  UsuarioController.postUsuario(req, res, next);
 
 routes.patch("/pedido/:pedidoId", (req, res, next) => {
   PedidoController.patchPedido(req, res, next);
 }); 
+  
 routes.get("/historial/:usuarioId", (req, res, next) => {
   PedidoController.getPedidosUsuario(req, res, next);
 });
