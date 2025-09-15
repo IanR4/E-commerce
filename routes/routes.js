@@ -23,8 +23,14 @@ routes.get("/usuario/:usuarioId", (req, res, next) => {
 
 routes.post("/usuario", (req, res, next) => {
   UsuarioController.postUsuario(req, res, next);
-});
 
+routes.patch("/pedido/:pedidoId", (req, res, next) => {
+  PedidoController.patchPedido(req, res, next);
+}); 
+  
+routes.get("/historial/:usuarioId", (req, res, next) => {
+  PedidoController.getPedidosUsuario(req, res, next);
+});
 
 routes.use((err, req, res, next) => {
   if (err?.name === "ZodError") {
