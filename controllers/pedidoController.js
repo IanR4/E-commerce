@@ -95,6 +95,7 @@ class PedidoController {
 
 
   postPedido = (req, res, next) => {
+    //const compradorId = parseInt(req.params.comprador, 10);
     const pedidoData = req.body;
     //const resultBody = pedidoSchema.safeParse(pedidoData)
     this.pedidoService.postPedido(pedidoData)

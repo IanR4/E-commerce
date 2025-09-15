@@ -20,7 +20,7 @@ export class Pedido {
     actualizarEstado(nuevoEstado, quien, motivo) {
         this.estado = nuevoEstado
         const fecha = new Date();
-        const cambioEstadoPedido = new CambioEstadoPedido(fecha, nuevoEstado, this, quien, motivo)
+        const cambioEstadoPedido = new CambioEstadoPedido(fecha, nuevoEstado, quien, motivo)
         this.historialEstados.push(cambioEstadoPedido)
     }
 

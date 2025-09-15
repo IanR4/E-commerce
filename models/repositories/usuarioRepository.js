@@ -1,5 +1,5 @@
 
-export class UsuarioRepository {
+class UsuarioRepository {
     constructor() {
         this.usuarios = []
         this.nextId = 1
@@ -16,3 +16,5 @@ export class UsuarioRepository {
         return this.usuarios.filter(usuario => usuario.id === usuarioId)[0]
     }
 }
+
+export default new UsuarioRepository();

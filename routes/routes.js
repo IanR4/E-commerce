@@ -1,9 +1,14 @@
 import express from "express";
 import PedidoController from "../controllers/pedidoController.js";
+import UsuarioController from "../controllers/usuarioController.js";
 
 const routes = express();
 
 routes.use(express.json());
+
+routes.get("/health-check", (req, res) => {
+  res.status(200).json({ message: "API is healthy" });
+});
 
 routes.get("/pedidos", (req, res, next) => {
   PedidoController.getPedido(req, res, next);
@@ -23,6 +28,7 @@ routes.get("/usuario/:usuarioId", (req, res, next) => {
 
 routes.post("/usuario", (req, res, next) => {
   UsuarioController.postUsuario(req, res, next);
+});
 
 routes.patch("/pedido/:pedidoId", (req, res, next) => {
   PedidoController.patchPedido(req, res, next);

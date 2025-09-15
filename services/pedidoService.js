@@ -1,10 +1,11 @@
 import {Pedido} from "../models/entities/pedido.js"
 import { PedidoRepository } from "../models/repositories/pedidoRepository.js";
-import { CambioEstadoPedido } from "../models/entities/cambioEstadoPedido.js";
+import UsuarioRepository from "../models/repositories/usuarioRepository.js";
 
 export default class PedidoService {
     constructor() {
         this.pedidoRepository = new PedidoRepository();
+        this.usuarioRepository = UsuarioRepository;
     }
 
     getPedido(pedidoId) {
@@ -20,12 +21,16 @@ export default class PedidoService {
     }
 
     postPedido(pedidoData) {
+        const compradorId = parseInt(pedidoData.comprador, 10);
+        const comprador = UsuarioRepository.findById(compradorId);
+        if(!comprador) {
+            return Promise.reject({name: "NotFoundError", message: "Comprador no encontrado"});
+        }
         const nuevoPedido = new Pedido(
-            pedidoData.comprador,
+            comprador,
             pedidoData.items,
             pedidoData.moneda,
-            pedidoData.direccionEntrega,
-            pedidoData.fechaCreacion
+            pedidoData.direccionEntrega
         )
         if(!nuevoPedido.validarStock()){
             nuevoPedido = null
@@ -41,26 +46,31 @@ export default class PedidoService {
 
     patchPedido(pedidoId, pedidoData) {
         const pedido = this.pedidoRepository.findById(pedidoId);
-            if(!pedido) {
-                return Promise.reject({name: "NotFoundError", message: "Pedido no encontrado"});
-            }
+        if(!pedido) {
+            return Promise.reject({name: "NotFoundError", message: "Pedido no encontrado"});
+        }
         
+        const usuarioId = parseInt(pedidoData.usuario, 10);
+        const usuario = UsuarioRepository.findById(usuarioId);
+        if(!usuario) {
+            return Promise.reject({name: "NotFoundError", message: "Usuario no encontrado"});
+        }
+        // Falta chequear que el vendedor venda los productos del pedido
+        
+
+        //SWITCH DE ESTADOS
         if(pedidoData.estado) {
-            const cambioEstado = new CambioEstadoPedido(
-                new Date(),
-                pedidoData.estado,
-                pedido,
-                pedidoData.motivo
-            );
+            pedido.actualizarEstado(pedidoData.estado, usuario, pedidoData.motivo);
         }
 
-        return Promise.all([this.pedidoRepository.actualizarPedido(pedidoId, pedidoData)])
+        return Promise.all([this.pedidoRepository.actualizarPedido(pedidoId, pedido)])
          .then((pedidoRes) => {
              return {
                  data: pedidoRes,
                  status: 200
              };
          });
+    }
 
     getPedidosUsuario(usuarioId) {
         return Promise.all([this.pedidoRepository.findByUser(usuarioId)])
@@ -74,3 +84,4 @@ export default class PedidoService {
         });
     }
 }
+
