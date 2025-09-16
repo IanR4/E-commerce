@@ -93,21 +93,24 @@ class PedidoController {
             .catch(next);
     };
 
-    postPedido = (req, res, next) => {
-        const pedidoData = req.body;
-        //const resultBody = pedidoSchema.safeParse(pedidoData)
-        this.pedidoService.postPedido(pedidoData)
-        .then(({ data, status }) => res.status(status).json(data))
-        .catch(next);
-    }
 
-    patchPedido = (req, res, next) => {
-        const pedidoId = parseInt(req.params.pedidoId, 10); 
-        const pedidoData = req.body;
-        this.pedidoService.patchPedido(pedidoId, pedidoData)
-            .then(({ data, status }) => res.status(status).json(data))
-            .catch(next);
-    }
+  postPedido = (req, res, next) => {
+    //const compradorId = parseInt(req.params.comprador, 10);
+    const pedidoData = req.body;
+    //const resultBody = pedidoSchema.safeParse(pedidoData)
+    this.pedidoService.postPedido(pedidoData)
+      .then(({ data, status }) => res.status(status).json(data))
+      .catch(next);
+  }
+
+  patchPedido = (req, res, next) => {
+    const pedidoId = parseInt(req.params.pedidoId, 10); 
+    const pedidoData = req.body;
+    this.pedidoService.patchPedido(pedidoId, pedidoData)
+      .then(({ data, status }) => res.status(status).json(data))
+      .catch(next);
+  }
+
 
     getPedidosUsuario = (req, res, next) => {
         const usuarioId = parseInt(req.params.usuarioId, 10);

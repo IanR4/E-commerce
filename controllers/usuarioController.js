@@ -26,9 +26,8 @@ class UsuarioController{
   };
 
   postUsuario = (req, res, next) => {
-    const usuarioData = req.body
-    //const resultBody = usuarioSchema.safeParse(usuarioData)
-    const resultBody = usuarioData
+    const usuarioData = req.body;
+    const resultBody = usuarioSchema.safeParse(usuarioData)
     this.usuarioService.postUsuario(resultBody.data)
       .then(({ data, status }) => res.status(status).json(data))
       .catch(next);

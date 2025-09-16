@@ -6,6 +6,10 @@ const routes = express();
 
 routes.use(express.json());
 
+routes.get("/health-check", (req, res) => {
+  res.status(200).json({ message: "API is healthy" });
+});
+
 routes.get("/pedidos", (req, res, next) => {
   PedidoController.getPedido(req, res, next);
 });

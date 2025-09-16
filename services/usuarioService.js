@@ -1,9 +1,10 @@
-import { Usuario } from "../models/entities/usuario.js"
-import { UsuarioRepository } from "../models/repositories/usuarioRepository.js";
+
+import {Usuario} from "../models/entities/usuario.js"
+import UsuarioRepository from "../models/repositories/usuarioRepository.js";
 
 export default class UsuarioService {
     constructor() {
-        this.usuarioRepository = new UsuarioRepository();
+        this.usuarioRepository = UsuarioRepository;
     }
 
     getUsuario(usuarioId){
