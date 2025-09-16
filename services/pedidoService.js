@@ -111,8 +111,7 @@ export default class PedidoService {
     }
 
     getPedidosUsuario(usuarioId) {
-        const usuarioRepository = new UsuarioRepository();
-        const usuario = usuarioRepository.findById(usuarioId);
+        const usuario = this.usuarioRepository.findById(usuarioId);
 
         if (!usuario) {
             return { 
@@ -123,7 +122,7 @@ export default class PedidoService {
             };
         }
 
-        return Promise.all([this.pedidoRepository.findByUser(usuario.nombre)])
+        return Promise.all([this.pedidoRepository.findByUser(usuario.id)])
         .then((listaPedidos) => {
             return {
                 data: {
@@ -133,7 +132,4 @@ export default class PedidoService {
             };
         });
     }
-
 }
-
-
