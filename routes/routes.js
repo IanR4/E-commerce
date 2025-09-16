@@ -1,5 +1,6 @@
 import express from "express";
 import PedidoController from "../controllers/pedidoController.js";
+import UsuarioController from "../controllers/usuarioController.js";
 
 const routes = express();
 
@@ -23,6 +24,7 @@ routes.get("/usuario/:usuarioId", (req, res, next) => {
 
 routes.post("/usuario", (req, res, next) => {
   UsuarioController.postUsuario(req, res, next);
+});
 
 routes.patch("/pedido/:pedidoId", (req, res, next) => {
   PedidoController.patchPedido(req, res, next);

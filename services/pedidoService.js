@@ -1,6 +1,7 @@
 import {Pedido} from "../models/entities/pedido.js"
 import { PedidoRepository } from "../models/repositories/pedidoRepository.js";
 import { CambioEstadoPedido } from "../models/entities/cambioEstadoPedido.js";
+import { UsuarioRepository } from "../models/repositories/usuarioRepository.js";
 
 export default class PedidoService {
     constructor() {
@@ -38,12 +39,11 @@ export default class PedidoService {
         });
     }
 
-
     patchPedido(pedidoId, pedidoData) {
         const pedido = this.pedidoRepository.findById(pedidoId);
-            if(!pedido) {
-                return Promise.reject({name: "NotFoundError", message: "Pedido no encontrado"});
-            }
+        if(!pedido) {
+            return Promise.reject({name: "NotFoundError", message: "Pedido no encontrado"});
+        }
         
         if(pedidoData.estado) {
             const cambioEstado = new CambioEstadoPedido(
@@ -55,15 +55,28 @@ export default class PedidoService {
         }
 
         return Promise.all([this.pedidoRepository.actualizarPedido(pedidoId, pedidoData)])
-         .then((pedidoRes) => {
-             return {
-                 data: pedidoRes,
-                 status: 200
-             };
-         });
+        .then((pedidoRes) => {
+            return {
+                data: pedidoRes,
+                status: 200
+            };
+        });
+    }
 
     getPedidosUsuario(usuarioId) {
-        return Promise.all([this.pedidoRepository.findByUser(usuarioId)])
+        const usuarioRepository = new UsuarioRepository();
+        const usuario = usuarioRepository.findById(usuarioId);
+
+        if (!usuario) {
+            return { 
+                data: { 
+                    error: "No existe un usuario con esta id"
+                }, 
+                status: 400
+            };
+        }
+
+        return Promise.all([this.pedidoRepository.findByUser(usuario.nombre)])
         .then((listaPedidos) => {
             return {
                 data: {
