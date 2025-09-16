@@ -6,7 +6,7 @@ export class FactoryNotificacion {
         this.nextId = 1
     }
 
-    crearNotificacionParaComprador(pedido){
+    crearNotificacionDeEnviado(pedido){
         const nuevaNotificacion = new Notificacion(
             this.nextId,
             pedido.comprador,
@@ -14,34 +14,34 @@ export class FactoryNotificacion {
         )
         this.nextId++
         this.notificaciones.push(nuevaNotificacion)
-        return nuevaNotificacion
+        //return nuevaNotificacion
     }
-    crearNotificacionDeCancelacion(pedido, vendedor){
+    crearNotificacionDeCancelacion(pedido){
         const nuevaNotificacion = new Notificacion(
             this.nextId,
-            vendedor,
+            pedido.items[0].producto.vendedor,
             `Su pedido con ID ${pedido.id} ha sido cancelado.`
         )
         this.nextId++
         this.notificaciones.push(nuevaNotificacion)
-        return nuevaNotificacion
+        //return nuevaNotificacion
     }
-    crearNotificacionDeCreacion(pedido, vendedor){
+    crearNotificacionDeCreacion(pedido){
         const productos = pedido.items.map(item => item.producto.titulo).join(", ")
 
         const nuevaNotificacion = new Notificacion(
             this.nextId,
-            vendedor,
-            `El pedido con ID ${pedido.id} ha sido creado por el comprador con ID ${pedido.comprador} con dirección 
+            pedido.items[0].producto.vendedor,
+            `El pedido con ID ${pedido.id} ha sido creado por el comprador con ID ${pedido.comprador.id} con dirección 
             ${pedido.direccionEntrega.calle} ${pedido.direccionEntrega.altura}, con precio total ${pedido.total} e 
             incluye el/los producto/s: ${productos}.`
         )
         this.nextId++
         this.notificaciones.push(nuevaNotificacion)
-        return nuevaNotificacion
+        //return nuevaNotificacion
     }
 
     findById(notificacionId) {
-        return this.pedidos.filter(notificacion => notificacion.id === notificacionId)[0]
+        return this.notificaciones.filter(notificacion => notificacion.id === notificacionId)[0]
     }
 }

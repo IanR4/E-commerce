@@ -3,12 +3,13 @@ import {Pedido} from "../models/entities/pedido.js"
 import { PedidoRepository } from "../models/repositories/pedidoRepository.js";
 import UsuarioRepository from "../models/repositories/usuarioRepository.js";
 import { CambioEstadoPedido } from "../models/entities/cambioEstadoPedido.js";
-
+import { FactoryNotificacion } from "../models/repositories/factoryNotificacion.js";
 
 export default class PedidoService {
     constructor() {
         this.pedidoRepository = new PedidoRepository();
         this.usuarioRepository = UsuarioRepository;
+        this.factoryNotificacion = new FactoryNotificacion();
     }
 
     getPedido(pedidoId) {
@@ -41,6 +42,7 @@ export default class PedidoService {
         }
 
         const pedidoGuardado = this.pedidoRepository.crearPedido(nuevoPedido);
+        this.factoryNotificacion.crearNotificacionDeCreacion(pedidoGuardado);
         return Promise.resolve({
             data: pedidoGuardado,
             status: 201
@@ -76,6 +78,7 @@ export default class PedidoService {
                     if(pedido.estado !== EstadoPedido.EnPreparacion) { 
                         return Promise.reject({name: "StateError", message: "El pedido no puede ser enviado"});
                     }
+                    this.factoryNotificacion.crearNotificacionDeEnviado(pedido);
                     // if(!pedido.items.every((item) => item.producto.vendedor === usuario)) {
                     //     return Promise.reject({name: "SellerError", message: "El usuario no vende los productos de este pedido"});
                     // }
@@ -90,6 +93,7 @@ export default class PedidoService {
                     if(pedido.estado === EstadoPedido.Enviado || pedido.estado === EstadoPedido.Entregado) { 
                         return Promise.reject({name: "StateError", message: "El pedido no puede ser cancelado"});
                     }
+                    this.factoryNotificacion.crearNotificacionDeCancelacion(pedido);
                     break;
                 default:
                     return Promise.reject({name: "StateError", message: "Estado no válido"});
