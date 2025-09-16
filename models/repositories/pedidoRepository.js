@@ -27,5 +27,6 @@ export class PedidoRepository {
 
     findByUser(usuarioId) {
         return this.pedidos.filter(pedido => pedido.comprador === usuarioId)
+
     }
 }

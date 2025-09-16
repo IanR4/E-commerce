@@ -1,3 +1,4 @@
+
 import {Usuario} from "../models/entities/usuario.js"
 import UsuarioRepository from "../models/repositories/usuarioRepository.js";
 
@@ -17,6 +18,7 @@ export default class UsuarioService {
             };
         });
     }
+    
     postUsuario(usuarioData){
         const nuevoUsuario = new Usuario(
             usuarioData.nombre,

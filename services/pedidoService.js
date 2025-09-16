@@ -2,6 +2,8 @@ import { EstadoPedido } from "../models/entities/estadoPedido.js";
 import {Pedido} from "../models/entities/pedido.js"
 import { PedidoRepository } from "../models/repositories/pedidoRepository.js";
 import UsuarioRepository from "../models/repositories/usuarioRepository.js";
+import { CambioEstadoPedido } from "../models/entities/cambioEstadoPedido.js";
+
 
 export default class PedidoService {
     constructor() {
@@ -45,7 +47,6 @@ export default class PedidoService {
         });
     }
 
-
     patchPedido(pedidoId, pedidoData) {
         const pedido = this.pedidoRepository.findById(pedidoId);
         if(!pedido) {
@@ -57,6 +58,7 @@ export default class PedidoService {
         if(!usuario) {
             return Promise.reject({name: "NotFoundError", message: "Usuario no encontrado"});
         }
+
 
         if(pedidoData.estado && pedidoData.estado !== pedido.estado) {
             switch(pedidoData.estado) {
@@ -105,7 +107,19 @@ export default class PedidoService {
     }
 
     getPedidosUsuario(usuarioId) {
-        return Promise.all([this.pedidoRepository.findByUser(usuarioId)])
+        const usuarioRepository = new UsuarioRepository();
+        const usuario = usuarioRepository.findById(usuarioId);
+
+        if (!usuario) {
+            return { 
+                data: { 
+                    error: "No existe un usuario con esta id"
+                }, 
+                status: 400
+            };
+        }
+
+        return Promise.all([this.pedidoRepository.findByUser(usuario.nombre)])
         .then((listaPedidos) => {
             return {
                 data: {
@@ -115,5 +129,7 @@ export default class PedidoService {
             };
         });
     }
+
 }
+
 

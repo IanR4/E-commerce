@@ -84,13 +84,13 @@ class PedidoController {
     }
 
     getPedido = (req, res, next) => {
-    const pedidoId = parseInt(req.params.pedidoId, 10);
-    if (isNaN(pedidoId)) {
-        return res.status(400).json({ error: "Invalid pedidoId parameter" });
-    }
-    this.pedidoService.getPedido(pedidoId)
-        .then(({ data, status }) => res.status(status).json(data))
-        .catch(next);
+        const pedidoId = parseInt(req.params.pedidoId, 10);
+        if (isNaN(pedidoId)) {
+            return res.status(400).json({ error: "Invalid pedidoId parameter" });
+        }
+        this.pedidoService.getPedido(pedidoId)
+            .then(({ data, status }) => res.status(status).json(data))
+            .catch(next);
     };
 
 
@@ -110,6 +110,7 @@ class PedidoController {
       .then(({ data, status }) => res.status(status).json(data))
       .catch(next);
   }
+
 
     getPedidosUsuario = (req, res, next) => {
         const usuarioId = parseInt(req.params.usuarioId, 10);
