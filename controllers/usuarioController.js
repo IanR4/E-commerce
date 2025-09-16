@@ -28,6 +28,9 @@ class UsuarioController{
   postUsuario = (req, res, next) => {
     const usuarioData = req.body;
     const resultBody = usuarioSchema.safeParse(usuarioData)
+    if (!resultBody.success) {
+      return res.status(400).json({ error: "Invalid request body", details: resultBody.error.errors });
+    }
     this.usuarioService.postUsuario(resultBody.data)
       .then(({ data, status }) => res.status(status).json(data))
       .catch(next);

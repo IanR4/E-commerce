@@ -13,12 +13,10 @@ export default class PedidoService {
     }
 
     getPedido(pedidoId) {
-        return Promise.all([this.pedidoRepository.findById(pedidoId)])
+        return Promise.resolve(this.pedidoRepository.findById(pedidoId))
         .then((pedidoRes) => {
             return {
-                data: {
-                    pedido: pedidoRes
-                },
+                data: pedidoRes,
                 status: 200
             };
         });
