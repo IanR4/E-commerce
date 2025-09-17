@@ -1,4 +1,3 @@
-
 import {Usuario} from "../models/entities/usuario.js"
 import UsuarioRepository from "../models/repositories/usuarioRepository.js";
 
@@ -8,12 +7,10 @@ export default class UsuarioService {
     }
 
     getUsuario(usuarioId){
-        return Promise.all([this.usuarioRepository.findById(usuarioId)])
+        return Promise.resolve(this.usuarioRepository.findById(usuarioId))
         .then((usuarioRes) => {
             return {
-                data: {
-                    usuario: usuarioRes
-                },
+                data: usuarioRes,
                 status: 200
             };
         });

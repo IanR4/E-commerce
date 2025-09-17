@@ -1,5 +1,3 @@
-import { z } from "zod"
-
 export class Usuario {
     constructor(nombre, email, telefono, tipo) {
         this.nombre = nombre

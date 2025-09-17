@@ -1,4 +1,3 @@
-
 class UsuarioRepository {
     constructor() {
         this.usuarios = []

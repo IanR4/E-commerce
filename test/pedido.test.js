@@ -15,10 +15,9 @@ function crearUsuarios() {
 }
 
 function crearProductoYItem() {
-  producto = new Producto(1, vendedor1, "Jabon", "Sabor vainilla", [], 100, "DolarUsa", 10, [], true);
+  producto = new Producto(1, vendedor1, "Helado", "Sabor vainilla", [], 100, "DolarUsa", 10, [], true);
   itemPedido = new ItemPedido(producto, 2, producto.precio);
 }
-
 
 
 describe("PedidoService", () => {
@@ -30,7 +29,6 @@ describe("PedidoService", () => {
   });
 
   test("crear un pedido correctamente", async () => {
-    // Datos para el pedido
     const pedidoData = {
       comprador: comprador1.id,
       items: [itemPedido],
@@ -41,6 +39,8 @@ describe("PedidoService", () => {
     const pedidoService = new PedidoService();
     const res = await pedidoService.postPedido(pedidoData);
 
+    expect(res.data.validarStock()).toBe(true);
+    expect(producto.stock).toBe(8);
     expect(res.status).toBe(201);
     expect(res.data).toHaveProperty("id");
     expect(res.data.comprador).toBe(comprador1);
@@ -51,7 +51,6 @@ describe("PedidoService", () => {
   });
 
   test("consultar pedido creado", async () => {
-    // Datos para el pedido
     const pedidoData = {
       comprador: comprador1.id,
       items: [itemPedido],
@@ -71,7 +70,6 @@ describe("PedidoService", () => {
     const comprador2 = new Usuario("Nico", "nico@mail.com", "31958271", "Comprador");
     UsuarioRepository.crearUsuario(comprador2);
 
-    // Datos para los pedidos
     const pedidoData1 = {
       comprador: comprador1.id,
       items: [itemPedido],
@@ -116,7 +114,6 @@ describe("PedidoService", () => {
   });
 
   test("actualizar estado de un pedido a enviado", async () => {
-    // Datos para el pedido
     const pedidoData = {
       comprador: comprador1.id,
       items: [itemPedido],
@@ -154,7 +151,6 @@ describe("PedidoService", () => {
     expect(res3.status).toBe(200);
     expect(pedidoCreado.data.tieneItemsDe(vendedor1)).toBe(true);
     expect(res3.data.estado).toBe(EstadoPedido.Enviado);
-    expect(producto.stock).toBe(8);
     expect(res3.data.historialEstados).toHaveLength(3);
     expect(res3.data.historialEstados[0].estado).toBe(EstadoPedido.Confirmado);
     expect(res3.data.historialEstados[1].estado).toBe(EstadoPedido.EnPreparacion);
@@ -162,7 +158,6 @@ describe("PedidoService", () => {
   });
 
   test("cancelar un pedido", async () => {
-    // Datos para el pedido
     const pedidoData = {
       comprador: comprador1.id,
       items: [itemPedido],
@@ -189,14 +184,12 @@ describe("PedidoService", () => {
     const res2 = await pedidoService.patchPedido(pedidoCreado.data.id, actualizacionData2);
     expect(res2.status).toBe(200);
     expect(res2.data.estado).toBe(EstadoPedido.Cancelado);
-    expect(producto.stock).toBe(10);
     expect(res2.data.historialEstados).toHaveLength(2);
     expect(res2.data.historialEstados[0].estado).toBe(EstadoPedido.Confirmado);
     expect(res2.data.historialEstados[1].estado).toBe(EstadoPedido.Cancelado);
   });
 
   test("realiza notificaciones correctamente", async () => {
-    // Datos para el pedido
     const pedidoData1 = {
       comprador: comprador1.id,
       items: [itemPedido],
@@ -209,7 +202,7 @@ describe("PedidoService", () => {
       moneda: "Real",
       direccionEntrega: "Esquina 456"
     };
-    // Datos para la actualizacion del pedido
+
     const actualizacionData1 = {
         usuario: vendedor1.id,
         estado: "Confirmado",

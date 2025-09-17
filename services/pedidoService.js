@@ -2,7 +2,6 @@ import { EstadoPedido } from "../models/entities/estadoPedido.js";
 import {Pedido} from "../models/entities/pedido.js"
 import { PedidoRepository } from "../models/repositories/pedidoRepository.js";
 import UsuarioRepository from "../models/repositories/usuarioRepository.js";
-import { CambioEstadoPedido } from "../models/entities/cambioEstadoPedido.js";
 import { FactoryNotificacion } from "../models/repositories/factoryNotificacion.js";
 
 export default class PedidoService {
@@ -38,7 +37,7 @@ export default class PedidoService {
             nuevoPedido = null
             return Promise.reject({name: "StockError", message: "No hay stock suficiente para completar el pedido"});
         }
-
+        nuevoPedido.reducirStockItems();
         const pedidoGuardado = this.pedidoRepository.crearPedido(nuevoPedido);
         this.factoryNotificacion.crearNotificacionDeCreacion(pedidoGuardado);
         return Promise.resolve({
@@ -58,7 +57,6 @@ export default class PedidoService {
         if(!usuario) {
             return Promise.reject({name: "NotFoundError", message: "Usuario no encontrado"});
         }
-
 
         if(pedidoData.estado && pedidoData.estado !== pedido.estado) {
             switch(pedidoData.estado) {
@@ -80,7 +78,6 @@ export default class PedidoService {
                     if(!pedido.tieneItemsDe(usuario)) {
                         return Promise.reject({name: "SellerError", message: "El usuario no vende los productos de este pedido"});
                     }
-                    pedido.reducirStockItems();
                     break;
                 case EstadoPedido.Entregado:
                     if(pedido.estado !== EstadoPedido.Enviado) { 
@@ -111,13 +108,8 @@ export default class PedidoService {
     getPedidosUsuario(usuarioId) {
         const usuario = this.usuarioRepository.findById(usuarioId);
 
-        if (!usuario) {
-            return { 
-                data: { 
-                    error: "No existe un usuario con esta id"
-                }, 
-                status: 400
-            };
+        if(!usuario) {
+            return Promise.reject({name: "NotFoundError", message: "Usuario no encontrado"});
         }
 
         return Promise.resolve(this.pedidoRepository.findByUser(usuario.id))

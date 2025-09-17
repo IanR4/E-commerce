@@ -1,5 +1,3 @@
-
-
 export class Producto {
     constructor(id, vendedor, titulo, descripcion, categorias, precio, moneda, stock, fotos, activo) {
         this.id = id

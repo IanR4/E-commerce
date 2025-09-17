@@ -2,14 +2,6 @@ import { z } from "zod"
 import UsuarioService from "../services/usuarioService.js"
 import { TipoUsuario } from "../models/entities/tipoUsuario.js"
 
-
-const usuarioSchema = z.object({
-    nombre: z.string().min(3).max(20),
-    email: z.string().email(),
-    telefono: z.string().min(8).max(15),
-    tipo: z.nativeEnum(TipoUsuario)
-})
-
 class UsuarioController{
   constructor() {
     this.usuarioService = new UsuarioService();
@@ -36,5 +28,12 @@ class UsuarioController{
       .catch(next);
   }
 }
+
+const usuarioSchema = z.object({
+    nombre: z.string().min(3).max(20),
+    email: z.string().email(),
+    telefono: z.string().min(8).max(15),
+    tipo: z.nativeEnum(TipoUsuario)
+})
 
 export default new UsuarioController();

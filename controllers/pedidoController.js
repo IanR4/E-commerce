@@ -1,15 +1,6 @@
 import { z } from "zod"
 import PedidoService from "../services/pedidoService.js"
 import { Moneda } from "../models/entities/moneda.js"
-import { TipoUsuario } from "../models/entities/tipoUsuario.js"
-
-
-const pedidoSchema = z.object({
-    comprador: z.string().min(1),
-    moneda: z.nativeEnum(Moneda),
-    direccionEntrega: z.object(),
-    items: z.array().min(1),
-})
 
 class PedidoController {
     constructor() {
@@ -59,7 +50,13 @@ class PedidoController {
             .then(({ data, status }) => res.status(status).json(data))
             .catch(next);
     };
-
 }
+
+const pedidoSchema = z.object({
+    comprador: z.string().min(1),
+    moneda: z.nativeEnum(Moneda),
+    direccionEntrega: z.object(),
+    items: z.array().min(1),
+})
 
 export default new PedidoController();

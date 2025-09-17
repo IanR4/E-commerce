@@ -14,7 +14,6 @@ export class FactoryNotificacion {
         )
         this.nextId++
         this.notificaciones.push(nuevaNotificacion)
-        //return nuevaNotificacion
     }
     crearNotificacionDeCancelacion(pedido){
         const nuevaNotificacion = new Notificacion(
@@ -24,7 +23,6 @@ export class FactoryNotificacion {
         )
         this.nextId++
         this.notificaciones.push(nuevaNotificacion)
-        //return nuevaNotificacion
     }
     crearNotificacionDeCreacion(pedido){
         const productos = pedido.items.map(item => item.producto.titulo).join(", ")
@@ -38,7 +36,6 @@ export class FactoryNotificacion {
         )
         this.nextId++
         this.notificaciones.push(nuevaNotificacion)
-        //return nuevaNotificacion
     }
 
     findById(notificacionId) {

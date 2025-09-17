@@ -1,4 +1,3 @@
-
 export class CambioEstadoPedido {
     constructor(fecha, estado, usuario, motivo) {
         this.fecha = fecha
