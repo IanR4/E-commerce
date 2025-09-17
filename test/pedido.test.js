@@ -16,7 +16,7 @@ function crearUsuarios() {
 
 function crearProductoYItem() {
   producto = new Producto(1, vendedor1, "Helado", "Sabor vainilla", [], 100, "DolarUsa", 10, [], true);
-  itemPedido = new ItemPedido(producto, 2, producto.precio);
+  itemPedido = new ItemPedido(producto, 2);
 }
 
 
