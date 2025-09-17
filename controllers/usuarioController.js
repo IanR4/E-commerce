@@ -2,14 +2,6 @@ import { z } from "zod"
 import UsuarioService from "../services/usuarioService.js"
 import { TipoUsuario } from "../models/entities/tipoUsuario.js"
 
-
-const usuarioSchema = z.object({
-    nombre: z.string().min(3).max(20),
-    email: z.string().email(),
-    telefono: z.string().min(8).max(15),
-    tipo: z.nativeEnum(TipoUsuario)
-})
-
 class UsuarioController{
   constructor() {
     this.usuarioService = new UsuarioService();
@@ -28,10 +20,20 @@ class UsuarioController{
   postUsuario = (req, res, next) => {
     const usuarioData = req.body;
     const resultBody = usuarioSchema.safeParse(usuarioData)
+    if (!resultBody.success) {
+      return res.status(400).json({ error: "Invalid request body", details: resultBody.error.errors });
+    }
     this.usuarioService.postUsuario(resultBody.data)
       .then(({ data, status }) => res.status(status).json(data))
       .catch(next);
   }
 }
+
+const usuarioSchema = z.object({
+    nombre: z.string().min(3).max(20),
+    email: z.string().email(),
+    telefono: z.string().min(8).max(15),
+    tipo: z.nativeEnum(TipoUsuario)
+})
 
 export default new UsuarioController();

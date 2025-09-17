@@ -1,4 +1,3 @@
-import { tr } from "zod/v4/locales"
 import {CambioEstadoPedido} from "../entities/cambioEstadoPedido.js"
 import {EstadoPedido} from "../entities/estadoPedido.js"
 
@@ -14,7 +13,7 @@ export class Pedido {
     }
 
     calcularTotal() {
-        return this.items.sum((item) => item.subTotal);
+        return this.items.reduce((total, item) => total + item.subtotal(), 0)
     }
 
     actualizarEstado(nuevoEstado, quien, motivo) {
@@ -25,11 +24,15 @@ export class Pedido {
     }
 
     validarStock() {
-        //return this.items.every((itemPedido) => itemPedido.producto.estaDisponible(itemPedido.cantidad))
-        return true
+        return this.items.every((itemPedido) => itemPedido.producto.estaDisponible(itemPedido.cantidad))
     }
 
-    notificarCreacion() {
-
+    tieneItemsDe(usuario) {
+        return this.items.every((item) => item.producto.vendedor === usuario)
     }
+
+    reducirStockItems() {
+        this.items.forEach((item) => item.producto.reducirStock(item.cantidad));
+    }
+
 }  

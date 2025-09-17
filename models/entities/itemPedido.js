@@ -1,9 +1,8 @@
-
 export class ItemPedido {
-    constructor(producto, cantidad, precioUnitario) {
+    constructor(producto, cantidad) {
         this.producto = producto
         this.cantidad = cantidad
-        this.precioUnitario = precioUnitario
+        this.precioUnitario = producto.precio
     }
 
     subtotal() {

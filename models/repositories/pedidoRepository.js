@@ -1,4 +1,3 @@
-
 export class PedidoRepository {
     constructor() {
         this.pedidos = []
@@ -19,7 +18,6 @@ export class PedidoRepository {
     actualizarPedido(pedidoId, pedido) {
         const indice = this.pedidos.findIndex(pedido => pedido.id === pedidoId)
         if (indice === -1) return null
-        // const pedidoActualizado = {...this.pedidos[indice], ...pedido}
         this.pedidos[indice] = pedido
         return pedido
     }

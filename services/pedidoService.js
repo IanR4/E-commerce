@@ -2,7 +2,6 @@ import { EstadoPedido } from "../models/entities/estadoPedido.js";
 import {Pedido} from "../models/entities/pedido.js"
 import { PedidoRepository } from "../models/repositories/pedidoRepository.js";
 import UsuarioRepository from "../models/repositories/usuarioRepository.js";
-import { CambioEstadoPedido } from "../models/entities/cambioEstadoPedido.js";
 import { FactoryNotificacion } from "../models/repositories/factoryNotificacion.js";
 
 export default class PedidoService {
@@ -13,12 +12,10 @@ export default class PedidoService {
     }
 
     getPedido(pedidoId) {
-        return Promise.all([this.pedidoRepository.findById(pedidoId)])
+        return Promise.resolve(this.pedidoRepository.findById(pedidoId))
         .then((pedidoRes) => {
             return {
-                data: {
-                    pedido: pedidoRes
-                },
+                data: pedidoRes,
                 status: 200
             };
         });
@@ -40,7 +37,7 @@ export default class PedidoService {
             nuevoPedido = null
             return Promise.reject({name: "StockError", message: "No hay stock suficiente para completar el pedido"});
         }
-
+        nuevoPedido.reducirStockItems();
         const pedidoGuardado = this.pedidoRepository.crearPedido(nuevoPedido);
         this.factoryNotificacion.crearNotificacionDeCreacion(pedidoGuardado);
         return Promise.resolve({
@@ -61,7 +58,6 @@ export default class PedidoService {
             return Promise.reject({name: "NotFoundError", message: "Usuario no encontrado"});
         }
 
-
         if(pedidoData.estado && pedidoData.estado !== pedido.estado) {
             switch(pedidoData.estado) {
                 case EstadoPedido.Confirmado:
@@ -79,10 +75,9 @@ export default class PedidoService {
                         return Promise.reject({name: "StateError", message: "El pedido no puede ser enviado"});
                     }
                     this.factoryNotificacion.crearNotificacionDeEnviado(pedido);
-                    // if(!pedido.items.every((item) => item.producto.vendedor === usuario)) {
-                    //     return Promise.reject({name: "SellerError", message: "El usuario no vende los productos de este pedido"});
-                    // }
-                    // pedido.items.every((item) => item.producto.reducirStock(item.cantidad));
+                    if(!pedido.tieneItemsDe(usuario)) {
+                        return Promise.reject({name: "SellerError", message: "El usuario no vende los productos de este pedido"});
+                    }
                     break;
                 case EstadoPedido.Entregado:
                     if(pedido.estado !== EstadoPedido.Enviado) { 
@@ -101,7 +96,7 @@ export default class PedidoService {
         pedido.actualizarEstado(pedidoData.estado, usuario, pedidoData.motivo);
     }
 
-        return Promise.all([this.pedidoRepository.actualizarPedido(pedidoId, pedido)])
+        return Promise.resolve(this.pedidoRepository.actualizarPedido(pedidoId, pedido))
          .then((pedidoRes) => {
              return {
                  data: pedidoRes,
@@ -113,21 +108,14 @@ export default class PedidoService {
     getPedidosUsuario(usuarioId) {
         const usuario = this.usuarioRepository.findById(usuarioId);
 
-        if (!usuario) {
-            return { 
-                data: { 
-                    error: "No existe un usuario con esta id"
-                }, 
-                status: 400
-            };
+        if(!usuario) {
+            return Promise.reject({name: "NotFoundError", message: "Usuario no encontrado"});
         }
 
-        return Promise.all([this.pedidoRepository.findByUser(usuario.id)])
+        return Promise.resolve(this.pedidoRepository.findByUser(usuario.id))
         .then((listaPedidos) => {
             return {
-                data: {
-                    pedidos: listaPedidos
-                },
+                data: listaPedidos,
                 status: 200
             };
         });
