@@ -3,27 +3,33 @@ import UsuarioRepository from "../models/repositories/usuarioRepository.js";
 import { Producto } from "../models/entities/producto.js";
 import { ItemPedido } from "../models/entities/itemPedido.js";
 import { Usuario } from "../models/entities/usuario.js";
+import { EstadoPedido } from "../models/entities/estadoPedido.js";
+
+let comprador1, vendedor1, producto, itemPedido;
+
+function crearUsuarios() {
+  comprador1 = new Usuario("Juan", "juan@mail.com", "12345600", "Comprador");
+  UsuarioRepository.crearUsuario(comprador1);
+  vendedor1 = new Usuario("Ian", "ian@mail.com", "70810617", "Vendedor");
+  UsuarioRepository.crearUsuario(vendedor1);
+}
+
+function crearProductoYItem() {
+  producto = new Producto(1, vendedor1, "Jabon", "Sabor vainilla", [], 100, "DolarUsa", 10, [], true);
+  itemPedido = new ItemPedido(producto, 2, producto.precio);
+}
+
+
 
 describe("PedidoService", () => {
   beforeEach(() => {
-    // Limpiar repositorios antes de cada test
     UsuarioRepository.usuarios = [];
     UsuarioRepository.nextId = 1;
+    crearUsuarios();
+    crearProductoYItem();
   });
 
   test("crear un pedido correctamente", async () => {
-    // Crear usuario y agregarlo al repositorio
-    const comprador1 = new Usuario("Juan", "juan@mail.com", "12345600", "Comprador");
-    UsuarioRepository.crearUsuario(comprador1);
-    const vendedor1 = new Usuario("Ian", "ian@mail.com", "70810617", "Vendedor");
-    UsuarioRepository.crearUsuario(vendedor1);
-
-    // Crear producto
-    const producto = new Producto(1, vendedor1, "Jabon", "Sabor vainilla", [], 100, "DolarUsa", 10, [], true);
-
-    // Crear itemPedido
-    const itemPedido = new ItemPedido(producto, 2, producto.precio);
-
     // Datos para el pedido
     const pedidoData = {
       comprador: comprador1.id,
@@ -45,18 +51,6 @@ describe("PedidoService", () => {
   });
 
   test("consultar pedido creado", async () => {
-    // Crear usuario y agregarlo al repositorio
-    const comprador1 = new Usuario("Juan", "juan@mail.com", "12345600", "Comprador");
-    UsuarioRepository.crearUsuario(comprador1);
-    const vendedor1 = new Usuario("Ian", "ian@mail.com", "70810617", "Vendedor");
-    UsuarioRepository.crearUsuario(vendedor1);
-
-    // Crear producto
-    const producto = new Producto(1, vendedor1, "Jabon", "Sabor vainilla", [], 100, "DolarUsa", 10, [], true);
-
-    // Crear itemPedido
-    const itemPedido = new ItemPedido(producto, 2, producto.precio);
-
     // Datos para el pedido
     const pedidoData = {
       comprador: comprador1.id,
@@ -74,20 +68,8 @@ describe("PedidoService", () => {
   });
 
   test("consultar historial de un usuario", async () => {
-    // Crear usuarios y agregarlos al repositorio
-    const comprador1 = new Usuario("Juan", "juan@mail.com", "12345600", "Comprador");
-    UsuarioRepository.crearUsuario(comprador1);
     const comprador2 = new Usuario("Nico", "nico@mail.com", "31958271", "Comprador");
     UsuarioRepository.crearUsuario(comprador2);
-
-    const vendedor1 = new Usuario("Ian", "ian@mail.com", "70810617", "Vendedor");
-    UsuarioRepository.crearUsuario(vendedor1);
-
-    // Crear producto
-    const producto = new Producto(1, vendedor1, "Jabon", "Sabor vainilla", [], 100, "DolarUsa", 10, [], true);
-
-    // Crear itemPedido
-    const itemPedido = new ItemPedido(producto, 2, producto.precio);
 
     // Datos para los pedidos
     const pedidoData1 = {
@@ -132,21 +114,88 @@ describe("PedidoService", () => {
       ])
     );
   });
-});
 
-test("Realiza notificaciones correctamente", async () => {
-    // Crear usuario y agregarlo al repositorio
-    const comprador1 = new Usuario("Juan", "juan@mail.com", "12345600", "Comprador");
-    UsuarioRepository.crearUsuario(comprador1);
-    const vendedor1 = new Usuario("Ian", "ian@mail.com", "70810617", "Vendedor");
-    UsuarioRepository.crearUsuario(vendedor1);
+  test("actualizar estado de un pedido a enviado", async () => {
+    // Datos para el pedido
+    const pedidoData = {
+      comprador: comprador1.id,
+      items: [itemPedido],
+      moneda: "DolarUsa",
+      direccionEntrega: "Calle 123"
+    };
 
-    // Crear producto
-    const producto = new Producto(1, vendedor1, "Jabon", "Sabor vainilla", [], 100, "DolarUsa", 10, [], true);
+    const pedidoService = new PedidoService();
+    const pedidoCreado = await pedidoService.postPedido(pedidoData);
+    const actualizacionData1 = {
+      usuario: vendedor1.id,
+      estado: "Confirmado",
+      motivo: "Pedido confirmado"
+    };
+    const res1 = await pedidoService.patchPedido(pedidoCreado.data.id, actualizacionData1);
+    expect(res1.status).toBe(200);
+    expect(res1.data.estado).toBe(EstadoPedido.Confirmado);
 
-    // Crear itemPedido
-    const itemPedido = new ItemPedido(producto, 2, producto.precio);
+    const actualizacionData2 = {
+      usuario: vendedor1.id,
+      estado: "EnPreparacion",
+      motivo: "Pedido en preparación"
+    };
+    const res2 = await pedidoService.patchPedido(pedidoCreado.data.id, actualizacionData2);
+    expect(res2.status).toBe(200);
+    expect(res2.data.estado).toBe(EstadoPedido.EnPreparacion);
 
+    const actualizacionData3 = {
+      usuario: vendedor1.id,
+      estado: "Enviado",
+      motivo: "Pedido enviado"
+    };
+    const res3 = await pedidoService.patchPedido(pedidoCreado.data.id, actualizacionData3);
+
+    expect(res3.status).toBe(200);
+    expect(pedidoCreado.data.tieneItemsDe(vendedor1)).toBe(true);
+    expect(res3.data.estado).toBe(EstadoPedido.Enviado);
+    expect(producto.stock).toBe(8);
+    expect(res3.data.historialEstados).toHaveLength(3);
+    expect(res3.data.historialEstados[0].estado).toBe(EstadoPedido.Confirmado);
+    expect(res3.data.historialEstados[1].estado).toBe(EstadoPedido.EnPreparacion);
+    expect(res3.data.historialEstados[2].estado).toBe(EstadoPedido.Enviado);
+  });
+
+  test("cancelar un pedido", async () => {
+    // Datos para el pedido
+    const pedidoData = {
+      comprador: comprador1.id,
+      items: [itemPedido],
+      moneda: "DolarUsa",
+      direccionEntrega: "Calle 123"
+    };
+
+    const pedidoService = new PedidoService();
+    const pedidoCreado = await pedidoService.postPedido(pedidoData);
+    const actualizacionData1 = {
+      usuario: vendedor1.id,
+      estado: "Confirmado",
+      motivo: "Pedido confirmado"
+    };
+    const res1 = await pedidoService.patchPedido(pedidoCreado.data.id, actualizacionData1);
+    expect(res1.status).toBe(200);
+    expect(res1.data.estado).toBe(EstadoPedido.Confirmado);
+
+    const actualizacionData2 = {
+      usuario: vendedor1.id,
+      estado: "Cancelado",
+      motivo: "Pedido cancelado"
+    };
+    const res2 = await pedidoService.patchPedido(pedidoCreado.data.id, actualizacionData2);
+    expect(res2.status).toBe(200);
+    expect(res2.data.estado).toBe(EstadoPedido.Cancelado);
+    expect(producto.stock).toBe(10);
+    expect(res2.data.historialEstados).toHaveLength(2);
+    expect(res2.data.historialEstados[0].estado).toBe(EstadoPedido.Confirmado);
+    expect(res2.data.historialEstados[1].estado).toBe(EstadoPedido.Cancelado);
+  });
+
+  test("realiza notificaciones correctamente", async () => {
     // Datos para el pedido
     const pedidoData1 = {
       comprador: comprador1.id,
@@ -179,7 +228,6 @@ test("Realiza notificaciones correctamente", async () => {
         motivo: "testing"
     };
 
-
     const pedidoService = new PedidoService();
     const res = await pedidoService.postPedido(pedidoData1);
     const res1 = await pedidoService.patchPedido(1, actualizacionData1);
@@ -199,4 +247,7 @@ test("Realiza notificaciones correctamente", async () => {
     expect(pedidoService.factoryNotificacion.notificaciones[1].usuarioDestino).toBe(comprador1);
     expect(pedidoService.factoryNotificacion.notificaciones[3].usuarioDestino).toBe(vendedor1);
   });
+});
+
+
 

@@ -77,10 +77,10 @@ export default class PedidoService {
                         return Promise.reject({name: "StateError", message: "El pedido no puede ser enviado"});
                     }
                     this.factoryNotificacion.crearNotificacionDeEnviado(pedido);
-                    // if(!pedido.items.every((item) => item.producto.vendedor === usuario)) {
-                    //     return Promise.reject({name: "SellerError", message: "El usuario no vende los productos de este pedido"});
-                    // }
-                    // pedido.items.every((item) => item.producto.reducirStock(item.cantidad));
+                    if(!pedido.tieneItemsDe(usuario)) {
+                        return Promise.reject({name: "SellerError", message: "El usuario no vende los productos de este pedido"});
+                    }
+                    pedido.reducirStockItems();
                     break;
                 case EstadoPedido.Entregado:
                     if(pedido.estado !== EstadoPedido.Enviado) { 
@@ -99,7 +99,7 @@ export default class PedidoService {
         pedido.actualizarEstado(pedidoData.estado, usuario, pedidoData.motivo);
     }
 
-        return Promise.all([this.pedidoRepository.actualizarPedido(pedidoId, pedido)])
+        return Promise.resolve(this.pedidoRepository.actualizarPedido(pedidoId, pedido))
          .then((pedidoRes) => {
              return {
                  data: pedidoRes,

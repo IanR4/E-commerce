@@ -25,11 +25,15 @@ export class Pedido {
     }
 
     validarStock() {
-        //return this.items.every((itemPedido) => itemPedido.producto.estaDisponible(itemPedido.cantidad))
-        return true
+        return this.items.every((itemPedido) => itemPedido.producto.estaDisponible(itemPedido.cantidad))
     }
 
-    notificarCreacion() {
-
+    tieneItemsDe(usuario) {
+        return this.items.every((item) => item.producto.vendedor === usuario)
     }
+
+    reducirStockItems() {
+        this.items.forEach((item) => item.producto.reducirStock(item.cantidad));
+    }
+
 }  
