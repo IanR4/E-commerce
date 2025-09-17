@@ -133,3 +133,70 @@ describe("PedidoService", () => {
     );
   });
 });
+
+test("Realiza notificaciones correctamente", async () => {
+    // Crear usuario y agregarlo al repositorio
+    const comprador1 = new Usuario("Juan", "juan@mail.com", "12345600", "Comprador");
+    UsuarioRepository.crearUsuario(comprador1);
+    const vendedor1 = new Usuario("Ian", "ian@mail.com", "70810617", "Vendedor");
+    UsuarioRepository.crearUsuario(vendedor1);
+
+    // Crear producto
+    const producto = new Producto(1, vendedor1, "Jabon", "Sabor vainilla", [], 100, "DolarUsa", 10, [], true);
+
+    // Crear itemPedido
+    const itemPedido = new ItemPedido(producto, 2, producto.precio);
+
+    // Datos para el pedido
+    const pedidoData1 = {
+      comprador: comprador1.id,
+      items: [itemPedido],
+      moneda: "DolarUsa",
+      direccionEntrega: "Calle 123"
+    };
+    const pedidoData2 = {
+      comprador: comprador1.id,
+      items: [itemPedido],
+      moneda: "Real",
+      direccionEntrega: "Esquina 456"
+    };
+    // Datos para la actualizacion del pedido
+    const actualizacionData1 = {
+        usuario: vendedor1.id,
+        estado: "Confirmado",
+    };
+    const actualizacionData2 = {
+        usuario: vendedor1.id,
+        estado: "EnPreparacion",
+    };
+    const actualizacionData3 = {
+        usuario: vendedor1.id,
+        estado: "Enviado"
+    };
+    const actualizacionData4 = {
+        usuario: comprador1.id,
+        estado: "Cancelado",
+        motivo: "testing"
+    };
+
+
+    const pedidoService = new PedidoService();
+    const res = await pedidoService.postPedido(pedidoData1);
+    const res1 = await pedidoService.patchPedido(1, actualizacionData1);
+    const res2 = await pedidoService.patchPedido(1, actualizacionData2);
+    const res3 = await pedidoService.patchPedido(1, actualizacionData3);
+    const res4 = await pedidoService.postPedido(pedidoData2);
+    const res5 = await pedidoService.patchPedido(2, actualizacionData4);
+
+    expect(res.status).toBe(201);
+    expect(res1.status).toBe(200);
+    expect(res2.status).toBe(200);
+    expect(res3.status).toBe(200);
+    expect(res4.status).toBe(201);
+    expect(res5.status).toBe(200);
+    expect(pedidoService.factoryNotificacion.notificaciones.length).toBe(4);
+    expect(pedidoService.factoryNotificacion.notificaciones[0].usuarioDestino).toBe(vendedor1);
+    expect(pedidoService.factoryNotificacion.notificaciones[1].usuarioDestino).toBe(comprador1);
+    expect(pedidoService.factoryNotificacion.notificaciones[3].usuarioDestino).toBe(vendedor1);
+  });
+
