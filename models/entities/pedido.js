@@ -14,7 +14,7 @@ export class Pedido {
     }
 
     calcularTotal() {
-        return this.items.sum((item) => item.subTotal);
+        return this.items.reduce((total, item) => total + item.subtotal(), 0)
     }
 
     actualizarEstado(nuevoEstado, quien, motivo) {
