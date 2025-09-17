@@ -120,12 +120,10 @@ export default class PedidoService {
             };
         }
 
-        return Promise.all([this.pedidoRepository.findByUser(usuario.id)])
+        return Promise.resolve(this.pedidoRepository.findByUser(usuario.id))
         .then((listaPedidos) => {
             return {
-                data: {
-                    pedidos: listaPedidos
-                },
+                data: listaPedidos,
                 status: 200
             };
         });
