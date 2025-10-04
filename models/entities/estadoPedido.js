@@ -1,8 +1,9 @@
-export const EstadoPedido = Object.freeze({
-  Pendiente: "Pendiente",
-  Confirmado: "Confirmado",
-  EnPreparacion: "EnPreparacion",
-  Enviado: "Enviado",
-  Entregado: "Entregado",
-  Cancelado: "Cancelado",
-});
+export class EstadoPedido {
+  constructor(estado) {
+    this.estado = estado;
+  }
+
+  validarTransicion(pedido, usuario, factoryNotificacion) {
+  }
+  
+}

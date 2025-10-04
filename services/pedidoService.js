@@ -1,8 +1,10 @@
+import { EstadoPedidoEnum } from "../models/entities/estadoPedidoEnum.js";
 import { EstadoPedido } from "../models/entities/estadoPedido.js";
 import {Pedido} from "../models/entities/pedido.js"
 import { PedidoRepository } from "../models/repositories/pedidoRepository.js";
 import UsuarioRepository from "../models/repositories/usuarioRepository.js";
 import { FactoryNotificacion } from "../models/repositories/factoryNotificacion.js";
+import { EstadoPedidoFactory } from "../models/entities/EstadoPedidoFactory.js";
 
 export default class PedidoService {
     constructor() {
@@ -59,42 +61,11 @@ export default class PedidoService {
         }
 
         if(pedidoData.estado && pedidoData.estado !== pedido.estado) {
-            switch(pedidoData.estado) {
-                case EstadoPedido.Confirmado:
-                    if(pedido.estado !== EstadoPedido.Pendiente) {
-                        return Promise.reject({name: "StateError", message: "El pedido no puede ser confirmado"});
-                    }
-                    break;
-                case EstadoPedido.EnPreparacion:
-                    if(pedido.estado !== EstadoPedido.Confirmado) {
-                        return Promise.reject({name: "StateError", message: "El pedido no puede ser preparado"});
-                    }
-                    break;
-                case EstadoPedido.Enviado:
-                    if(pedido.estado !== EstadoPedido.EnPreparacion) { 
-                        return Promise.reject({name: "StateError", message: "El pedido no puede ser enviado"});
-                    }
-                    this.factoryNotificacion.crearNotificacionDeEnviado(pedido);
-                    if(!pedido.tieneItemsDe(usuario)) {
-                        return Promise.reject({name: "SellerError", message: "El usuario no vende los productos de este pedido"});
-                    }
-                    break;
-                case EstadoPedido.Entregado:
-                    if(pedido.estado !== EstadoPedido.Enviado) { 
-                        return Promise.reject({name: "StateError", message: "El pedido no puede ser entregado"});
-                    }
-                    break;
-                case EstadoPedido.Cancelado:
-                    if(pedido.estado === EstadoPedido.Enviado || pedido.estado === EstadoPedido.Entregado) { 
-                        return Promise.reject({name: "StateError", message: "El pedido no puede ser cancelado"});
-                    }
-                    this.factoryNotificacion.crearNotificacionDeCancelacion(pedido);
-                    break;
-                default:
-                    return Promise.reject({name: "StateError", message: "Estado no válido"});
+            const nuevoEstado = EstadoPedidoFactory.crearEstado(pedidoData.estado);
+            if(nuevoEstado.validarTransicion(pedido, usuario, this.factoryNotificacion)) {
+                pedido.actualizarEstado(pedidoData.estado, usuario, pedidoData.motivo);
             }
-        pedido.actualizarEstado(pedidoData.estado, usuario, pedidoData.motivo);
-    }
+        }
 
         return Promise.resolve(this.pedidoRepository.actualizarPedido(pedidoId, pedido))
          .then((pedidoRes) => {
