@@ -2,6 +2,8 @@ import express from "express";
 import PedidoController from "../controllers/pedidoController.js";
 import UsuarioController from "../controllers/usuarioController.js";
 import ProductoController from "../controllers/productoController.js";
+import GeneralError from "../errors/errors.js";
+
 
 const routes = express();
 
@@ -47,18 +49,16 @@ routes.get("/historial/:usuarioId", (req, res, next) => {
   PedidoController.getPedidosUsuario(req, res, next);
 });
 
-routes.use((err, req, res, next) => {
-  if (err?.name === "ZodError") {
-    return res.status(400).json({
-      error: "ValidationError",
-      details: err.errors
-    });
+routes.use((err, _req, res, _next) => {
+  if (err instanceof GeneralError) {
+    const response = { error: err.name || "Error" };
+    response.message = err.message;
+    if (err.details) response.details = err.details;
+    return res.status(err.statusCode || 502).json(response);
   }
-  const upstreamStatus = err?.response?.status;
-  res.status(upstreamStatus || 502).json({
-    error: err.name || "Error",
-    message: err.message
-  });
+
+  console.error("Unhandled error: ", err);
+  res.status(500).json({ error: "Internal Server Error" });
 });
 
 export default routes;
