@@ -1,5 +1,5 @@
 import {CambioEstadoPedido} from "../entities/cambioEstadoPedido.js"
-import {EstadoPedido} from "../entities/estadoPedido.js"
+import {EstadoPedidoEnum} from "../entities/estadoPedidoEnum.js"
 
 export class Pedido {
     constructor(comprador, items, moneda, direccionEntrega) {
@@ -7,7 +7,7 @@ export class Pedido {
         this.items = items
         this.moneda = moneda
         this.direccionEntrega = direccionEntrega
-        this.estado = EstadoPedido.Pendiente
+        this.estado = EstadoPedidoEnum.Pendiente
         this.fechaCreacion = new Date()
         this.historialEstados = []
     }

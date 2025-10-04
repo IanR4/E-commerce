@@ -1,9 +1,10 @@
 import PedidoService from "../services/pedidoService.js";
 import UsuarioRepository from "../models/repositories/usuarioRepository.js";
+import ProductoRepository from "../models/repositories/productoRepository.js";
 import { Producto } from "../models/entities/producto.js";
 import { ItemPedido } from "../models/entities/itemPedido.js";
 import { Usuario } from "../models/entities/usuario.js";
-import { EstadoPedido } from "../models/entities/estadoPedido.js";
+import { EstadoPedidoEnum } from "../models/entities/estadoPedidoEnum.js";
 
 let comprador1, vendedor1, producto, itemPedido;
 
@@ -15,8 +16,8 @@ function crearUsuarios() {
 }
 
 function crearProductoYItem() {
-  producto = new Producto(1, vendedor1, "Helado", "Sabor vainilla", [], 100, "DolarUsa", 10, [], true);
-  itemPedido = new ItemPedido(producto, 2);
+  producto = new Producto(vendedor1, "Helado", "Sabor vainilla", [], 100, "DolarUsa", 10, []);
+  ProductoRepository.crearProducto(producto);
 }
 
 
@@ -31,7 +32,11 @@ describe("PedidoService", () => {
   test("crear un pedido correctamente", async () => {
     const pedidoData = {
       comprador: comprador1.id,
-      items: [itemPedido],
+      items: [{
+        producto: producto.id,
+        cantidad: 2,
+        precioUnitario: 100
+      }],
       moneda: "DolarUsa",
       direccionEntrega: "Calle 123"
     };
@@ -53,7 +58,11 @@ describe("PedidoService", () => {
   test("consultar pedido creado", async () => {
     const pedidoData = {
       comprador: comprador1.id,
-      items: [itemPedido],
+      items: [{
+        producto: producto.id,
+        cantidad: 2,
+        precioUnitario: 100
+      }],
       moneda: "DolarUsa",
       direccionEntrega: "Calle 123"
     };
@@ -72,21 +81,21 @@ describe("PedidoService", () => {
 
     const pedidoData1 = {
       comprador: comprador1.id,
-      items: [itemPedido],
+      items: [{ producto: producto.id, cantidad: 2, precioUnitario: 100 }],
       moneda: "DolarUsa",
       direccionEntrega: "Calle 123"
     };
 
     const pedidoData2 = {
       comprador: comprador1.id,
-      items: [itemPedido],
+      items: [{ producto: producto.id, cantidad: 1, precioUnitario: 100 }],
       moneda: "Real",
       direccionEntrega: "Calle 567"
     };
 
     const pedidoData3 = {
       comprador: comprador2.id,
-      items: [itemPedido],
+      items: [{ producto: producto.id, cantidad: 1, precioUnitario: 100 }],
       moneda: "Real",
       direccionEntrega: "Calle 898"
     };
@@ -116,7 +125,11 @@ describe("PedidoService", () => {
   test("actualizar estado de un pedido a enviado", async () => {
     const pedidoData = {
       comprador: comprador1.id,
-      items: [itemPedido],
+      items: [{
+        producto: producto.id,
+        cantidad: 2,
+        precioUnitario: 100
+      }],
       moneda: "DolarUsa",
       direccionEntrega: "Calle 123"
     };
@@ -130,7 +143,7 @@ describe("PedidoService", () => {
     };
     const res1 = await pedidoService.patchPedido(pedidoCreado.data.id, actualizacionData1);
     expect(res1.status).toBe(200);
-    expect(res1.data.estado).toBe(EstadoPedido.Confirmado);
+    expect(res1.data.estado).toBe(EstadoPedidoEnum.Confirmado);
 
     const actualizacionData2 = {
       usuario: vendedor1.id,
@@ -139,7 +152,7 @@ describe("PedidoService", () => {
     };
     const res2 = await pedidoService.patchPedido(pedidoCreado.data.id, actualizacionData2);
     expect(res2.status).toBe(200);
-    expect(res2.data.estado).toBe(EstadoPedido.EnPreparacion);
+    expect(res2.data.estado).toBe(EstadoPedidoEnum.EnPreparacion);
 
     const actualizacionData3 = {
       usuario: vendedor1.id,
@@ -150,17 +163,21 @@ describe("PedidoService", () => {
 
     expect(res3.status).toBe(200);
     expect(pedidoCreado.data.tieneItemsDe(vendedor1)).toBe(true);
-    expect(res3.data.estado).toBe(EstadoPedido.Enviado);
+    expect(res3.data.estado).toBe(EstadoPedidoEnum.Enviado);
     expect(res3.data.historialEstados).toHaveLength(3);
-    expect(res3.data.historialEstados[0].estado).toBe(EstadoPedido.Confirmado);
-    expect(res3.data.historialEstados[1].estado).toBe(EstadoPedido.EnPreparacion);
-    expect(res3.data.historialEstados[2].estado).toBe(EstadoPedido.Enviado);
+    expect(res3.data.historialEstados[0].estado).toBe(EstadoPedidoEnum.Confirmado);
+    expect(res3.data.historialEstados[1].estado).toBe(EstadoPedidoEnum.EnPreparacion);
+    expect(res3.data.historialEstados[2].estado).toBe(EstadoPedidoEnum.Enviado);
   });
 
   test("cancelar un pedido", async () => {
     const pedidoData = {
       comprador: comprador1.id,
-      items: [itemPedido],
+      items: [{
+        producto: producto.id,
+        cantidad: 2,
+        precioUnitario: 100
+      }],
       moneda: "DolarUsa",
       direccionEntrega: "Calle 123"
     };
@@ -174,7 +191,7 @@ describe("PedidoService", () => {
     };
     const res1 = await pedidoService.patchPedido(pedidoCreado.data.id, actualizacionData1);
     expect(res1.status).toBe(200);
-    expect(res1.data.estado).toBe(EstadoPedido.Confirmado);
+    expect(res1.data.estado).toBe(EstadoPedidoEnum.Confirmado);
 
     const actualizacionData2 = {
       usuario: vendedor1.id,
@@ -183,22 +200,30 @@ describe("PedidoService", () => {
     };
     const res2 = await pedidoService.patchPedido(pedidoCreado.data.id, actualizacionData2);
     expect(res2.status).toBe(200);
-    expect(res2.data.estado).toBe(EstadoPedido.Cancelado);
+    expect(res2.data.estado).toBe(EstadoPedidoEnum.Cancelado);
     expect(res2.data.historialEstados).toHaveLength(2);
-    expect(res2.data.historialEstados[0].estado).toBe(EstadoPedido.Confirmado);
-    expect(res2.data.historialEstados[1].estado).toBe(EstadoPedido.Cancelado);
+    expect(res2.data.historialEstados[0].estado).toBe(EstadoPedidoEnum.Confirmado);
+    expect(res2.data.historialEstados[1].estado).toBe(EstadoPedidoEnum.Cancelado);
   });
 
   test("realiza notificaciones correctamente", async () => {
     const pedidoData1 = {
       comprador: comprador1.id,
-      items: [itemPedido],
+      items: [{
+        producto: producto.id,
+        cantidad: 2,
+        precioUnitario: 100
+      }],
       moneda: "DolarUsa",
       direccionEntrega: "Calle 123"
     };
     const pedidoData2 = {
       comprador: comprador1.id,
-      items: [itemPedido],
+      items: [{
+        producto: producto.id,
+        cantidad: 2,
+        precioUnitario: 100
+      }],
       moneda: "Real",
       direccionEntrega: "Esquina 456"
     };
