@@ -1,5 +1,6 @@
 import PedidoService from "../services/pedidoService.js";
 import UsuarioRepository from "../models/repositories/usuarioRepository.js";
+import ProductoRepository from "../models/repositories/productoRepository.js";
 import { Producto } from "../models/entities/producto.js";
 import { ItemPedido } from "../models/entities/itemPedido.js";
 import { Usuario } from "../models/entities/usuario.js";
@@ -15,8 +16,8 @@ function crearUsuarios() {
 }
 
 function crearProductoYItem() {
-  producto = new Producto(1, vendedor1, "Helado", "Sabor vainilla", [], 100, "DolarUsa", 10, [], true);
-  itemPedido = new ItemPedido(producto, 2);
+  producto = new Producto(vendedor1, "Helado", "Sabor vainilla", [], 100, "DolarUsa", 10, []);
+  ProductoRepository.crearProducto(producto);
 }
 
 
@@ -31,7 +32,11 @@ describe("PedidoService", () => {
   test("crear un pedido correctamente", async () => {
     const pedidoData = {
       comprador: comprador1.id,
-      items: [itemPedido],
+      items: [{
+        producto: producto.id,
+        cantidad: 2,
+        precioUnitario: 100
+      }],
       moneda: "DolarUsa",
       direccionEntrega: "Calle 123"
     };
@@ -53,7 +58,11 @@ describe("PedidoService", () => {
   test("consultar pedido creado", async () => {
     const pedidoData = {
       comprador: comprador1.id,
-      items: [itemPedido],
+      items: [{
+        producto: producto.id,
+        cantidad: 2,
+        precioUnitario: 100
+      }],
       moneda: "DolarUsa",
       direccionEntrega: "Calle 123"
     };
@@ -72,21 +81,21 @@ describe("PedidoService", () => {
 
     const pedidoData1 = {
       comprador: comprador1.id,
-      items: [itemPedido],
+      items: [{ producto: producto.id, cantidad: 2, precioUnitario: 100 }],
       moneda: "DolarUsa",
       direccionEntrega: "Calle 123"
     };
 
     const pedidoData2 = {
       comprador: comprador1.id,
-      items: [itemPedido],
+      items: [{ producto: producto.id, cantidad: 1, precioUnitario: 100 }],
       moneda: "Real",
       direccionEntrega: "Calle 567"
     };
 
     const pedidoData3 = {
       comprador: comprador2.id,
-      items: [itemPedido],
+      items: [{ producto: producto.id, cantidad: 1, precioUnitario: 100 }],
       moneda: "Real",
       direccionEntrega: "Calle 898"
     };
@@ -116,7 +125,11 @@ describe("PedidoService", () => {
   test("actualizar estado de un pedido a enviado", async () => {
     const pedidoData = {
       comprador: comprador1.id,
-      items: [itemPedido],
+      items: [{
+        producto: producto.id,
+        cantidad: 2,
+        precioUnitario: 100
+      }],
       moneda: "DolarUsa",
       direccionEntrega: "Calle 123"
     };
@@ -160,7 +173,11 @@ describe("PedidoService", () => {
   test("cancelar un pedido", async () => {
     const pedidoData = {
       comprador: comprador1.id,
-      items: [itemPedido],
+      items: [{
+        producto: producto.id,
+        cantidad: 2,
+        precioUnitario: 100
+      }],
       moneda: "DolarUsa",
       direccionEntrega: "Calle 123"
     };
@@ -192,13 +209,21 @@ describe("PedidoService", () => {
   test("realiza notificaciones correctamente", async () => {
     const pedidoData1 = {
       comprador: comprador1.id,
-      items: [itemPedido],
+      items: [{
+        producto: producto.id,
+        cantidad: 2,
+        precioUnitario: 100
+      }],
       moneda: "DolarUsa",
       direccionEntrega: "Calle 123"
     };
     const pedidoData2 = {
       comprador: comprador1.id,
-      items: [itemPedido],
+      items: [{
+        producto: producto.id,
+        cantidad: 2,
+        precioUnitario: 100
+      }],
       moneda: "Real",
       direccionEntrega: "Esquina 456"
     };
