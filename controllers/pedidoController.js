@@ -52,11 +52,19 @@ class PedidoController {
     };
 }
 
+const itemPedidoSchema = z.object({
+    producto: z.string().min(1),
+    cantidad: z.number().positive(),
+    precioUnitario: z.number().nonnegative()
+})
+
 const pedidoSchema = z.object({
     comprador: z.string().min(1),
     moneda: z.nativeEnum(Moneda),
-    direccionEntrega: z.object(),
-    items: z.array().min(1),
+    direccionEntrega: z.string(),
+    items: z.array(itemPedidoSchema).min(1),
 })
+
+
 
 export default new PedidoController();

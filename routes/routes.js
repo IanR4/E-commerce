@@ -1,6 +1,7 @@
 import express from "express";
 import PedidoController from "../controllers/pedidoController.js";
 import UsuarioController from "../controllers/usuarioController.js";
+import ProductoController from "../controllers/productoController.js";
 
 const routes = express();
 
@@ -28,6 +29,14 @@ routes.get("/usuario/:usuarioId", (req, res, next) => {
 
 routes.post("/usuario", (req, res, next) => {
   UsuarioController.postUsuario(req, res, next);
+});
+
+routes.get("/producto/:productoId", (req, res, next) => {
+  ProductoController.getProducto(req, res, next);
+});
+
+routes.post("/producto", (req, res, next) => {
+  ProductoController.postProducto(req, res, next);
 });
 
 routes.patch("/pedido/:pedidoId", (req, res, next) => {

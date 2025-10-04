@@ -2,6 +2,7 @@ import { EstadoPedido } from "../models/entities/estadoPedido.js";
 import {Pedido} from "../models/entities/pedido.js"
 import { PedidoRepository } from "../models/repositories/pedidoRepository.js";
 import UsuarioRepository from "../models/repositories/usuarioRepository.js";
+import ItemPedidoCreator from "../middleware/itemPedidoCreator.js";
 import { FactoryNotificacion } from "../models/repositories/factoryNotificacion.js";
 
 export default class PedidoService {
@@ -27,9 +28,10 @@ export default class PedidoService {
         if(!comprador) {
             return Promise.reject({name: "NotFoundError", message: "Comprador no encontrado"});
         }
+        const items = ItemPedidoCreator.crearItems(pedidoData.items)
         const nuevoPedido = new Pedido(
             comprador,
-            pedidoData.items,
+            items,
             pedidoData.moneda,
             pedidoData.direccionEntrega
         )
