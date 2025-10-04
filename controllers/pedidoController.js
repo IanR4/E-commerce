@@ -1,3 +1,4 @@
+
 import PedidoValidator from "../validators/pedidoValidator.js"
 import PedidoService from "../services/pedidoService.js"
 
@@ -17,7 +18,7 @@ class PedidoController {
     postPedido = (req, res) => {
         const pedidoData = req.body;
         const resultBody = this.pedidoValidator.validarPedido(pedidoData);
-        this.pedidoService.postPedido(resultBody.data)
+        this.pedidoService.postPedido(resultBody)
             .then(({ data, status }) => res.status(status).json(data))
     }
 
@@ -38,18 +39,6 @@ class PedidoController {
     };
 }
 
-const itemPedidoSchema = z.object({
-    producto: z.string().min(1),
-    cantidad: z.number().positive(),
-    precioUnitario: z.number().nonnegative()
-})
-
-const pedidoSchema = z.object({
-    comprador: z.string().min(1),
-    moneda: z.nativeEnum(Moneda),
-    direccionEntrega: z.string(),
-    items: z.array(itemPedidoSchema).min(1),
-})
 
 
 
