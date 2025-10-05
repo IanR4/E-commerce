@@ -55,6 +55,14 @@ class PedidoValidator {
         return pedido;
     }
 
+    buscarPedidoUsuario(usuarioId) {
+        const listaPedido = this.pedidoRepository.findByUser(usuarioId);
+        if(!listaPedido) {
+            return Promise.reject(new NotFoundError("Lista de pedidos no encontrada"));
+        }
+        return listaPedido;
+    }
+
     validarStockPedido(pedido) {
         if(!pedido.validarStock()){
             return Promise.reject(new StockError("No hay stock suficiente para completar el pedido"));

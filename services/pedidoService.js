@@ -17,7 +17,7 @@ export default class PedidoService {
     }
 
     getPedido(pedidoId) {
-        return Promise.resolve(this.pedidoRepository.findById(pedidoId))
+        return Promise.resolve(this.pedidoValidator.buscarPedido(pedidoId))
         .then((pedidoRes) => {
             return {
                 data: pedidoRes,
@@ -29,20 +29,24 @@ export default class PedidoService {
     postPedido(pedidoData) {
         const compradorId = parseInt(pedidoData.comprador, 10);
         const comprador = this.pedidoValidator.buscarComprador(compradorId);
-        const items = ItemPedidoCreator.crearItems(pedidoData.items)
-        const nuevoPedido = new Pedido(
-            comprador,
-            items,
-            pedidoData.moneda,
-            pedidoData.direccionEntrega
-        )
-        this.pedidoValidator.validarStockPedido(nuevoPedido);
-        nuevoPedido.reducirStockItems();
-        const pedidoGuardado = this.pedidoRepository.crearPedido(nuevoPedido);
-        this.factoryNotificacion.crearNotificacionDeCreacion(pedidoGuardado);
-        return Promise.resolve({
-            data: pedidoGuardado,
-            status: 201
+        console.log(pedidoData.items)
+        return Promise.resolve(ItemPedidoCreator.crearItems(pedidoData.items))
+        .then((items) => {
+            const nuevoPedido = new Pedido(
+                comprador,
+                items,
+                pedidoData.moneda,
+                pedidoData.direccionEntrega
+            )
+                console.log(nuevoPedido)
+                this.pedidoValidator.validarStockPedido(nuevoPedido);
+                nuevoPedido.reducirStockItems();
+                const pedidoGuardado = this.pedidoRepository.crearPedido(nuevoPedido);
+                this.factoryNotificacion.crearNotificacionDeCreacion(pedidoGuardado);
+            return Promise.resolve({
+                data: pedidoGuardado,
+                status: 201
+            });
         });
     }
 
@@ -70,7 +74,7 @@ export default class PedidoService {
     getPedidosUsuario(usuarioId) {
         const usuario = this.pedidoValidator.buscarUsuario(usuarioId);
 
-        return Promise.resolve(this.pedidoRepository.findByUser(usuario.id))
+        return Promise.resolve(this.pedidoValidator.buscarPedidoUsuario(usuario.id))
         .then((listaPedidos) => {
             return {
                 data: listaPedidos,

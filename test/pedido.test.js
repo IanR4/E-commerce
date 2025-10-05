@@ -5,6 +5,8 @@ import { Producto } from "../models/entities/producto.js";
 import { ItemPedido } from "../models/entities/itemPedido.js";
 import { Usuario } from "../models/entities/usuario.js";
 import { EstadoPedidoEnum } from "../models/entities/estadoPedidoEnum.js";
+import { Pedido } from "../models/entities/pedido.js";
+import PedidoRepository from "../models/repositories/pedidoRepository.js";
 
 let comprador1, vendedor1, producto, itemPedido;
 
@@ -18,13 +20,19 @@ function crearUsuarios() {
 function crearProductoYItem() {
   producto = new Producto(vendedor1, "Helado", "Sabor vainilla", [], 100, "DolarUsa", 10, []);
   ProductoRepository.crearProducto(producto);
+  console.log(producto)
+  console.log(ProductoRepository.productos)
 }
 
 
 describe("PedidoService", () => {
   beforeEach(() => {
     UsuarioRepository.usuarios = [];
+    PedidoRepository.pedidos = [];
+    ProductoRepository.productos = [];
     UsuarioRepository.nextId = 1;
+    PedidoRepository.nextId = 1;
+    ProductoRepository.nextId = 1;
     crearUsuarios();
     crearProductoYItem();
   });
@@ -54,7 +62,7 @@ describe("PedidoService", () => {
     expect(res.data.items[0].producto.vendedor).toBe(vendedor1);
 
   });
-
+  
   test("consultar pedido creado", async () => {
     const pedidoData = {
       comprador: comprador1.id,
@@ -74,28 +82,28 @@ describe("PedidoService", () => {
     expect(pedidoObtenido.status).toBe(200);
     expect(pedidoObtenido.data).toEqual(pedidoCreado.data);
   });
-
+  
   test("consultar historial de un usuario", async () => {
     const comprador2 = new Usuario("Nico", "nico@mail.com", "31958271", "Comprador");
     UsuarioRepository.crearUsuario(comprador2);
 
     const pedidoData1 = {
       comprador: comprador1.id,
-      items: [{ producto: producto.id, cantidad: 2, precioUnitario: 100 }],
+      items: [{ producto: producto.id, cantidad: 1, precioUnitario: 100 }],
       moneda: "DolarUsa",
       direccionEntrega: "Calle 123"
     };
 
     const pedidoData2 = {
       comprador: comprador1.id,
-      items: [{ producto: producto.id, cantidad: 1, precioUnitario: 100 }],
+      items: [{ producto: producto.id, cantidad: 2, precioUnitario: 200 }],
       moneda: "Real",
       direccionEntrega: "Calle 567"
     };
 
     const pedidoData3 = {
       comprador: comprador2.id,
-      items: [{ producto: producto.id, cantidad: 1, precioUnitario: 100 }],
+      items: [{ producto: producto.id, cantidad: 3, precioUnitario: 300 }],
       moneda: "Real",
       direccionEntrega: "Calle 898"
     };
@@ -121,7 +129,7 @@ describe("PedidoService", () => {
       ])
     );
   });
-
+  
   test("actualizar estado de un pedido a enviado", async () => {
     const pedidoData = {
       comprador: comprador1.id,
@@ -169,7 +177,7 @@ describe("PedidoService", () => {
     expect(res3.data.historialEstados[1].estado).toBe(EstadoPedidoEnum.EnPreparacion);
     expect(res3.data.historialEstados[2].estado).toBe(EstadoPedidoEnum.Enviado);
   });
-
+  
   test("cancelar un pedido", async () => {
     const pedidoData = {
       comprador: comprador1.id,
@@ -205,7 +213,7 @@ describe("PedidoService", () => {
     expect(res2.data.historialEstados[0].estado).toBe(EstadoPedidoEnum.Confirmado);
     expect(res2.data.historialEstados[1].estado).toBe(EstadoPedidoEnum.Cancelado);
   });
-
+  
   test("realiza notificaciones correctamente", async () => {
     const pedidoData1 = {
       comprador: comprador1.id,
@@ -265,4 +273,5 @@ describe("PedidoService", () => {
     expect(pedidoService.factoryNotificacion.notificaciones[1].usuarioDestino).toBe(comprador1);
     expect(pedidoService.factoryNotificacion.notificaciones[3].usuarioDestino).toBe(vendedor1);
   });
+  
 });

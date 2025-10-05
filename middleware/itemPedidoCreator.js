@@ -1,5 +1,6 @@
 import {ItemPedido} from "../models/entities/itemPedido.js"
 import ProductoRepository from "../models/repositories/productoRepository.js";
+import productoValidator from "../validators/productoValidator.js";
 
 class itemPedidoCreator {
 
@@ -8,6 +9,7 @@ class itemPedidoCreator {
         for (let i = 0; i < nuevosItems.length; i++) {
             const productoId = parseInt(nuevosItems[i].producto, 10);
             const producto = ProductoRepository.findById(productoId);
+            console.log(producto)
             if(!producto) {
                 return Promise.reject({name: "NotFoundError", message: "Producto no encontrado"});
             }
@@ -18,7 +20,7 @@ class itemPedidoCreator {
             )
             itemsCreados.push(nuevoItemPedido)
         }
-        return itemsCreados
+        return itemsCreados;
     }
 }
 

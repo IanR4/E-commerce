@@ -1,6 +1,7 @@
 import {Producto} from "../models/entities/producto.js"
 import UsuarioRepository from "../models/repositories/usuarioRepository.js";
 import ProductoRepository from "../models/repositories/productoRepository.js";
+import ProductoValidator from "../validators/productoValidator.js"
 
 export default class ProductoService {
 
@@ -15,11 +16,8 @@ export default class ProductoService {
     }
 
     postProducto(productoData) {
-        const vendedorId = parseInt(productoData.vendedor, 10);
-        const vendedor = UsuarioRepository.findById(vendedorId);
-        if(!vendedor) {
-            return Promise.reject({name: "NotFoundError", message: "Vendedor no encontrado"});
-        }
+        const vendedorId = ProductoValidator.validarUsuarioId(parseInt(productoData.vendedor, 10))
+        const vendedor = ProductoValidator.buscarVendedor(vendedorId)
         const nuevoProducto = new Producto(
             vendedor,
             productoData.titulo,
