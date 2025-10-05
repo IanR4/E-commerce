@@ -2,6 +2,7 @@ import {Producto} from "../models/entities/producto.js"
 import UsuarioRepository from "../models/repositories/usuarioRepository.js";
 import ProductoRepository from "../models/repositories/productoRepository.js";
 import ProductoValidator from "../validators/productoValidator.js"
+import UsuarioValidator from "../validators/usuarioValidator.js"
 
 export default class ProductoService {
 
@@ -16,8 +17,8 @@ export default class ProductoService {
     }
 
     postProducto(productoData) {
-        const vendedorId = ProductoValidator.validarUsuarioId(parseInt(productoData.vendedor, 10))
-        const vendedor = ProductoValidator.buscarVendedor(vendedorId)
+        const vendedorId = UsuarioValidator.validarUsuarioId(parseInt(productoData.vendedor, 10))
+        const vendedor = UsuarioValidator.buscarVendedor(vendedorId)
         const nuevoProducto = new Producto(
             vendedor,
             productoData.titulo,

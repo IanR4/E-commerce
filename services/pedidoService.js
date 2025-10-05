@@ -7,10 +7,12 @@ import ItemPedidoCreator from "../middleware/itemPedidoCreator.js";
 import { FactoryNotificacion } from "../models/repositories/factoryNotificacion.js";
 import { EstadoPedidoFactory } from "../models/entities/EstadoPedidoFactory.js";
 import PedidoValidator from "../validators/pedidoValidator.js"
+import UsuarioValidator from "../validators/usuarioValidator.js"
 
 export default class PedidoService {
     constructor() {
         this.pedidoValidator = PedidoValidator;
+        this.usuarioValidator = UsuarioValidator;
         this.pedidoRepository = PedidoRepository;
         this.usuarioRepository = UsuarioRepository;
         this.factoryNotificacion = new FactoryNotificacion();
@@ -28,7 +30,7 @@ export default class PedidoService {
 
     postPedido(pedidoData) {
         const compradorId = parseInt(pedidoData.comprador, 10);
-        const comprador = this.pedidoValidator.buscarComprador(compradorId);
+        const comprador = this.usuarioValidator.buscarComprador(compradorId);
         console.log(pedidoData.items)
         return Promise.resolve(ItemPedidoCreator.crearItems(pedidoData.items))
         .then((items) => {
@@ -53,7 +55,7 @@ export default class PedidoService {
     patchPedido(pedidoId, pedidoData) {
         const pedido = this.pedidoValidator.buscarPedido(pedidoId);        
         const usuarioId = parseInt(pedidoData.usuario, 10);
-        const usuario = this.pedidoValidator.buscarUsuario(usuarioId);
+        const usuario = this.usuarioValidator.buscarUsuario(usuarioId);
 
         if(pedidoData.estado && pedidoData.estado !== pedido.estado) {
             const nuevoEstado = EstadoPedidoFactory.crearEstado(pedidoData.estado);
@@ -72,7 +74,7 @@ export default class PedidoService {
     }
 
     getPedidosUsuario(usuarioId) {
-        const usuario = this.pedidoValidator.buscarUsuario(usuarioId);
+        const usuario = this.usuarioValidator.buscarUsuario(usuarioId);
 
         return Promise.resolve(this.pedidoValidator.buscarPedidoUsuario(usuario.id))
         .then((listaPedidos) => {

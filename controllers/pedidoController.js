@@ -1,9 +1,10 @@
-
+import UsuarioValidator from "../validators/usuarioValidator.js"
 import PedidoValidator from "../validators/pedidoValidator.js"
 import PedidoService from "../services/pedidoService.js"
 
 class PedidoController {
     constructor() {
+        this.usuarioValidator = UsuarioValidator;
         this.pedidoValidator = PedidoValidator;
         this.pedidoService = new PedidoService();
     }
@@ -32,7 +33,7 @@ class PedidoController {
 
     getPedidosUsuario = (req, res) => {
         const usuarioId = parseInt(req.params.usuarioId, 10);
-        this.pedidoValidator.validarUsuarioId(usuarioId);
+        this.usuarioValidator.validarUsuarioId(usuarioId);
         this.pedidoService.getPedidosUsuario(usuarioId)
             .then(({ data, status }) => res.status(status).json(data))
             .catch(next);

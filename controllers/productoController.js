@@ -1,4 +1,3 @@
-import { z } from "zod"
 import ProductoService from "../services/productoService.js"
 import ProductoValidator from "../validators/productoValidator.js"
 

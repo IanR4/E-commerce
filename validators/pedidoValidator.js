@@ -16,12 +16,6 @@ class PedidoValidator {
         }
     }
 
-    validarUsuarioId(usuarioId) {
-        if (isNaN(usuarioId)) {
-            throw new BadRequestError("Invalid usuarioId parameter");
-        }
-    }
-
     validarPedido(pedido) {
         try {
             return pedidoSchema.parse(pedido);
@@ -29,22 +23,6 @@ class PedidoValidator {
         catch(error) {
             throw new ValidationError("Invalid request body", error.errors);
         }
-    }
-
-    buscarUsuario(usuarioId) {
-        const usuario = this.usuarioRepository.findById(usuarioId);
-        if(!usuario) {
-            return Promise.reject(new NotFoundError("Usuario no encontrado"));
-        }
-        return usuario;
-    }
-
-    buscarComprador(compradorId) {
-        const comprador = this.usuarioRepository.findById(compradorId);
-        if(!comprador) {
-            return Promise.reject(new NotFoundError("Comprador no encontrado"));
-        }
-        return comprador;
     }
 
     buscarPedido(pedidoId) {

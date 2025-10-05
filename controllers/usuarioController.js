@@ -1,39 +1,27 @@
 import { z } from "zod"
 import UsuarioService from "../services/usuarioService.js"
 import { TipoUsuario } from "../models/entities/tipoUsuario.js"
+import UsuarioValidator from "../validators/usuarioValidator.js"
 
 class UsuarioController{
   constructor() {
+    this.usuarioValidator = UsuarioValidator;
     this.usuarioService = new UsuarioService();
   }
 
-  getUsuario = (req, res, next) => {
+  getUsuario = (req, res) => {
     const usuarioId = parseInt(req.params.usuarioId, 10);
-    if (isNaN(usuarioId)) {
-      return res.status(400).json({ error: "Invalid usuarioId parameter" });
-    }
+    this.usuarioValidator.  validarUsuarioId(usuarioId);
     this.usuarioService.getUsuario(usuarioId)
-      .then(({ data, status }) => res.status(status).json(data))
-      .catch(next);
+      .then(({ data, status }) => res.status(status).json(data));
   };
 
-  postUsuario = (req, res, next) => {
+  postUsuario = (req, res) => {
     const usuarioData = req.body;
-    const resultBody = usuarioSchema.safeParse(usuarioData)
-    if (!resultBody.success) {
-      return res.status(400).json({ error: "Invalid request body", details: resultBody.error.errors });
-    }
+    const resultBody = this.usuarioValidator.validarUsuario(usuarioData);
     this.usuarioService.postUsuario(resultBody.data)
       .then(({ data, status }) => res.status(status).json(data))
-      .catch(next);
   }
 }
-
-const usuarioSchema = z.object({
-    nombre: z.string().min(3).max(20),
-    email: z.string().email(),
-    telefono: z.string().min(8).max(15),
-    tipo: z.nativeEnum(TipoUsuario)
-})
 
 export default new UsuarioController();

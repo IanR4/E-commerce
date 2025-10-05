@@ -16,12 +16,6 @@ class ProductoValidator {
         }
     }
 
-    validarUsuarioId(usuarioId) {
-        if (isNaN(usuarioId)) {
-            throw new BadRequestError("Invalid usuarioId parameter");
-        }
-    }
-
     validarProducto(producto) {
         try {
             return productoSchema.parse(producto);
@@ -29,22 +23,6 @@ class ProductoValidator {
         catch(error) {
             throw new ValidationError("Invalid request body", error.errors);
         }
-    }
-
-    buscarUsuario(usuarioId) {
-        const usuario = this.usuarioRepository.findById(usuarioId);
-        if(!usuario) {
-            return Promise.reject(new NotFoundError("Usuario no encontrado"));
-        }
-        return usuario;
-    }
-
-    buscarVendedor(vendedorId) {
-        const vendedor = this.usuarioRepository.findById(vendedorId);
-        if(!vendedor) {
-            return Promise.reject(new NotFoundError("Vendedor no encontrado"));
-        }
-        return vendedor;
     }
 
     buscarProducto(productoId) {

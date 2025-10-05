@@ -1,13 +1,15 @@
 import {Usuario} from "../models/entities/usuario.js"
 import UsuarioRepository from "../models/repositories/usuarioRepository.js";
+import UsuarioValidator from "../validators/usuarioValidator.js"
 
 export default class UsuarioService {
     constructor() {
         this.usuarioRepository = UsuarioRepository;
+        this.usuarioValidator = UsuarioValidator;
     }
 
     getUsuario(usuarioId){
-        return Promise.resolve(this.usuarioRepository.findById(usuarioId))
+        return Promise.resolve(this.usuarioValidator.buscarUsuario(usuarioId))
         .then((usuarioRes) => {
             return {
                 data: usuarioRes,
