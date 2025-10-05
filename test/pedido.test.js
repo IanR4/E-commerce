@@ -148,7 +148,7 @@ describe("PedidoService", () => {
     const actualizacionData2 = {
       usuario: vendedor1.id,
       estado: "EnPreparacion",
-      motivo: "Pedido en preparación"
+      motivo: "Pedido en preparaciÃ³n"
     };
     const res2 = await pedidoService.patchPedido(pedidoCreado.data.id, actualizacionData2);
     expect(res2.status).toBe(200);
@@ -266,6 +266,3 @@ describe("PedidoService", () => {
     expect(pedidoService.factoryNotificacion.notificaciones[3].usuarioDestino).toBe(vendedor1);
   });
 });
-
-
-
