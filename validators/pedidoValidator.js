@@ -1,8 +1,15 @@
 import { z } from "zod";
 import { Moneda } from "../models/entities/moneda.js";
-import {BadRequestError, NotFoundError, ValidationError } from "../errors/errors.js";
+import { BadRequestError, NotFoundError, ValidationError, StockError } from "../errors/errors.js";
+import UsuarioRepository from "../models/repositories/usuarioRepository.js";
+import PedidoRepository from "../models/repositories/pedidoRepository.js";
 
 class PedidoValidator {
+    constructor() {
+        this.pedidoRepository = PedidoRepository;
+        this.usuarioRepository = UsuarioRepository;
+    }
+
     validarPedidoId(pedidoId) {
         if (isNaN(pedidoId)) {
             throw new BadRequestError("Invalid pedidoId parameter");
@@ -21,6 +28,36 @@ class PedidoValidator {
         }
         catch(error) {
             throw new ValidationError("Invalid request body", error.errors);
+        }
+    }
+
+    buscarUsuario(usuarioId) {
+        const usuario = this.usuarioRepository.findById(usuarioId);
+        if(!usuario) {
+            return Promise.reject(new NotFoundError("Usuario no encontrado"));
+        }
+        return usuario;
+    }
+
+    buscarComprador(compradorId) {
+        const comprador = this.usuarioRepository.findById(compradorId);
+        if(!comprador) {
+            return Promise.reject(new NotFoundError("Comprador no encontrado"));
+        }
+        return comprador;
+    }
+
+    buscarPedido(pedidoId) {
+        const pedido = this.pedidoRepository.findById(pedidoId);
+        if(!pedido) {
+            return Promise.reject(new NotFoundError("Pedido no encontrado"));
+        }
+        return pedido;
+    }
+
+    validarStockPedido(pedido) {
+        if(!pedido.validarStock()){
+            return Promise.reject(new StockError("No hay stock suficiente para completar el pedido"));
         }
     }
 }

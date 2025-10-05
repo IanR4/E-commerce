@@ -1,4 +1,4 @@
-export class PedidoRepository {
+class PedidoRepository {
     constructor() {
         this.pedidos = []
         this.nextId = 1
@@ -26,3 +26,5 @@ export class PedidoRepository {
         return this.pedidos.filter(pedido => pedido.comprador.id === usuarioId)
     }
 }
+
+export default new PedidoRepository();

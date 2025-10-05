@@ -24,3 +24,9 @@ export class ValidationError extends GeneralError {
         this.details = details;
     }
 }
+
+export class StockError extends GeneralError {
+    constructor(message = "Insufficient Stock") {
+        super(message, 400);
+    }
+}

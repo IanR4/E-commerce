@@ -1,15 +1,17 @@
 import { EstadoPedidoEnum } from "../models/entities/estadoPedidoEnum.js";
 import { EstadoPedido } from "../models/entities/estadoPedido.js";
 import {Pedido} from "../models/entities/pedido.js"
-import { PedidoRepository } from "../models/repositories/pedidoRepository.js";
+import PedidoRepository from "../models/repositories/pedidoRepository.js";
 import UsuarioRepository from "../models/repositories/usuarioRepository.js";
 import ItemPedidoCreator from "../middleware/itemPedidoCreator.js";
 import { FactoryNotificacion } from "../models/repositories/factoryNotificacion.js";
 import { EstadoPedidoFactory } from "../models/entities/EstadoPedidoFactory.js";
+import PedidoValidator from "../validators/pedidoValidator.js"
 
 export default class PedidoService {
     constructor() {
-        this.pedidoRepository = new PedidoRepository();
+        this.pedidoValidator = PedidoValidator;
+        this.pedidoRepository = PedidoRepository;
         this.usuarioRepository = UsuarioRepository;
         this.factoryNotificacion = new FactoryNotificacion();
     }
@@ -26,10 +28,7 @@ export default class PedidoService {
 
     postPedido(pedidoData) {
         const compradorId = parseInt(pedidoData.comprador, 10);
-        const comprador = UsuarioRepository.findById(compradorId);
-        if(!comprador) {
-            return Promise.reject({name: "NotFoundError", message: "Comprador no encontrado"});
-        }
+        const comprador = this.pedidoValidator.buscarComprador(compradorId);
         const items = ItemPedidoCreator.crearItems(pedidoData.items)
         const nuevoPedido = new Pedido(
             comprador,
@@ -37,10 +36,7 @@ export default class PedidoService {
             pedidoData.moneda,
             pedidoData.direccionEntrega
         )
-        if(!nuevoPedido.validarStock()){
-            nuevoPedido = null
-            return Promise.reject({name: "StockError", message: "No hay stock suficiente para completar el pedido"});
-        }
+        this.pedidoValidator.validarStockPedido(nuevoPedido);
         nuevoPedido.reducirStockItems();
         const pedidoGuardado = this.pedidoRepository.crearPedido(nuevoPedido);
         this.factoryNotificacion.crearNotificacionDeCreacion(pedidoGuardado);
@@ -51,16 +47,9 @@ export default class PedidoService {
     }
 
     patchPedido(pedidoId, pedidoData) {
-        const pedido = this.pedidoRepository.findById(pedidoId);
-        if(!pedido) {
-            return Promise.reject({name: "NotFoundError", message: "Pedido no encontrado"});
-        }
-        
+        const pedido = this.pedidoValidator.buscarPedido(pedidoId);        
         const usuarioId = parseInt(pedidoData.usuario, 10);
-        const usuario = UsuarioRepository.findById(usuarioId);
-        if(!usuario) {
-            return Promise.reject({name: "NotFoundError", message: "Usuario no encontrado"});
-        }
+        const usuario = this.pedidoValidator.buscarUsuario(usuarioId);
 
         if(pedidoData.estado && pedidoData.estado !== pedido.estado) {
             const nuevoEstado = EstadoPedidoFactory.crearEstado(pedidoData.estado);
@@ -79,11 +68,7 @@ export default class PedidoService {
     }
 
     getPedidosUsuario(usuarioId) {
-        const usuario = this.usuarioRepository.findById(usuarioId);
-
-        if(!usuario) {
-            return Promise.reject({name: "NotFoundError", message: "Usuario no encontrado"});
-        }
+        const usuario = this.pedidoValidator.buscarUsuario(usuarioId);
 
         return Promise.resolve(this.pedidoRepository.findByUser(usuario.id))
         .then((listaPedidos) => {
