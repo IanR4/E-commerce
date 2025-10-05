@@ -1,6 +1,5 @@
 export class Notificacion {
-    constructor(id, usuarioDestino, mensaje) {
-        this.id = id
+    constructor(usuarioDestino, mensaje) {
         this.usuarioDestino = usuarioDestino
         this.mensaje = mensaje 
         this.fechaAlta = new Date()
@@ -9,6 +8,9 @@ export class Notificacion {
     }
 
     marcarComoLeida() {
-        this.leida = true
+        if(!this.leida) {
+            this.leida = true
+            this.fechaLeida = new Date()
+        }
     }
 }
