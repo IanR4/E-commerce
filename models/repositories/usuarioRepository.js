@@ -1,18 +1,17 @@
+import { UsuarioModel } from '../../schemas/usuarioSchema.js';
+
 class UsuarioRepository {
     constructor() {
-        this.usuarios = []
-        this.nextId = 1
+        this.model = UsuarioModel;
     }
 
     crearUsuario(usuario){
-        usuario.id = this.nextId
-        this.nextId++
-        this.usuarios.push(usuario)
-        return usuario
+        const nuevoUsuario = new this.model(usuario);
+        return nuevoUsuario.save();
     }
 
     findById(usuarioId){
-        return this.usuarios.filter(usuario => usuario.id === usuarioId)[0]
+        return this.model.findOne({ _id: usuarioId }).exec();
     }
 }
 

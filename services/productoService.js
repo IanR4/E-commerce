@@ -17,22 +17,26 @@ export default class ProductoService {
     }
 
     postProducto(productoData) {
-        const vendedorId = UsuarioValidator.validarUsuarioId(parseInt(productoData.vendedor, 10))
-        const vendedor = UsuarioValidator.buscarVendedor(vendedorId)
-        const nuevoProducto = new Producto(
-            vendedor,
-            productoData.titulo,
-            productoData.descripcion,
-            productoData.categorias,
-            productoData.precio,
-            productoData.moneda,
-            productoData.stock,
-            productoData.fotos
-        )
-        const productoGuardado = ProductoRepository.crearProducto(nuevoProducto);
-        return Promise.resolve({
-            data: productoGuardado,
-            status: 201
-        });
+        const vendedorId = productoData.vendedor;
+        UsuarioValidator.validarUsuarioId(vendedorId);
+
+        return UsuarioValidator.buscarVendedor(vendedorId)
+            .then(vendedor => {
+                const nuevoProducto = new Producto(
+                    vendedor._id, 
+                    productoData.titulo,
+                    productoData.descripcion,
+                    productoData.categorias,
+                    productoData.precio,
+                    productoData.moneda,
+                    productoData.stock,
+                    productoData.fotos
+                );
+                return ProductoRepository.crearProducto(nuevoProducto);
+            })
+                .then(productoGuardado => ({
+                    data: productoGuardado,
+                    status: 201
+                }));
     }
 }

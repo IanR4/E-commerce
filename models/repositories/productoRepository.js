@@ -1,18 +1,17 @@
+import { ProductoModel } from '../../schemas/productoSchema.js';
+
 class ProductoRepository {
     constructor() {
-        this.productos = []
-        this.nextId = 1
+        this.model = ProductoModel;
     }
 
     crearProducto(producto){
-        producto.id = this.nextId
-        this.nextId++
-        this.productos.push(producto)
-        return producto
+        const nuevoProducto = new this.model(producto);
+        return nuevoProducto.save();
     }
 
     findById(productoId) {
-        return this.productos.filter(producto => producto.id === productoId)[0]
+        return this.model.findOne({ _id: productoId }).exec();
     }
 }
 

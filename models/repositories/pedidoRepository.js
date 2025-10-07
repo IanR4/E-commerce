@@ -1,29 +1,25 @@
+import { PedidoModel } from '../../schemas/pedidoSchema.js';
+
 class PedidoRepository {
     constructor() {
-        this.pedidos = []
-        this.nextId = 1
+        this.model = PedidoModel;
     }
 
-    crearPedido(pedido){
-        pedido.id = this.nextId
-        this.nextId++
-        this.pedidos.push(pedido)
-        return pedido
+    crearPedido(pedidoData) {
+        const nuevoPedido = new this.model(pedidoData);
+        return nuevoPedido.save();
     }
 
     findById(pedidoId) {
-        return this.pedidos.filter(pedido => pedido.id === pedidoId)[0]
+        return this.model.findOne({ _id: pedidoId }).exec();
     }
 
     actualizarPedido(pedidoId, pedido) {
-        const indice = this.pedidos.findIndex(pedido => pedido.id === pedidoId)
-        if (indice === -1) return null
-        this.pedidos[indice] = pedido
-        return pedido
+        return this.model.findByIdAndUpdate(pedidoId, pedido, { new: true }).exec();
     }
 
     findByUser(usuarioId) {
-        return this.pedidos.filter(pedido => pedido.comprador.id === usuarioId)
+        return this.model.find({ comprador: usuarioId }).exec();
     }
 }
 

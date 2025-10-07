@@ -11,7 +11,7 @@ class PedidoValidator {
     }
 
     validarPedidoId(pedidoId) {
-        if (isNaN(pedidoId)) {
+        if (!pedidoId) {
             throw new BadRequestError("Invalid pedidoId parameter");
         }
     }

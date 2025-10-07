@@ -25,10 +25,10 @@ export default class UsuarioService {
             usuarioData.telefono,
             usuarioData.tipo,
         )
-        const usuarioGuardado = this.usuarioRepository.crearUsuario(nuevoUsuario);
-        return Promise.resolve({
-            data: usuarioGuardado,
-            status: 201
-        });
+        return this.usuarioRepository.crearUsuario(nuevoUsuario)
+            .then(usuarioGuardado => ({
+                data: usuarioGuardado,
+                status: 201
+            }));
     }
 }

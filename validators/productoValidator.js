@@ -11,7 +11,7 @@ class ProductoValidator {
     }
 
     validarProductoId(productoId) {
-        if (isNaN(productoId)) {
+        if (!productoId) {
             throw new BadRequestError("Invalid productoId parameter");
         }
     }

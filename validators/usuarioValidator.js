@@ -9,7 +9,7 @@ class UsuarioValidator {
     }
 
     validarUsuarioId(usuarioId) {
-        if (isNaN(usuarioId)) {
+        if (!usuarioId) {
             throw new BadRequestError("Invalid usuarioId parameter");
         }
     }

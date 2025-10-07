@@ -10,8 +10,8 @@ class UsuarioController{
   }
 
   getUsuario = (req, res) => {
-    const usuarioId = parseInt(req.params.usuarioId, 10);
-    this.usuarioValidator.  validarUsuarioId(usuarioId);
+    const usuarioId = req.params.usuarioId;
+    this.usuarioValidator.validarUsuarioId(usuarioId);
     this.usuarioService.getUsuario(usuarioId)
       .then(({ data, status }) => res.status(status).json(data));
   };
@@ -19,9 +19,10 @@ class UsuarioController{
   postUsuario = (req, res) => {
     const usuarioData = req.body;
     const resultBody = this.usuarioValidator.validarUsuario(usuarioData);
-    this.usuarioService.postUsuario(resultBody.data)
+    this.usuarioService.postUsuario(resultBody)
       .then(({ data, status }) => res.status(status).json(data))
   }
+  
 }
 
 export default new UsuarioController();

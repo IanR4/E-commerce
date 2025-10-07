@@ -4,23 +4,24 @@ import productoValidator from "../validators/productoValidator.js";
 
 class itemPedidoCreator {
 
-    crearItems(nuevosItems){
-        const itemsCreados = []
-        for (let i = 0; i < nuevosItems.length; i++) {
-            const productoId = parseInt(nuevosItems[i].producto, 10);
-            const producto = ProductoRepository.findById(productoId);
-            console.log(producto)
-            if(!producto) {
-                return Promise.reject({name: "NotFoundError", message: "Producto no encontrado"});
-            }
-            const nuevoItemPedido = new ItemPedido(
-                producto,
-                nuevosItems[i].cantidad,
-                nuevosItems[i].precioUnitario
-            )
-            itemsCreados.push(nuevoItemPedido)
-        }
-        return itemsCreados;
+    crearItems(nuevosItems) {
+        // Array de promesas para cada producto
+        const promesas = nuevosItems.map(item => {
+            const productoId = item.producto; 
+            return ProductoRepository.findById(productoId)
+                .then(producto => {
+                    if (!producto) {
+                        throw { name: "NotFoundError", message: "Producto no encontrado" };
+                    }
+                    return new ItemPedido(
+                        producto,
+                        item.cantidad,
+                        item.precioUnitario
+                    );
+                });
+        });
+        // Esperar todas las promesas y devolver el array de items
+        return Promise.all(promesas);
     }
 }
 

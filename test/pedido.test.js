@@ -20,8 +20,6 @@ function crearUsuarios() {
 function crearProductoYItem() {
   producto = new Producto(vendedor1, "Helado", "Sabor vainilla", [], 100, "DolarUsa", 10, []);
   ProductoRepository.crearProducto(producto);
-  console.log(producto)
-  console.log(ProductoRepository.productos)
 }
 
 

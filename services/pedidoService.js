@@ -29,27 +29,29 @@ export default class PedidoService {
     }
 
     postPedido(pedidoData) {
-        const compradorId = parseInt(pedidoData.comprador, 10);
-        const comprador = this.usuarioValidator.buscarComprador(compradorId);
-        console.log(pedidoData.items)
-        return Promise.resolve(ItemPedidoCreator.crearItems(pedidoData.items))
-        .then((items) => {
-            const nuevoPedido = new Pedido(
-                comprador,
-                items,
-                pedidoData.moneda,
-                pedidoData.direccionEntrega
-            )
-                console.log(nuevoPedido)
-                this.pedidoValidator.validarStockPedido(nuevoPedido);
-                nuevoPedido.reducirStockItems();
-                const pedidoGuardado = this.pedidoRepository.crearPedido(nuevoPedido);
-                this.factoryNotificacion.crearNotificacionDeCreacion(pedidoGuardado);
-            return Promise.resolve({
-                data: pedidoGuardado,
-                status: 201
+        const compradorId = pedidoData.comprador;
+        return this.usuarioValidator.buscarComprador(compradorId)
+            .then(comprador => {
+                return ItemPedidoCreator.crearItems(pedidoData.items)
+                    .then(items => {
+                        const nuevoPedido = new Pedido(
+                            comprador._id, // o comprador según tu schema
+                            items,
+                            pedidoData.moneda,
+                            pedidoData.direccionEntrega
+                        );
+                        this.pedidoValidator.validarStockPedido(nuevoPedido);
+                        nuevoPedido.reducirStockItems();
+                        return this.pedidoRepository.crearPedido(nuevoPedido)
+                            .then(pedidoGuardado => {
+                                //this.factoryNotificacion.crearNotificacionDeCreacion(pedidoGuardado);
+                                return {
+                                    data: pedidoGuardado,
+                                    status: 201
+                                };
+                            });
+                    });
             });
-        });
     }
 
     patchPedido(pedidoId, pedidoData) {

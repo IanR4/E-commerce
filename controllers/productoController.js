@@ -7,20 +7,19 @@ class ProductoController {
         this.productoValidator = ProductoValidator;
     }
 
-    getProducto = (req, res, next) => {
-        productoId = this.productoValidator.validarProductoId(parseInt(req.params.productoId, 10));
+    getProducto = (req, res) => {
+        const productoId = req.params.productoId;
+        this.productoValidator.validarProductoId(productoId);
         this.productoService.getProducto(productoId)
             .then(({ data, status }) => res.status(status).json(data))
-            .catch(next);
     };
 
 
-    postProducto = (req, res, next) => {
+    postProducto = (req, res) => {
         const productoData = req.body;
         const resultBody = this.productoValidator.validarProducto(productoData);
-        this.productoService.postProducto(resultBody.data)
+        this.productoService.postProducto(resultBody)
             .then(({ data, status }) => res.status(status).json(data))
-            .catch(next);
     }
 }
 
