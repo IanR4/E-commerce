@@ -3,7 +3,7 @@ import PedidoController from "../controllers/pedidoController.js";
 import UsuarioController from "../controllers/usuarioController.js";
 import ProductoController from "../controllers/productoController.js";
 import GeneralError from "../errors/errors.js";
-
+import NotificacionController from "../controllers/notificacionController.js";
 
 const routes = express();
 
@@ -45,8 +45,21 @@ routes.patch("/pedido/:pedidoId", (req, res, next) => {
   PedidoController.patchPedido(req, res, next);
 }); 
   
-routes.get("/historial/:usuarioId", (req, res, next) => {
+routes.get("/usuarios/:usuarioId/pedidos", (req, res, next) => {
   PedidoController.getPedidosUsuario(req, res, next);
+});
+
+
+routes.get("/usuarios/:usuarioId/notificaciones/leidas", (req, res, next) => {
+  NotificacionController.getNotificacionesLeidasUsuario(req, res, next);
+});
+
+routes.get("/usuarios/:usuarioId/notificaciones/noleidas", (req, res, next) => {
+  NotificacionController.getNotificacionesNoLeidasUsuario(req, res, next);
+});
+
+routes.patch("/usuarios/:usuarioId/notificaciones/:notificacionId/leida", (req, res, next) => {
+  NotificacionController.marcarNotificacionComoLeida(req, res, next);
 });
 
 routes.use((err, _req, res, _next) => {

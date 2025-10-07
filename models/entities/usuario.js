@@ -5,5 +5,15 @@ export class Usuario {
         this.telefono = telefono
         this.tipo = tipo
         this.fechaAlta = new Date()
+
+        this.notificaciones = []
+        this.nextNotificacionId = 1
+    }
+
+    recibirNotificacion(notificacion) {
+        notificacion.id = this.nextId
+        this.nextNotificacionId++
+
+        this.notificaciones.push(notificacion)
     }
 }

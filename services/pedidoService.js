@@ -4,10 +4,10 @@ import {Pedido} from "../models/entities/pedido.js"
 import PedidoRepository from "../models/repositories/pedidoRepository.js";
 import UsuarioRepository from "../models/repositories/usuarioRepository.js";
 import ItemPedidoCreator from "../middleware/itemPedidoCreator.js";
-import { FactoryNotificacion } from "../models/repositories/factoryNotificacion.js";
 import { EstadoPedidoFactory } from "../models/entities/EstadoPedidoFactory.js";
 import PedidoValidator from "../validators/pedidoValidator.js"
 import UsuarioValidator from "../validators/usuarioValidator.js"
+import { FactoryNotificacion } from "../models/entities/factoryNotificacion.js";
 
 export default class PedidoService {
     constructor() {
@@ -66,13 +66,16 @@ export default class PedidoService {
             }
         }
 
+        const notificacion = this.factoryNotificacion.crearSegunPedido(pedido);
+        notificacion.usuarioDestino.recibirNotificacion(notificacion);
+
         return Promise.resolve(this.pedidoRepository.actualizarPedido(pedidoId, pedido))
-         .then((pedidoRes) => {
-             return {
-                 data: pedidoRes,
-                 status: 200
-             };
-         });
+            .then((pedidoRes) => {
+                return {
+                    data: pedidoRes,
+                    status: 200
+                };
+            });
     }
 
     getPedidosUsuario(usuarioId) {
