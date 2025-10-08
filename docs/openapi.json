@@ -1,0 +1,202 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "TP Backend API",
+    "description": "Documentación de la API REST para gestión de usuarios, productos, pedidos y notificaciones.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    { "url": "http://localhost:${PORT}", "description": "Servidor local" }
+  ],
+  "tags": [
+    { "name": "Health", "description": "Estado del servicio" },
+    { "name": "Pedidos", "description": "Gestión de pedidos" },
+    { "name": "Usuarios", "description": "Gestión de usuarios" },
+    { "name": "Productos", "description": "Gestión de productos" },
+    { "name": "Notificaciones", "description": "Gestión de notificaciones de usuarios" }
+  ],
+  "paths": {
+    "/health-check": {
+      "get": {
+        "tags": ["Health"],
+        "summary": "Verifica el estado de la API",
+        "responses": {
+          "200": {"description": "API saludable"}
+        }
+      }
+    },
+    "/pedidos": {
+      "get": {
+        "tags": ["Pedidos"],
+        "summary": "Obtiene pedidos (implementación actual reutiliza getPedido)",
+        "responses": {"200": {"description": "Listado de pedidos o pedido específico"}}
+      }
+    },
+    "/pedido": {
+      "post": {
+        "tags": ["Pedidos"],
+        "summary": "Crea un nuevo pedido",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {"schema": {"$ref": "#/components/schemas/PedidoCreate"}}
+          }
+        },
+        "responses": {"201": {"description": "Pedido creado"}, "400": {"description": "Error de validación"}}
+      }
+    },
+    "/pedido/{pedidoId}": {
+      "get": {
+        "tags": ["Pedidos"],
+        "summary": "Obtiene un pedido por ID",
+        "parameters": [
+          {"name": "pedidoId", "in": "path", "required": true, "schema": {"type": "string"}}
+        ],
+        "responses": {"200": {"description": "Pedido encontrado"}, "404": {"description": "No encontrado"}}
+      },
+      "patch": {
+        "tags": ["Pedidos"],
+        "summary": "Actualiza parcialmente un pedido (estado u otros campos permitidos)",
+        "parameters": [
+          {"name": "pedidoId", "in": "path", "required": true, "schema": {"type": "string"}}
+        ],
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/PedidoPatch"}}}},
+        "responses": {"200": {"description": "Pedido actualizado"}, "400": {"description": "Error de validación"}, "404": {"description": "No encontrado"}}
+      }
+    },
+    "/usuarios/{usuarioId}/pedidos": {
+      "get": {
+        "tags": ["Pedidos"],
+        "summary": "Lista pedidos de un usuario",
+        "parameters": [
+          {"name": "usuarioId", "in": "path", "required": true, "schema": {"type": "string"}}
+        ],
+        "responses": {"200": {"description": "Listado devuelto"}, "404": {"description": "Usuario no encontrado"}}
+      }
+    },
+    "/usuario": {
+      "post": {
+        "tags": ["Usuarios"],
+        "summary": "Crea un nuevo usuario",
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/UsuarioCreate"}}}},
+        "responses": {"201": {"description": "Usuario creado"}, "400": {"description": "Error de validación"}}
+      }
+    },
+    "/usuario/{usuarioId}": {
+      "get": {
+        "tags": ["Usuarios"],
+        "summary": "Obtiene un usuario por ID",
+        "parameters": [{"name": "usuarioId", "in": "path", "required": true, "schema": {"type": "string"}}],
+        "responses": {"200": {"description": "Usuario encontrado"}, "404": {"description": "No encontrado"}}
+      }
+    },
+    "/producto": {
+      "post": {
+        "tags": ["Productos"],
+        "summary": "Crea un nuevo producto",
+        "requestBody": {"required": true, "content": {"application/json": {"schema": {"$ref": "#/components/schemas/ProductoCreate"}}}},
+        "responses": {"201": {"description": "Producto creado"}, "400": {"description": "Error de validación"}}
+      }
+    },
+    "/producto/{productoId}": {
+      "get": {
+        "tags": ["Productos"],
+        "summary": "Obtiene producto por ID",
+        "parameters": [{"name": "productoId", "in": "path", "required": true, "schema": {"type": "string"}}],
+        "responses": {"200": {"description": "Producto encontrado"}, "404": {"description": "No encontrado"}}
+      }
+    },
+    "/vendedores/{vendedorId}/productos": {
+      "get": {
+        "tags": ["Productos"],
+        "summary": "Lista productos de un vendedor con filtros y paginación",
+        "parameters": [
+          {"name": "vendedorId", "in": "path", "required": true, "schema": {"type": "string"}},
+          {"name": "page", "in": "query", "schema": {"type": "integer", "default": 1}},
+            {"name": "limit", "in": "query", "schema": {"type": "integer", "default": 10}},
+            {"name": "titulo", "in": "query", "schema": {"type": "string"}},
+            {"name": "categoria", "in": "query", "schema": {"type": "string"}},
+            {"name": "descripcion", "in": "query", "schema": {"type": "string"}},
+            {"name": "precioMin", "in": "query", "schema": {"type": "number"}},
+            {"name": "precioMax", "in": "query", "schema": {"type": "number"}},
+            {"name": "orden", "in": "query", "schema": {"type": "string", "enum": ["precio_asc", "precio_desc", "titulo_asc", "titulo_desc"]}}
+        ],
+        "responses": {"200": {"description": "Listado de productos"}, "404": {"description": "Vendedor no encontrado"}}
+      }
+    },
+    "/usuarios/{usuarioId}/notificaciones/leidas": {
+      "get": {
+        "tags": ["Notificaciones"],
+        "summary": "Obtiene notificaciones leídas de un usuario",
+        "parameters": [{"name": "usuarioId", "in": "path", "required": true, "schema": {"type": "string"}}],
+        "responses": {"200": {"description": "Listado devuelto"}, "404": {"description": "Usuario no encontrado"}}
+      }
+    },
+    "/usuarios/{usuarioId}/notificaciones/noleidas": {
+      "get": {
+        "tags": ["Notificaciones"],
+        "summary": "Obtiene notificaciones no leídas de un usuario",
+        "parameters": [{"name": "usuarioId", "in": "path", "required": true, "schema": {"type": "string"}}],
+        "responses": {"200": {"description": "Listado devuelto"}, "404": {"description": "Usuario no encontrado"}}
+      }
+    },
+    "/notificacion/{notificacionId}/leer": {
+      "patch": {
+        "tags": ["Notificaciones"],
+        "summary": "Marca una notificación como leída",
+        "parameters": [{"name": "notificacionId", "in": "path", "required": true, "schema": {"type": "string"}}],
+        "responses": {"200": {"description": "Notificación marcada"}, "404": {"description": "No encontrado"}}
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ItemPedido": {
+        "type": "object",
+        "properties": {
+          "producto": {"type": "string"},
+          "cantidad": {"type": "integer"},
+          "precioUnitario": {"type": "number"}
+        },
+        "required": ["producto", "cantidad", "precioUnitario"]
+      },
+      "PedidoCreate": {
+        "type": "object",
+        "properties": {
+          "comprador": {"type": "string"},
+          "items": {"type": "array", "items": {"$ref": "#/components/schemas/ItemPedido"}},
+          "moneda": {"type": "string", "enum": ["ARS", "USD", "EUR"]},
+          "direccionEntrega": {"type": "string"}
+        },
+        "required": ["comprador", "items", "moneda", "direccionEntrega"]
+      },
+      "PedidoPatch": {
+        "type": "object",
+        "properties": {
+          "estado": {"type": "string"},
+          "direccionEntrega": {"type": "string"}
+        }
+      },
+      "UsuarioCreate": {
+        "type": "object",
+        "properties": {
+          "nombre": {"type": "string"},
+          "email": {"type": "string"},
+          "tipo": {"type": "string"}
+        },
+        "required": ["nombre", "email", "tipo"]
+      },
+      "ProductoCreate": {
+        "type": "object",
+        "properties": {
+          "titulo": {"type": "string"},
+          "descripcion": {"type": "string"},
+          "categoria": {"type": "string"},
+          "precio": {"type": "number"},
+          "moneda": {"type": "string"}
+        },
+        "required": ["titulo", "descripcion", "categoria", "precio", "moneda"]
+      }
+    }
+  }
+}

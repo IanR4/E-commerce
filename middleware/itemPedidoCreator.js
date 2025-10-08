@@ -16,7 +16,7 @@ class itemPedidoCreator {
                     return new ItemPedido(
                         producto,
                         item.cantidad,
-                        item.precioUnitario
+                        producto.precio
                     );
                 });
         });

@@ -42,8 +42,8 @@ export default class PedidoService {
                             pedidoData.moneda,
                             pedidoData.direccionEntrega
                         );
-                        this.pedidoValidator.validarStockPedido(nuevoPedido);
-                        nuevoPedido.reducirStockItems();
+                        //this.pedidoValidator.validarStockPedido(nuevoPedido);
+                        //nuevoPedido.reducirStockItems();
                         return this.pedidoRepository.crearPedido(nuevoPedido)
                             .then(pedidoGuardado => {
                                 return {

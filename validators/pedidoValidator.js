@@ -51,7 +51,6 @@ class PedidoValidator {
 const itemPedidoSchema = z.object({
     producto: z.string().min(1),
     cantidad: z.number().positive(),
-    precioUnitario: z.number().nonnegative()
 })
 
 const pedidoSchema = z.object({
