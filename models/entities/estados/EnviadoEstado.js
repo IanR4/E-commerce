@@ -6,7 +6,7 @@ export class EnviadoEstado extends EstadoPedido {
     super(EstadoPedidoEnum.Enviado);
   }
 
-  validarTransicion(pedido, usuario, factoryNotificacion) {
+  validarTransicion(pedido, usuario) {
     if (pedido.estado !== EstadoPedidoEnum.EnPreparacion) {
       return Promise.reject({
         name: "StateError", 
@@ -20,7 +20,6 @@ export class EnviadoEstado extends EstadoPedido {
         message: "El usuario no vende los productos de este pedido"
       });
     }
-    factoryNotificacion.crearNotificacionDeEnviado(pedido);
     return Promise.resolve();
   }
 }

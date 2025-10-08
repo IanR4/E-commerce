@@ -6,14 +6,13 @@ export class CanceladoEstado extends EstadoPedido {
     super(EstadoPedidoEnum.Cancelado);
   }
 
-  validarTransicion(pedido, usuario, factoryNotificacion) {
+  validarTransicion(pedido, usuario) {
     if (pedido.estado === EstadoPedidoEnum.Enviado || pedido.estado === EstadoPedidoEnum.Entregado) {
       return Promise.reject({
         name: "StateError", 
         message: "El pedido no puede ser cancelado"
       });
     }
-    factoryNotificacion.crearNotificacionDeCancelacion(pedido);
     return Promise.resolve();
   }
 }

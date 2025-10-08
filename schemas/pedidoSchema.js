@@ -4,6 +4,7 @@ import { EstadoPedidoEnum } from '../models/entities/estadoPedidoEnum.js';
 import { Moneda } from '../models/entities/moneda.js';
 import { cambioEstadoPedidoSchema } from './cambioEstadoPedidoSchema.js';
 import { itemPedidoSchema } from './itemPedidoSchema.js';
+import { CambioEstadoPedido } from '../models/entities/cambioEstadoPedido.js';
 import { direccionEntregaSchema } from './direccionEntregaSchema.js';
 
 const pedidoSchema = new mongoose.Schema({
@@ -42,6 +43,13 @@ const pedidoSchema = new mongoose.Schema({
 }, {
     collection: 'pedidos'
 });
+
+pedidoSchema.methods.actualizarEstado = function(nuevoEstado, quien, motivo) {
+    this.estado = nuevoEstado;
+    const fecha = new Date();
+    const cambioEstadoPedido = new CambioEstadoPedido(fecha, nuevoEstado, quien, motivo);
+    this.historialEstados.push(cambioEstadoPedido);
+};
 
 pedidoSchema.loadClass(Pedido);
 

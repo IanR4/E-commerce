@@ -23,12 +23,13 @@ class PedidoController {
             .then(({ data, status }) => res.status(status).json(data))
     }
 
-    patchPedido = (req, res) => {
+    patchPedido = (req, res, next) => {
         const pedidoId = req.params.pedidoId; 
         this.pedidoValidator.validarPedidoId(pedidoId);
         const pedidoData = req.body;
         this.pedidoService.patchPedido(pedidoId, pedidoData)
-        .then(({ data, status }) => res.status(status).json(data))
+            .then(({ data, status }) => res.status(status).json(data))
+            .catch(next); 
     }
 
     getPedidosUsuario = (req, res) => {

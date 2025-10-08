@@ -1,5 +1,3 @@
-import { EstadoPedidoEnum } from "../models/entities/estadoPedidoEnum.js";
-import { EstadoPedido } from "../models/entities/estadoPedido.js";
 import {Pedido} from "../models/entities/pedido.js"
 import PedidoRepository from "../models/repositories/pedidoRepository.js";
 import UsuarioRepository from "../models/repositories/usuarioRepository.js";
@@ -8,6 +6,7 @@ import { EstadoPedidoFactory } from "../models/entities/EstadoPedidoFactory.js";
 import PedidoValidator from "../validators/pedidoValidator.js"
 import UsuarioValidator from "../validators/usuarioValidator.js"
 import { FactoryNotificacion } from "../models/entities/factoryNotificacion.js";
+import { Usuario } from "../models/entities/usuario.js";
 
 export default class PedidoService {
     constructor() {
@@ -44,7 +43,6 @@ export default class PedidoService {
                         nuevoPedido.reducirStockItems();
                         return this.pedidoRepository.crearPedido(nuevoPedido)
                             .then(pedidoGuardado => {
-                                //this.factoryNotificacion.crearNotificacionDeCreacion(pedidoGuardado);
                                 return {
                                     data: pedidoGuardado,
                                     status: 201
@@ -55,28 +53,44 @@ export default class PedidoService {
     }
 
     patchPedido(pedidoId, pedidoData) {
-        const pedido = this.pedidoValidator.buscarPedido(pedidoId);        
-        const usuarioId = parseInt(pedidoData.usuario, 10);
-        const usuario = this.usuarioValidator.buscarUsuario(usuarioId);
+        return this.pedidoValidator.buscarPedido(pedidoId)
+            .then(pedido => {
+                const usuarioId = pedidoData.usuario;
+                return this.usuarioValidator.buscarUsuario(usuarioId)
+                    .then(usuario => {
+                        if (pedidoData.estado && pedidoData.estado !== pedido.estado) {
+                            const nuevoEstado = EstadoPedidoFactory.crearEstado(pedidoData.estado);
+                            if (nuevoEstado.validarTransicion(pedido, usuario)) {
+                                if (typeof pedido.actualizarEstado === 'function') {
+                                    pedido.actualizarEstado(pedidoData.estado, usuario, pedidoData.motivo);
+                                } else {
+                                    pedido.estado = pedidoData.estado;
+                                }
+                            }
+                        }
 
-        if(pedidoData.estado && pedidoData.estado !== pedido.estado) {
-            const nuevoEstado = EstadoPedidoFactory.crearEstado(pedidoData.estado);
-            if(nuevoEstado.validarTransicion(pedido, usuario, this.factoryNotificacion)) {
-                pedido.actualizarEstado(pedidoData.estado, usuario, pedidoData.motivo);
-            }
-        }
+                        return this.factoryNotificacion.crearSegunPedido(pedido)
+                            .then(notificacion => {
+                                if (
+                                    notificacion.usuarioDestino &&
+                                    typeof notificacion.usuarioDestino.recibirNotificacion === 'function'
+                                ) {
+                                    notificacion.usuarioDestino.recibirNotificacion(notificacion);
+                                } else {
+                                    console.log("No se pudo enviar la notificación: usuario destino no encontrado o inválido.");
+                                }
 
-        const notificacion = this.factoryNotificacion.crearSegunPedido(pedido);
-        notificacion.usuarioDestino.recibirNotificacion(notificacion);
-
-        return Promise.resolve(this.pedidoRepository.actualizarPedido(pedidoId, pedido))
-            .then((pedidoRes) => {
-                return {
-                    data: pedidoRes,
-                    status: 200
-                };
+                                return this.pedidoRepository.actualizarPedido(pedidoId, pedido)
+                                    .then(pedidoRes => ({
+                                        data: pedidoRes,
+                                        status: 200
+                                    }));
+                            });
+                    });
             });
     }
+
+    
 
     getPedidosUsuario(usuarioId) {
         const usuario = this.usuarioValidator.buscarUsuario(usuarioId);

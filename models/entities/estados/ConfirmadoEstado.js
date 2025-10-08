@@ -6,7 +6,7 @@ export class ConfirmadoEstado extends EstadoPedido {
     super(EstadoPedidoEnum.Confirmado);
   }
 
-  validarTransicion(pedido, usuario, factoryNotificacion) {
+  validarTransicion(pedido, usuario) {
     if (pedido.estado !== EstadoPedidoEnum.Pendiente) {
       return Promise.reject({
         name: "StateError", 

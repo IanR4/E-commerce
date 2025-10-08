@@ -1,5 +1,6 @@
 import {CambioEstadoPedido} from "../entities/cambioEstadoPedido.js"
 import {EstadoPedidoEnum} from "../entities/estadoPedidoEnum.js"
+import {ItemPedido} from "../entities/itemPedido.js"
 
 export class Pedido {
     constructor(comprador, items, moneda, direccionEntrega) {
@@ -13,7 +14,7 @@ export class Pedido {
     }
 
     calcularTotal() {
-        return this.items.reduce((total, item) => total + item.subtotal(), 0)
+        return this.items.reduce((total, item) => total + item.subtotal, 0)
     }
 
     actualizarEstado(nuevoEstado, quien, motivo) {

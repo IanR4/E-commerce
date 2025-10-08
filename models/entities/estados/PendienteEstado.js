@@ -6,7 +6,7 @@ export class PendienteEstado extends EstadoPedido {
     super(EstadoPedidoEnum.Pendiente);
   }
 
-  validarTransicion(pedido, usuario, factoryNotificacion) {
+  validarTransicion(pedido, usuario) {
     return Promise.resolve();
   }
 }

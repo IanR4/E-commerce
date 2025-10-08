@@ -23,7 +23,11 @@ const usuarioSchema = new mongoose.Schema({
     fechaAlta: {
         type: Date,
         required: true,
-    }
+    },
+    notificaciones: {
+        type: [Object],
+        default: []
+    },
 }, {
     collection: 'usuarios'
 });

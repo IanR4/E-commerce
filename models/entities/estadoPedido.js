@@ -3,7 +3,7 @@ export class EstadoPedido {
     this.estado = estado;
   }
 
-  validarTransicion(pedido, usuario, factoryNotificacion) {
+  validarTransicion(pedido, usuario) {
   }
   
 }

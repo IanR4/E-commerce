@@ -1,16 +1,18 @@
 import { Notificacion } from "../entities/notificacion.js"
-import { EstadoPedido } from "./estadoPedido.js"
+import { EstadoPedidoEnum } from "./estadoPedidoEnum.js"
+import UsuarioRepository from "../repositories/usuarioRepository.js"
+import ProductoRepository from "../repositories/productoRepository.js"
 
 export class FactoryNotificacion {
     crearSegunEstadoPedido(estado) {
         switch(estado) {
-            case EstadoPedido.Cancelado:
+            case EstadoPedidoEnum.Cancelado:
                 return "Su pedido ha sido cancelado."
                 break
-            case EstadoPedido.Confirmado:
+            case EstadoPedidoEnum.Confirmado:
                 return "Su pedido ha sido confirmado."
                 break
-            case EstadoPedido.Enviado:
+            case EstadoPedidoEnum.Enviado:
                 return "Su pedido ha sido enviado."
                 break
             default:
@@ -19,25 +21,31 @@ export class FactoryNotificacion {
     }
 
     crearSegunPedido(pedido) {
-        const mensaje = this.crearSegunEstadoPedido(pedido.estado)
-        const destinatario = this.obtenerDestinatarioSegunEstadoPedido(pedido)
-        if(pedido.estado === EstadoPedido.Confirmado) {
-            return new Notificacion(destinatario, `${mensaje} El pedido con ID ${pedido.id} ha sido creado por el comprador con ID ${pedido.comprador.id}. La dirección de entrega es 
-            ${pedido.direccionEntrega.calle} ${pedido.direccionEntrega.altura}. El pedido incluye el/los producto/s: ${pedido.items}. Y su precio total es ${pedido.calcularTotal()}.`)
-        } else {
-            return new Notificacion(destinatario, `${mensaje} ID de pedido: ${pedido.id}`)
-        }
+        return this.obtenerDestinatarioSegunEstadoPedido(pedido)
+            .then(destinatario => {
+                const mensaje = this.crearSegunEstadoPedido(pedido.estado);
+                if(pedido.estado === EstadoPedidoEnum.Confirmado) {
+                    return new Notificacion(destinatario, `${mensaje} El pedido con ID ${pedido._id} ha sido creado por el comprador con ID ${pedido.comprador}. La dirección de entrega es 
+                    ${pedido.direccionEntrega}. El pedido incluye el/los producto/s: ${pedido.items}.`);
+                } else {
+                    return new Notificacion(destinatario, `${mensaje} ID de pedido: ${pedido.id}`);
+                }
+            });
     }
 
     obtenerDestinatarioSegunEstadoPedido(pedido) {
         switch(pedido.estado) {
-            case EstadoPedido.Cancelado:
-            case EstadoPedido.Confirmado:
-                return pedido.items[0].producto.vendedor
-                break
-            case EstadoPedido.Enviado:
-                return pedido.comprador
-                break
+            case EstadoPedidoEnum.Cancelado:
+            case EstadoPedidoEnum.Confirmado: {
+                const productoId = pedido.items[0].producto;
+                return ProductoRepository.findById(productoId)
+                    .then(producto => {
+                        const vendedorId = producto.vendedor;
+                        return UsuarioRepository.findById(vendedorId);
+                    });
+            }
+            case EstadoPedidoEnum.Enviado:
+                return Promise.resolve(pedido.comprador);
             default:
                 return Promise.reject({name: "StateError", message: "Estado no válido"});
         }
