@@ -1,38 +1,9 @@
-jest.mock("../validators/usuarioValidator.js", () => ({
-  __esModule: true,
-  default: {
-    validarUsuarioId: jest.fn(),
-    buscarVendedor: jest.fn((id) => Promise.resolve(mockVendedor)),
-  }
-}));
-jest.mock("../schemas/productoSchema.js", () => ({
-  __esModule: true,
-  ProductoModel: class {
-    constructor(data) { Object.assign(this, data); }
-    save() { return Promise.resolve(this); }
-    static findOne() { return Promise.resolve(null); }
-  }
-}));
 import ProductoService from "../services/productoService.js";
 
 const vendedorObjectId = "507f1f77bcf86cd799439011";
 const mockVendedor = { id: vendedorObjectId, _id: vendedorObjectId, nombre: "Ian", email: "ian@mail.com", telefono: "70810617", tipo: "Vendedor" };
 const mockProducto = { id: 1, _id: 1, vendedor: vendedorObjectId, titulo: "Helado", descripcion: "Sabor vainilla", fotos: [], precio: 100, moneda: "DolarUsa", stock: 10, categorias: [] };
 
-jest.mock("../models/repositories/productoRepository.js", () => ({
-  __esModule: true,
-  default: {
-    crearProducto: jest.fn((producto) => Promise.resolve({ ...producto, _id: 1 })),
-    findById: jest.fn((id) => {
-      if (id === mockProducto.id || id === mockProducto._id) return Promise.resolve(mockProducto);
-      return Promise.resolve(undefined);
-    }),
-    findByVendedor: jest.fn((vendedorId) => {
-      if (vendedorId === mockVendedor.id || vendedorId === mockVendedor._id) return Promise.resolve([mockProducto]);
-      return Promise.resolve([]);
-    }),
-  }
-}));
 
 describe("ProductoService con mocks", () => {
   let productoService;
@@ -79,3 +50,37 @@ describe("ProductoService con mocks", () => {
     expect(res.data).toEqual([mockProducto]);
   });
 });
+
+
+
+jest.mock("../validators/usuarioValidator.js", () => ({
+  __esModule: true,
+  default: {
+    validarUsuarioId: jest.fn(),
+    buscarVendedor: jest.fn((id) => Promise.resolve(mockVendedor)),
+  }
+}));
+jest.mock("../schemas/productoSchema.js", () => ({
+  __esModule: true,
+  ProductoModel: class {
+    constructor(data) { Object.assign(this, data); }
+    save() { return Promise.resolve(this); }
+    static findOne() { return Promise.resolve(null); }
+  }
+}));
+
+
+jest.mock("../models/repositories/productoRepository.js", () => ({
+  __esModule: true,
+  default: {
+    crearProducto: jest.fn((producto) => Promise.resolve({ ...producto, _id: 1 })),
+    findById: jest.fn((id) => {
+      if (id === mockProducto.id || id === mockProducto._id) return Promise.resolve(mockProducto);
+      return Promise.resolve(undefined);
+    }),
+    findByVendedor: jest.fn((vendedorId) => {
+      if (vendedorId === mockVendedor.id || vendedorId === mockVendedor._id) return Promise.resolve([mockProducto]);
+      return Promise.resolve([]);
+    }),
+  }
+}));

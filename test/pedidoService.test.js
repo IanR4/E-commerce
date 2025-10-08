@@ -6,48 +6,6 @@ const mockProducto = { id: 1, _id: 1, vendedor: mockVendedor, nombre: "Helado", 
 const mockItemPedido = { producto: mockProducto, cantidad: 2, precioUnitario: 100 };
 const mockPedido = { _id: 1, comprador: mockUsuario, items: [mockItemPedido], moneda: "DolarUsa", direccionEntrega: "Calle 123", estado: "Pendiente", historialEstados: [] };
 
-jest.mock("../models/repositories/usuarioRepository.js", () => ({
-  __esModule: true,
-  default: {
-    crearUsuario: jest.fn().mockResolvedValue(mockUsuario),
-    mockFindById: jest.fn((id) => {
-      if (id === mockUsuario.id || id === mockUsuario._id) return Promise.resolve(mockUsuario);
-      if (id === mockVendedor.id || id === mockVendedor._id) return Promise.resolve(mockVendedor);
-      return Promise.resolve(null);
-    }),
-    findById: function(id) { return this.mockFindById(id); }
-  }
-}));
-
-
-jest.mock("../models/repositories/productoRepository.js", () => ({
-  __esModule: true,
-  default: {
-    crearProducto: jest.fn().mockResolvedValue(mockProducto),
-    mockFindById: jest.fn((id) => {
-      if (id === mockProducto._id) return Promise.resolve(mockProducto);
-      return Promise.resolve(null);
-    }),
-    findById: function(id) { return this.mockFindById(id); }
-  }
-}));
-
-jest.mock("../models/repositories/pedidoRepository.js", () => ({
-  __esModule: true,
-  default: {
-    crearPedido: jest.fn((pedido) => Promise.resolve({ ...pedido, _id: 99 })),
-    findById: jest.fn((id) => {
-      if (id === mockPedido.id || id === mockPedido._id) return Promise.resolve(mockPedido);
-      return Promise.resolve(undefined);
-    }),
-  findByUsuario: jest.fn().mockResolvedValue([mockPedido]),
-    findByUser: jest.fn((usuarioId) => {
-      if (usuarioId === mockUsuario.id || usuarioId === mockUsuario._id) return Promise.resolve([mockPedido]);
-      return Promise.resolve([]);
-    }),
-  }
-}));
-
 describe("PedidoService con mocks", () => {
   let pedidoService;
 
@@ -101,3 +59,45 @@ describe("PedidoService con mocks", () => {
     expect(res.data.historialEstados[0].estado).toBe("Enviado");
   });
 });
+
+jest.mock("../models/repositories/usuarioRepository.js", () => ({
+  __esModule: true,
+  default: {
+    crearUsuario: jest.fn().mockResolvedValue(mockUsuario),
+    mockFindById: jest.fn((id) => {
+      if (id === mockUsuario.id || id === mockUsuario._id) return Promise.resolve(mockUsuario);
+      if (id === mockVendedor.id || id === mockVendedor._id) return Promise.resolve(mockVendedor);
+      return Promise.resolve(null);
+    }),
+    findById: function(id) { return this.mockFindById(id); }
+  }
+}));
+
+
+jest.mock("../models/repositories/productoRepository.js", () => ({
+  __esModule: true,
+  default: {
+    crearProducto: jest.fn().mockResolvedValue(mockProducto),
+    mockFindById: jest.fn((id) => {
+      if (id === mockProducto._id) return Promise.resolve(mockProducto);
+      return Promise.resolve(null);
+    }),
+    findById: function(id) { return this.mockFindById(id); }
+  }
+}));
+
+jest.mock("../models/repositories/pedidoRepository.js", () => ({
+  __esModule: true,
+  default: {
+    crearPedido: jest.fn((pedido) => Promise.resolve({ ...pedido, _id: 99 })),
+    findById: jest.fn((id) => {
+      if (id === mockPedido.id || id === mockPedido._id) return Promise.resolve(mockPedido);
+      return Promise.resolve(undefined);
+    }),
+  findByUsuario: jest.fn().mockResolvedValue([mockPedido]),
+    findByUser: jest.fn((usuarioId) => {
+      if (usuarioId === mockUsuario.id || usuarioId === mockUsuario._id) return Promise.resolve([mockPedido]);
+      return Promise.resolve([]);
+    }),
+  }
+}));

@@ -2,27 +2,6 @@ import UsuarioService from "../services/usuarioService.js";
 
 const mockUsuario = { id: 1, _id: 1, nombre: "Juan", email: "juan@mail.com", telefono: "12345600", tipo: "Comprador" };
 
-jest.mock("../models/repositories/usuarioRepository.js", () => ({
-  __esModule: true,
-  default: {
-    crearUsuario: jest.fn((usuario) => Promise.resolve({ ...usuario, _id: 1 })),
-    findById: jest.fn((id) => {
-      if (id === mockUsuario.id || id === mockUsuario._id) return Promise.resolve(mockUsuario);
-      return Promise.resolve(undefined);
-    }),
-  }
-}));
-
-jest.mock("../validators/usuarioValidator.js", () => ({
-  __esModule: true,
-  default: {
-    buscarUsuario: jest.fn((id) => {
-      if (id === mockUsuario.id || id === mockUsuario._id) return Promise.resolve(mockUsuario);
-      return Promise.resolve(undefined);
-    }),
-  }
-}));
-
 describe("UsuarioService con mocks", () => {
   let usuarioService;
 
@@ -59,3 +38,25 @@ describe("UsuarioService con mocks", () => {
     expect(res.data).toBeUndefined();
   });
 });
+
+
+jest.mock("../models/repositories/usuarioRepository.js", () => ({
+  __esModule: true,
+  default: {
+    crearUsuario: jest.fn((usuario) => Promise.resolve({ ...usuario, _id: 1 })),
+    findById: jest.fn((id) => {
+      if (id === mockUsuario.id || id === mockUsuario._id) return Promise.resolve(mockUsuario);
+      return Promise.resolve(undefined);
+    }),
+  }
+}));
+
+jest.mock("../validators/usuarioValidator.js", () => ({
+  __esModule: true,
+  default: {
+    buscarUsuario: jest.fn((id) => {
+      if (id === mockUsuario.id || id === mockUsuario._id) return Promise.resolve(mockUsuario);
+      return Promise.resolve(undefined);
+    }),
+  }
+}));
