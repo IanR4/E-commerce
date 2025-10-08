@@ -124,9 +124,7 @@ export default class PedidoService {
     
 
     getPedidosUsuario(usuarioId) {
-        const usuario = this.usuarioValidator.buscarUsuario(usuarioId);
-
-        return Promise.resolve(this.pedidoValidator.buscarPedidoUsuario(usuario.id))
+        return Promise.resolve(this.pedidoValidator.buscarPedidoUsuario(usuarioId))
         .then((listaPedidos) => {
             return {
                 data: listaPedidos,
