@@ -5,6 +5,9 @@ import ProductoController from "../controllers/productoController.js";
 import GeneralError from "../errors/errors.js";
 import NotificacionController from "../controllers/notificacionController.js";
 
+import swaggerUiExpress from "swagger-ui-express"
+import { readFile } from "node:fs/promises"
+
 const routes = express();
 
 routes.use(express.json());
@@ -64,6 +67,13 @@ routes.get("/usuarios/:usuarioId/notificaciones/noleidas", (req, res, next) => {
 routes.patch("/notificacion/:notificacionId/leer", (req, res, next) => {
   NotificacionController.marcarNotificacionComoLeida(req, res, next);
 });
+
+const swaggerDocument = JSON.parse(
+  await readFile(new URL("../docs/api-docs.json", import.meta.url)),
+)
+
+routes.use("/api-docs", swaggerUiExpress.serve)
+routes.get("/api-docs", swaggerUiExpress.setup(swaggerDocument))
 
 routes.use((err, _req, res, _next) => {
   if (err instanceof GeneralError) {
