@@ -30,3 +30,9 @@ export class StockError extends GeneralError {
         super(message, 400);
     }
 }
+
+export class StateError extends GeneralError {
+    constructor(message = "Invalid State Transition") {
+        super(message, 409); // 409 Conflict para transiciones inválidas
+    }
+}

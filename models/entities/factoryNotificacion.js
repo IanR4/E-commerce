@@ -16,7 +16,7 @@ export class FactoryNotificacion {
                 return "Su pedido ha sido enviado."
                 break
             default:
-                return Promise.reject({name: "StateError", message: "Estado no válido"});
+                
         }
     }
 
@@ -47,7 +47,7 @@ export class FactoryNotificacion {
             case EstadoPedidoEnum.Enviado:
                 return Promise.resolve(pedido.comprador);
             default:
-                return Promise.reject({name: "StateError", message: "Estado no válido"});
+                
         }
     }
 }

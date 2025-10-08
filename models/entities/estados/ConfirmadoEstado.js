@@ -1,5 +1,6 @@
 import { EstadoPedido } from "../estadoPedido.js";
 import { EstadoPedidoEnum } from "../estadoPedidoEnum.js";
+import { StateError } from "../../../errors/errors.js";
 
 export class ConfirmadoEstado extends EstadoPedido {
   constructor() {
@@ -8,10 +9,7 @@ export class ConfirmadoEstado extends EstadoPedido {
 
   validarTransicion(pedido, usuario) {
     if (pedido.estado !== EstadoPedidoEnum.Pendiente) {
-      return Promise.reject({
-        name: "StateError", 
-        message: "El pedido no puede ser confirmado"
-      });
+      return Promise.reject(new StateError("El pedido no puede ser confirmado"));
     }
     return Promise.resolve();
   }
