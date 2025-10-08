@@ -34,9 +34,31 @@ export default class ProductoService {
                 );
                 return ProductoRepository.crearProducto(nuevoProducto);
             })
-                .then(productoGuardado => ({
-                    data: productoGuardado,
-                    status: 201
-                }));
+            .then(productoGuardado => ({
+                data: productoGuardado,
+                status: 201
+            }));
+    }
+
+    getProductosPorVendedor(vendedorId, datosPaginacion, filtros) {
+        const { page, limit } = datosPaginacion
+        const numeroPagina = Math.max(Number(page), 1)
+        const elementosPorPagina = Math.min(Math.max(Number(limit), 1), 100)
+        const offset = (numeroPagina - 1) * elementosPorPagina
+
+        return Promise.resolve(ProductoRepository.findByVendedor(vendedorId, filtros))
+        .then((productosRes) => {
+            const cantidadTotal = productosRes.length
+            const totalPaginas = Math.ceil(cantidadTotal / elementosPorPagina)
+
+            return {
+                pagina: numeroPagina,
+                entradasPagina: elementosPorPagina,
+                cantidadTotal: cantidadTotal,
+                totalPaginas: totalPaginas,
+                data: productosRes.slice(offset, offset + elementosPorPagina),
+                status: 200
+            };
+        });
     }
 }

@@ -22,4 +22,21 @@ export class Producto {
     aumentarStock(cantidad) {
         this.stock += cantidad
     }
+
+    ventas() {
+        return Promise.resolve( PedidoModel.aggregate([
+            { $unwind: "$items" },
+            { $match: { "items.producto": this._id } },
+            {
+                $group: {
+                _id: null,
+                totalVentas: {
+                    $sum: { $multiply: ["$items.cantidad", "$items.precioUnitario"] }
+                    }
+                }
+            }
+        ]).exec()). then((resultado) => {
+        return resultado[0]?.totalVentas || 0;
+        })
+    }
 }
