@@ -69,11 +69,11 @@ routes.patch("/notificacion/:notificacionId/leer", (req, res, next) => {
 });
 
 const swaggerDocument = JSON.parse(
-  await readFile(new URL("../docs/api-docs.json", import.meta.url)),
+  await readFile(new URL("../docs/otra-docs.json", import.meta.url)),
 )
 
-routes.use("/api-docs", swaggerUiExpress.serve)
-routes.get("/api-docs", swaggerUiExpress.setup(swaggerDocument))
+routes.use("/otra-docs", swaggerUiExpress.serve)
+routes.get("/otra-docs", swaggerUiExpress.setup(swaggerDocument))
 
 routes.use((err, _req, res, _next) => {
   if (err instanceof GeneralError) {
