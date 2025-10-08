@@ -7,187 +7,215 @@
     },
     "servers": [
         {
-        "url": "http://localhost:3000"
+            "url": "http://localhost:3000"
         }
     ],
     "paths": {
         "/health-check": {
-        "get": {
-            "summary": "Verifica el estado del servidor",
-            "responses": {
-            "200": {
-                "description": "Servidor funcionando"
+            "get": {
+                "summary": "Verifica el estado del servidor",
+                "responses": {
+                    "200": {
+                        "description": "Servidor funcionando"
+                    }
+                }
             }
-            }
-        }
         },
         "/usuario": {
-        "post": {
-            "summary": "Crear un usuario",
-            "requestBody": {
-            "required": true,
-            "content": {
-                "application/json": {
-                "schema": { "$ref": "#/components/schemas/Usuario" }
+            "post": {
+                "summary": "Crear un usuario",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": { "$ref": "#/components/schemas/Usuario" }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": { "description": "Usuario creado" }
                 }
             }
-            },
-            "responses": {
-            "201": { "description": "Usuario creado" }
-            }
-        }
         },
         "/usuario/{usuarioId}": {
-        "get": {
-            "summary": "Obtener usuario por ID",
-            "parameters": [
-            { "name": "usuarioId", "in": "path", "required": true, "schema": { "type": "string" } }
-            ],
-            "responses": {
-            "200": { "description": "Usuario encontrado" },
-            "404": { "description": "Usuario no encontrado" }
+            "get": {
+                "summary": "Obtener usuario por ID",
+                "parameters": [
+                    { "name": "usuarioId", "in": "path", "required": true, "schema": { "type": "string" } }
+                ],
+                "responses": {
+                    "200": { "description": "Usuario encontrado" },
+                    "404": { "description": "Usuario no encontrado" }
+                }
             }
-        }
+        },
+        "/producto": {
+            "post": {
+                "summary": "Crear un producto",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": { "$ref": "#/components/schemas/Producto" }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": { "description": "Producto creado" }
+                }
+            }
         },
         "/producto/{productoId}": {
-        "get": {
-            "summary": "Obtener producto por ID",
-            "parameters": [
-            { "name": "productoId", "in": "path", "required": true, "schema": { "type": "string" } }
-            ],
-            "responses": {
-            "200": { "description": "Producto encontrado" },
-            "404": { "description": "Producto no encontrado" }
+            "get": {
+                "summary": "Obtener producto por ID",
+                "parameters": [
+                    { "name": "productoId", "in": "path", "required": true, "schema": { "type": "string" } }
+                ],
+                "responses": {
+                    "200": { "description": "Producto encontrado" },
+                    "404": { "description": "Producto no encontrado" }
+                }
             }
-        }
         },
         "/pedido": {
-        "post": {
-            "summary": "Crear un pedido",
-            "requestBody": {
-            "required": true,
-            "content": {
-                "application/json": {
-                "schema": { "$ref": "#/components/schemas/Pedido" }
+            "post": {
+                "summary": "Crear un pedido",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": { "$ref": "#/components/schemas/Pedido" }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": { "description": "Pedido creado" }
                 }
             }
-            },
-            "responses": {
-            "201": { "description": "Pedido creado" }
-            }
-        }
         },
         "/pedido/{pedidoId}": {
-        "get": {
-            "summary": "Obtener pedido por ID",
-            "parameters": [
-            { "name": "pedidoId", "in": "path", "required": true, "schema": { "type": "string" } }
-            ],
-            "responses": {
-            "200": { "description": "Pedido encontrado" },
-            "404": { "description": "Pedido no encontrado" }
-            }
-        },
-        "patch": {
-            "summary": "Actualizar un pedido",
-            "parameters": [
-            { "name": "pedidoId", "in": "path", "required": true, "schema": { "type": "string" } }
-            ],
-            "requestBody": {
-            "required": true,
-            "content": {
-                "application/json": {
-                "schema": { "$ref": "#/components/schemas/PedidoPatch" }
+            "get": {
+                "summary": "Obtener pedido por ID",
+                "parameters": [
+                    { "name": "pedidoId", "in": "path", "required": true, "schema": { "type": "string" } }
+                ],
+                "responses": {
+                    "200": { "description": "Pedido encontrado" },
+                    "404": { "description": "Pedido no encontrado" }
+                }
+            },
+            "patch": {
+                "summary": "Actualizar un pedido",
+                "parameters": [
+                    { "name": "pedidoId", "in": "path", "required": true, "schema": { "type": "string" } }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": { "$ref": "#/components/schemas/PedidoPatch" }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": { "description": "Pedido actualizado" }
                 }
             }
-            },
-            "responses": {
-            "200": { "description": "Pedido actualizado" }
-            }
-        }
         },
         "/pedidos": {
-        "get": {
-            "summary": "Obtener todos los pedidos",
-            "responses": {
-            "200": { "description": "Lista de pedidos" }
+            "get": {
+                "summary": "Obtener todos los pedidos",
+                "responses": {
+                    "200": { "description": "Lista de pedidos" }
+                }
             }
-        }
         },
         "/usuario/{usuarioId}/notificaciones/leidas": {
-        "get": {
-            "summary": "Obtener notificaciones leídas de un usuario",
-            "parameters": [
-            { "name": "usuarioId", "in": "path", "required": true, "schema": { "type": "string" } }
-            ],
-            "responses": {
-            "200": { "description": "Lista de notificaciones leídas" }
+            "get": {
+                "summary": "Obtener notificaciones leídas de un usuario",
+                "parameters": [
+                    { "name": "usuarioId", "in": "path", "required": true, "schema": { "type": "string" } }
+                ],
+                "responses": {
+                    "200": { "description": "Lista de notificaciones leídas" }
+                }
             }
-        }
         },
         "/usuario/{usuarioId}/notificaciones/noleidas": {
-        "get": {
-            "summary": "Obtener notificaciones no leídas de un usuario",
-            "parameters": [
-            { "name": "usuarioId", "in": "path", "required": true, "schema": { "type": "string" } }
-            ],
-            "responses": {
-            "200": { "description": "Lista de notificaciones no leídas" }
+            "get": {
+                "summary": "Obtener notificaciones no leídas de un usuario",
+                "parameters": [
+                    { "name": "usuarioId", "in": "path", "required": true, "schema": { "type": "string" } }
+                ],
+                "responses": {
+                    "200": { "description": "Lista de notificaciones no leídas" }
+                }
             }
-        }
         },
-        "/notificacion/{notificacionId}/leer": {
-        "patch": {
-            "summary": "Marcar una notificación como leída",
-            "parameters": [
-            { "name": "notificacionId", "in": "path", "required": true, "schema": { "type": "string" } }
-            ],
-            "responses": {
-            "200": { "description": "Notificación marcada como leída" }
+        "/notificacion/{notificacionId}": {
+            "patch": {
+                "summary": "Marcar una notificación como leída",
+                "parameters": [
+                    { "name": "notificacionId", "in": "path", "required": true, "schema": { "type": "string" } }
+                ],
+                "responses": {
+                    "200": { "description": "Notificación marcada como leída" }
+                }
             }
-        }
         }
     },
     "components": {
         "schemas": {
-        "Usuario": {
-            "type": "object",
-            "properties": {
-            "nombre": { "type": "string" },
-            "email": { "type": "string" },
-            "telefono": { "type": "string" },
-            "tipo": { "type": "string", "enum": ["Comprador", "Vendedor", "Admin"] },
-            "fechaAlta": { "type": "string", "format": "date-time" }
+            "Usuario": {
+                "type": "object",
+                "properties": {
+                    "nombre": { "type": "string" },
+                    "email": { "type": "string" },
+                    "telefono": { "type": "string" },
+                    "tipo": { "type": "string", "enum": ["Comprador", "Vendedor", "Admin"] },
+                    "fechaAlta": { "type": "string", "format": "date-time" }
+                },
+                "required": ["nombre", "email", "telefono", "tipo", "fechaAlta"]
             },
-            "required": ["nombre", "email", "telefono", "tipo", "fechaAlta"]
-        },
-        "Pedido": {
-            "type": "object",
-            "properties": {
-            "comprador": { "type": "string" },
-            "items": { "type": "array", "items": { "type": "object" } },
-            "moneda": { "type": "string" },
-            "direccionEntrega": { "type": "object" }
+            "Producto": {
+                "type": "object",
+                "properties": {
+                    "nombre": { "type": "string" },
+                    "descripcion": { "type": "string" },
+                    "precio": { "type": "number" },
+                    "stock": { "type": "integer" },
+                    "categoria": { "type": "string" },
+                    "vendedor": { "type": "string" }
+                },
+                "required": ["nombre", "precio", "stock", "categoria", "vendedor"]
             },
-            "required": ["comprador", "items", "moneda", "direccionEntrega"]
-        },
-        "PedidoPatch": {
-            "type": "object",
-            "properties": {
-            "estado": { "type": "string" },
-            "usuario": { "type": "string" },
-            "motivo": { "type": "string" }
+            "Pedido": {
+                "type": "object",
+                "properties": {
+                    "comprador": { "type": "string" },
+                    "items": { "type": "array", "items": { "type": "object" } },
+                    "moneda": { "type": "string" },
+                    "direccionEntrega": { "type": "object" }
+                },
+                "required": ["comprador", "items", "moneda", "direccionEntrega"]
+            },
+            "PedidoPatch": {
+                "type": "object",
+                "properties": {
+                    "estado": { "type": "string" },
+                    "usuario": { "type": "string" },
+                    "motivo": { "type": "string" }
+                }
+            },
+            "Notificacion": {
+                "type": "object",
+                "properties": {
+                    "usuario": { "type": "string" },
+                    "mensaje": { "type": "string" },
+                    "leida": { "type": "boolean" },
+                    "fechaLeida": { "type": "string", "format": "date-time", "nullable": true }
+                }
             }
-        },
-        "Notificacion": {
-            "type": "object",
-            "properties": {
-            "usuario": { "type": "string" },
-            "mensaje": { "type": "string" },
-            "leida": { "type": "boolean" },
-            "fechaLeida": { "type": "string", "format": "date-time", "nullable": true }
-            }
-        }
         }
     }
 }
