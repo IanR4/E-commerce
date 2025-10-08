@@ -1,6 +1,5 @@
 import {CambioEstadoPedido} from "../entities/cambioEstadoPedido.js"
 import {EstadoPedidoEnum} from "../entities/estadoPedidoEnum.js"
-import {ItemPedido} from "../entities/itemPedido.js"
 
 export class Pedido {
     constructor(comprador, items, moneda, direccionEntrega) {

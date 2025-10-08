@@ -103,51 +103,10 @@ export default class PedidoService {
             });
     }
 
-    //  patchPedido(pedidoId, pedidoData) {
-    //     return this.pedidoValidator.buscarPedido(pedidoId)
-    //         .then(pedido => {
-    //             const usuarioId = pedidoData.usuario;
-    //             return this.usuarioValidator.buscarUsuario(usuarioId)
-    //                 .then(usuario => {
-    //                     if (pedidoData.estado && pedidoData.estado !== pedido.estado) {
-    //                         let nuevoEstadoInstancia;
-    //                         nuevoEstadoInstancia = EstadoPedidoFactory.crearEstado(pedidoData.estado);
-    //                         return Promise.resolve(nuevoEstadoInstancia.validarTransicion(pedido, usuario))
-    //                             .then(() => {
-    //                                 if (typeof pedido.actualizarEstado === 'function') {
-    //                                     pedido.actualizarEstado(pedidoData.estado, usuario, pedidoData.motivo);
-    //                                 }
-    //                                 return pedido;
-    //                             })
-    //                     }
-    //                     return pedido; // No cambia estado
-    //                 })
-    //                 .then(pedidoProcesado => {
-    //                     return this.factoryNotificacion.crearSegunPedido(pedidoProcesado)
-    //                         .then(notificacion => {
-    //                             if (
-    //                                 notificacion &&
-    //                                 notificacion.usuarioDestino &&
-    //                                 typeof notificacion.usuarioDestino.recibirNotificacion === 'function'
-    //                             ) {
-    //                                 notificacion.usuarioDestino.recibirNotificacion(notificacion);
-    //                             }
-    //                             return this.pedidoRepository.actualizarPedido(pedidoId, pedidoProcesado)
-    //                                 .then(pedidoRes => ({
-    //                                     data: pedidoRes,
-    //                                     status: 200
-    //                                 }));
-    //                         });
-    //                 });
-    //         });
-    // }
-
     
 
     getPedidosUsuario(usuarioId) {
-        const usuario = this.usuarioValidator.buscarUsuario(usuarioId);
-
-        return Promise.resolve(this.pedidoValidator.buscarPedidoUsuario(usuario.id))
+        return Promise.resolve(this.pedidoValidator.buscarPedidoUsuario(usuarioId))
         .then((listaPedidos) => {
             return {
                 data: listaPedidos,

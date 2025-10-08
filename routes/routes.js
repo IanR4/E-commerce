@@ -41,6 +41,10 @@ routes.post("/producto", (req, res, next) => {
   ProductoController.postProducto(req, res, next);
 });
 
+routes.get("/vendedores/:vendedorId/productos", (req, res, next) => {
+  ProductoController.getProductosVendedor(req, res, next);
+});
+
 routes.patch("/pedido/:pedidoId", (req, res, next) => {
   PedidoController.patchPedido(req, res, next);
 }); 
@@ -48,7 +52,6 @@ routes.patch("/pedido/:pedidoId", (req, res, next) => {
 routes.get("/usuarios/:usuarioId/pedidos", (req, res, next) => {
   PedidoController.getPedidosUsuario(req, res, next);
 });
-
 
 routes.get("/usuarios/:usuarioId/notificaciones/leidas", (req, res, next) => {
   NotificacionController.getNotificacionesLeidasUsuario(req, res, next);
