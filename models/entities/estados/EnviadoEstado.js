@@ -12,9 +12,9 @@ export class EnviadoEstado extends EstadoPedido {
       return Promise.reject(new StateError("El pedido no puede ser enviado"));
     }
 
-    if (!pedido.tieneItemsDe(usuario)) {
-      return Promise.reject(new StateError("El usuario no vende los productos de este pedido"));
-    }
+    // if (!pedido.tieneItemsDe(usuario)) {
+    //   return Promise.reject(new StateError("El usuario no vende los productos de este pedido"));
+    // }
     return Promise.resolve();
   }
 }
