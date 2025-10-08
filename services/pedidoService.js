@@ -1,10 +1,12 @@
 import {Pedido} from "../models/entities/pedido.js"
 import PedidoRepository from "../models/repositories/pedidoRepository.js";
 import UsuarioRepository from "../models/repositories/usuarioRepository.js";
+import NotificacionRepository from "../models/repositories/notificacionRepository.js";
 import ItemPedidoCreator from "../middleware/itemPedidoCreator.js";
 import { EstadoPedidoFactory } from "../models/entities/estadoPedidoFactory.js";
 import PedidoValidator from "../validators/pedidoValidator.js"
 import UsuarioValidator from "../validators/usuarioValidator.js"
+import { FactoryNotificacion } from "../models/entities/factoryNotificacion.js";
 // import { FactoryNotificacion } from "../models/entities/factoryNotificacion.js"; // Eliminado: ya no se usa notificación
 // import { Usuario } from "../models/entities/usuario.js";
 
@@ -14,7 +16,8 @@ export default class PedidoService {
         this.usuarioValidator = UsuarioValidator;
         this.pedidoRepository = PedidoRepository;
         this.usuarioRepository = UsuarioRepository;
-    // this.factoryNotificacion = new FactoryNotificacion(); // Eliminado
+        this.notificacionRepository = NotificacionRepository;
+        this.factoryNotificacion = new FactoryNotificacion();
     }
 
     getPedido(pedidoId) {
@@ -34,7 +37,7 @@ export default class PedidoService {
                 return ItemPedidoCreator.crearItems(pedidoData.items)
                     .then(items => {
                         const nuevoPedido = new Pedido(
-                            comprador._id, // o comprador según tu schema
+                            comprador._id,
                             items,
                             pedidoData.moneda,
                             pedidoData.direccionEntrega
@@ -73,11 +76,29 @@ export default class PedidoService {
                         return pedido; // No cambia el estado
                     })
                     .then(pedidoProcesado => {
-                        return this.pedidoRepository.actualizarPedido(pedidoId, pedidoProcesado)
-                            .then(pedidoRes => ({
-                                data: pedidoRes,
-                                status: 200
-                            }));
+                        // Crear la notificación y guardarla en la base de datos
+                        return this.factoryNotificacion.crearSegunPedido(pedidoProcesado)
+                            .then(notificacion => {
+                                if (notificacion) {
+                                    // Si el destinatario es un objeto usuario, obtener su id
+                                    const usuarioDestino = notificacion.usuarioDestino?._id || notificacion.usuarioDestino || notificacion.usuario;
+                                    const notificacionData = {
+                                        usuario: usuarioDestino,
+                                        mensaje: notificacion.mensaje,
+                                        leida: false
+                                    };
+                                    return this.notificacionRepository.crearNotificacion(notificacionData);
+                                }
+                                return null;
+                            })
+                            .then(() => {
+                                // Actualizar el pedido después de crear la notificación
+                                return this.pedidoRepository.actualizarPedido(pedidoId, pedidoProcesado)
+                                    .then(pedidoRes => ({
+                                        data: pedidoRes,
+                                        status: 200
+                                    }));
+                            });
                     });
             });
     }

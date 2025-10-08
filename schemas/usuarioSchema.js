@@ -24,10 +24,6 @@ const usuarioSchema = new mongoose.Schema({
         type: Date,
         required: true,
     },
-    notificaciones: {
-        type: [Object],
-        default: []
-    },
 }, {
     collection: 'usuarios'
 });

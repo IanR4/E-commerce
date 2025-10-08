@@ -1,41 +1,32 @@
-import { z } from "zod"
+import UsuarioValidator from "../validators/usuarioValidator.js"
+import NotificacionValidator from "../validators/notificacionValidator.js"
 import NotificacionService from "../services/notificacionService.js";
 
 class NotificacionController {
     constructor() {
+        this.usuarioValidator = UsuarioValidator;
+        this.notificacionValidator = NotificacionValidator;
         this.notificacionService = new NotificacionService();
     }
 
-    getNotificacionesLeidasUsuario = (req, res, next) => {
-        const usuarioId = parseInt(req.params.usuarioId, 10);
-        if (isNaN(usuarioId)) {
-            return res.status(400).json({ error: "Invalid usuarioId parameter" });
-        }
+    getNotificacionesLeidasUsuario = (req, res) => {
+        const usuarioId = req.params.usuarioId;
+        this.usuarioValidator.validarUsuarioId(usuarioId);
         this.notificacionService.getNotificacionesLeidasUsuario(usuarioId)
             .then(({ data, status }) => res.status(status).json(data))
-            .catch(next);
     }
 
-    getNotificacionesNoLeidasUsuario = (req, res, next) => {
-        const usuarioId = parseInt(req.params.usuarioId, 10);
-        if (isNaN(usuarioId)) {
-            return res.status(400).json({ error: "Invalid usuarioId parameter" });
-        }
+    getNotificacionesNoLeidasUsuario = (req, res) => {
+        const usuarioId = req.params.usuarioId;
+        this.usuarioValidator.validarUsuarioId(usuarioId);
         this.notificacionService.getNotificacionesNoLeidasUsuario(usuarioId)
             .then(({ data, status }) => res.status(status).json(data))
-            .catch(next);
     }
 
     marcarNotificacionComoLeida = (req, res, next) => {
-        const usuarioId = parseInt(req.params.usuarioId, 10);
-        const notificacionId = parseInt(req.params.notificacionId, 10);
-        if (isNaN(usuarioId)) {
-            return res.status(400).json({ error: "Invalid usuarioId parameter" });
-        }
-        if (isNaN(notificacionId)) {
-            return res.status(400).json({ error: "Invalid notificacionId parameter" });
-        }
-        this.notificacionService.marcarNotificacionComoLeida(usuarioId, notificacionId)
+        const notificacionId = req.params.notificacionId;
+        this.notificacionValidator.validarNotificacionId(notificacionId);
+        this.notificacionService.marcarNotificacionComoLeida(notificacionId)
             .then(({ data, status }) => res.status(status).json(data))
             .catch(next);
     }

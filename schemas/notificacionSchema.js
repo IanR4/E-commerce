@@ -31,4 +31,11 @@ const notificacionSchema = new mongoose.Schema({
 
 notificacionSchema.loadClass(Notificacion);
 
+notificacionSchema.methods.marcarComoLeida = function() {
+    if (!this.leida) {
+        this.leida = true;
+        this.fechaLeida = new Date();
+    }
+};
+
 export const NotificacionModel = mongoose.model('Notificacion', notificacionSchema);

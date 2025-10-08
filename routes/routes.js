@@ -58,7 +58,7 @@ routes.get("/usuarios/:usuarioId/notificaciones/noleidas", (req, res, next) => {
   NotificacionController.getNotificacionesNoLeidasUsuario(req, res, next);
 });
 
-routes.patch("/usuarios/:usuarioId/notificaciones/:notificacionId/leida", (req, res, next) => {
+routes.patch("/notificacion/:notificacionId/leer", (req, res, next) => {
   NotificacionController.marcarNotificacionComoLeida(req, res, next);
 });
 

@@ -6,11 +6,12 @@ export class Notificacion {
         this.leida = false
         this.fechaLeida = null
     }
-
+/*
     marcarComoLeida() {
         if(!this.leida) {
             this.leida = true
             this.fechaLeida = new Date()
         }
     }
+*/
 }

@@ -18,7 +18,7 @@ class NotificacionRepository {
         return this.model.findByIdAndUpdate(notificacionId, notificacion, { new: true }).exec();
     }
 
-    findByUsuario(usuarioId) {
+    findByUser(usuarioId) {
         return this.model.find({ usuario: usuarioId }).exec();
     }
 }

@@ -16,11 +16,37 @@ export class FactoryNotificacion {
                 return "Su pedido ha sido enviado."
                 break
             default:
-                
+                return null
         }
     }
 
+    
+    obtenerDestinatarioSegunEstadoPedido(pedido) {
+        switch(pedido.estado) {
+            case EstadoPedidoEnum.Cancelado:
+                case EstadoPedidoEnum.Confirmado: {
+                    const productoId = pedido.items[0].producto;
+                    return ProductoRepository.findById(productoId)
+                    .then(producto => {
+                        const vendedorId = producto.vendedor;
+                        return UsuarioRepository.findById(vendedorId);
+                    });
+                }
+                case EstadoPedidoEnum.Enviado:
+                    return Promise.resolve(pedido.comprador);
+                    default:
+                        return null
+                    }
+                }
+
     crearSegunPedido(pedido) {
+        if (
+            pedido.estado !== EstadoPedidoEnum.Cancelado &&
+            pedido.estado !== EstadoPedidoEnum.Confirmado &&
+            pedido.estado !== EstadoPedidoEnum.Enviado
+        ) {
+            return Promise.resolve(null);
+        }
         return this.obtenerDestinatarioSegunEstadoPedido(pedido)
             .then(destinatario => {
                 const mensaje = this.crearSegunEstadoPedido(pedido.estado);
@@ -31,23 +57,5 @@ export class FactoryNotificacion {
                     return new Notificacion(destinatario, `${mensaje} ID de pedido: ${pedido.id}`);
                 }
             });
-    }
-
-    obtenerDestinatarioSegunEstadoPedido(pedido) {
-        switch(pedido.estado) {
-            case EstadoPedidoEnum.Cancelado:
-            case EstadoPedidoEnum.Confirmado: {
-                const productoId = pedido.items[0].producto;
-                return ProductoRepository.findById(productoId)
-                    .then(producto => {
-                        const vendedorId = producto.vendedor;
-                        return UsuarioRepository.findById(vendedorId);
-                    });
-            }
-            case EstadoPedidoEnum.Enviado:
-                return Promise.resolve(pedido.comprador);
-            default:
-                
-        }
     }
 }
