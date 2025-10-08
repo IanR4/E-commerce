@@ -1,5 +1,6 @@
 import ProductoService from "../services/productoService.js"
 import ProductoValidator from "../validators/productoValidator.js"
+import UsuarioValidator from "../validators/usuarioValidator.js";
 
 class ProductoController {
     constructor() {

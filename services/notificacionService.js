@@ -14,9 +14,9 @@ export default class NotificacionService {
     }
 
     getNotificacionesLeidasUsuario(usuarioId) {
-        const usuario = this.usuarioValidator.buscarUsuario(usuarioId);
+        this.usuarioValidator.buscarUsuario(usuarioId);
 
-        return Promise.resolve(this.notificacionValidator.buscarNotificacionesLeidasUsuario(usuario.id))
+        return Promise.resolve(this.notificacionValidator.buscarNotificacionesLeidasUsuario(usuarioId))
         .then((listaPedidos) => {
             return {
                 data: listaPedidos,
@@ -26,12 +26,12 @@ export default class NotificacionService {
     }
 
     getNotificacionesNoLeidasUsuario(usuarioId) {
-        const usuario = this.usuarioValidator.buscarUsuario(usuarioId);
+        this.usuarioValidator.buscarUsuario(usuarioId);
 
-        return Promise.resolve(this.notificacionValidator.buscarNotificacionesNoLeidasUsuario(usuario.id))
-        .then((listaPedidos) => {
+        return Promise.resolve(this.notificacionValidator.buscarNotificacionesNoLeidasUsuario(usuarioId))
+        .then((listaNotificaciones) => {
             return {
-                data: listaPedidos,
+                data: listaNotificaciones,
                 status: 200
             };
         });

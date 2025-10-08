@@ -23,12 +23,11 @@ class NotificacionController {
             .then(({ data, status }) => res.status(status).json(data))
     }
 
-    marcarNotificacionComoLeida = (req, res, next) => {
+    marcarNotificacionComoLeida = (req, res) => {
         const notificacionId = req.params.notificacionId;
         this.notificacionValidator.validarNotificacionId(notificacionId);
         this.notificacionService.marcarNotificacionComoLeida(notificacionId)
             .then(({ data, status }) => res.status(status).json(data))
-            .catch(next);
     }
 }
 
