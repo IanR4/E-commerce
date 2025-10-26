@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Card, TextField, Button } from '@mui/material';
 import { useNavigate } from "react-router-dom";
+import CarritoItem from '../../components/carritoItem/CarritoItem.jsx';
 
 import './Checkout.css';
 
@@ -44,7 +45,7 @@ const Checkout = ({ carrito, limpiarCarrito }) => {
         <div>
           {carrito.map((producto, index) => (
             <div key={index}>
-              {producto.nombre}: {producto.cantidadUnidades}
+              <CarritoItem producto={producto}/>
             </div>
           ))}
         </div>
