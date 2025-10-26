@@ -1,15 +1,13 @@
 const productos = [
   {
     id: 1,
-    titulo: "Four Seasons Hotel",
+    nombre: "Four Seasons Hotel",
     descripcion:
       "Lujoso hotel de 5 estrellas ubicado en el corazón de Buenos Aires. Ofrece elegantes habitaciones con vistas a la ciudad, spa de clase mundial, restaurantes gourmet y servicio personalizado de primer nivel.",
-    categorias: ["Lujo", "Negocios", "Romántico"],
+    ubicacion: "Buenos Aires, Argentina",
+    puntaje: 9.2,
     precio: 1580000,
-    moneda: "Real",
-    fotos: "/images/fourseasonsbs.jpeg",
-    vendedor: "Ian Ramos",
-    stock: 10,
+    imagen: "/images/fourseasonsbs.jpeg",
   },
   {
     id: 2,
