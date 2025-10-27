@@ -74,7 +74,7 @@ const Contacto = () => {
             fullWidth
             margin="normal"
             type="mensaje"
-            value={campos.repetirEmail.valor}
+            value={campos.mensaje.valor}
             onChange={setValorDe('mensaje')}
           />
         </form>
