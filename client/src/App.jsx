@@ -57,8 +57,15 @@ function App() {
                   carrito={carrito}
                   actualizarCarrito={actualizarCarrito}
                 />
-              } 
-            />
+              } />
+              <Route 
+              path="/busqueda/" 
+              element={
+                <Search
+                  carrito={carrito}
+                  actualizarCarrito={actualizarCarrito}
+                />
+              } />
           </Route>
         </Routes>
       </BrowserRouter>

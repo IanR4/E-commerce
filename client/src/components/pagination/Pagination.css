@@ -1,0 +1,17 @@
+.pagination-nav {
+  margin-top: 1rem;
+}
+
+.pagination .page-item .page-link {
+  cursor: pointer;
+}
+
+.pagination .page-item.disabled .page-link {
+  cursor: default;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: var(--primary-green, #2a9d8f);
+  border-color: var(--primary-green, #2a9d8f);
+  color: white;
+}

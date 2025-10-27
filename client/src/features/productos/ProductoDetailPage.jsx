@@ -51,15 +51,15 @@ const ProductoDetailPage = ({ carrito, actualizarCarrito }) => {
   return (
     <div className="producto-detail-container">
       <div className="producto-header">
-        <h1 className="producto-nombre">{producto.nombre}</h1>
-        <div className="producto-ubicacion">{producto.ubicacion}</div>
+        <h1 className="producto-nombre">{producto.titulo}</h1>
+        <div className="producto-stock">Stock: {producto.stock}</div>
       </div>
 
       <div className="producto-content">
         <div className="producto-image-section">
           <img 
             src={producto.imagen} 
-            alt={producto.nombre} 
+            alt={producto.titulo} 
             className="producto-imagen"
           />
         </div>
@@ -72,11 +72,6 @@ const ProductoDetailPage = ({ carrito, actualizarCarrito }) => {
           <div className="producto-price-section">
             <div className="producto-precio">$ {producto.precio?.toLocaleString()}</div>
             <div className="price-details">Impuestos incluidos</div>        
-          </div>
-
-          <div className="producto-rating-section">
-            <div className="producto-puntaje">{producto.puntaje}</div>
-            <div className="rating-text">Excelente</div>
           </div>
         </div>
       </div>

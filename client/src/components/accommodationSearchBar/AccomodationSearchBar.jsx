@@ -19,7 +19,7 @@ const AccomodationSearchBar = ({filtrarProductos}) => {
             variant="standard"
             placeholder="Buscar productos"
           />
-          <Link to={`/busqueda/${encodeURIComponent(searchText)}`} className="link-no-style">
+          <Link to={`/busqueda/${searchText}`} className="link-no-style">
           <Button id = "boton" variant="outlined">
             
               <FaSearch className='button-icon' />
