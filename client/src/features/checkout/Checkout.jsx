@@ -5,7 +5,7 @@ import CarritoItem from '../../components/carritoItem/CarritoItem.jsx';
 
 import './Checkout.css';
 
-const Checkout = ({ carrito, limpiarCarrito }) => {
+const Checkout = ({ carrito, limpiarCarrito, removerDelCarrito }) => {
   const inicializarCampo = (requerido = true) => ({ valor: '', requerido });
   const navigate = useNavigate()
 
@@ -44,8 +44,8 @@ const Checkout = ({ carrito, limpiarCarrito }) => {
         <h3>Ya casi estamos...</h3>
         <div>
           {carrito.map((producto, index) => (
-            <div key={index}>
-              <CarritoItem producto={producto}/>
+            <div key={producto.id ?? index}>
+              <CarritoItem producto={producto} onRemove={removerDelCarrito} />
             </div>
           ))}
         </div>

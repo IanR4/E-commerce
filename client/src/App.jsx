@@ -29,6 +29,10 @@ function App() {
     setCarrito([]);
   };
 
+  const removerDelCarrito = (id) => {
+    setCarrito(prev => prev.filter(p => String(p.id) !== String(id)));
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
@@ -50,6 +54,7 @@ function App() {
               <Checkout 
                 carrito={carrito}
                 limpiarCarrito={limpiarCarrito}
+                removerDelCarrito={removerDelCarrito}
               />} />
             <Route 
               path="/busqueda/:searchText" 

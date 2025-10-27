@@ -2,7 +2,11 @@ import "./CarritoItem.css";
 import { Link } from "react-router-dom";   
 import "../../index.css"
 
-const CarritoItem = ({producto}) => {
+const CarritoItem = ({producto, onRemove}) => {
+  const handleRemove = () => {
+    if (typeof onRemove === 'function') onRemove(producto.id);
+  }
+
   return (
     <div key={producto.id} className="carrito-card">
       <div className="producto-carrito-card">
@@ -18,7 +22,14 @@ const CarritoItem = ({producto}) => {
             <span className="producto-carrito-price">$ {producto.precio.toLocaleString("es-AR")}</span>
           </div>
           <div className="producto-carrito-eliminar">
-            <button className="producto-carrito-eliminar-boton">Eliminar</button>
+            <button
+              type="button"
+              className="producto-carrito-eliminar-boton"
+              onClick={handleRemove}
+              aria-label={`Eliminar ${producto.titulo}`}
+            >
+              Eliminar
+            </button>
           </div>
         </div>
       </div>
