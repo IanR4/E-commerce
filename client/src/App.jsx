@@ -8,6 +8,7 @@ import {createTheme, ThemeProvider} from "@mui/material"
 import Checkout from './features/checkout/Checkout.jsx';
 import React, {useState} from "react";
 import Contacto from './features/utilities/contacto/Contacto.jsx';
+import FAQ from './features/utilities/faq/FAQ.jsx';
 
 const theme = createTheme({
   palette: {
@@ -72,6 +73,12 @@ function App() {
               path="/Contacto" 
               element={
                 <Contacto
+                />
+              } />
+              <Route 
+              path="/FAQ" 
+              element={
+                <FAQ
                 />
               } />
           </Route>
