@@ -7,6 +7,7 @@ const productos = [
     moneda: "ARS",
     stock: 10,
     precio: 15800,
+    categoria: "Limpieza",
     imagen: "/images/remeraurbanfit.jpg",
   },
   {
@@ -17,6 +18,7 @@ const productos = [
     moneda: "ARS",
     stock: 20,
     precio: 24700,
+    categoria: "Limpieza",
     imagen: "/images/zapatillasrunnerpro.jpg",
   },
   {
@@ -27,6 +29,7 @@ const productos = [
     moneda: "ARS",
     stock: 30,
     precio: 12000,
+    categoria: "Limpieza",
     imagen: "/images/auricularesbluetooth.jpg",
   },
   {
@@ -37,6 +40,7 @@ const productos = [
     moneda: "ARS",
     stock: 15,
     precio: 12050,
+    categoria: "Limpieza",
     imagen: "/images/perfume.jpg",
   },
   {
@@ -47,6 +51,7 @@ const productos = [
     moneda: "ARS",
     stock: 25,
     precio: 9800,
+    categoria: "Cocina",
     imagen: "/images/catedralbariloche.jpg",
   },
   {
@@ -57,6 +62,7 @@ const productos = [
     moneda: "ARS",
     stock: 5,
     precio: 32000,
+    categoria: "Tecnologia",
     imagen: "/images/llaollao.jpg",
   },
   {
@@ -67,6 +73,7 @@ const productos = [
     moneda: "ARS",
     stock: 50,
     precio: 98000,
+    categoria: "Ropa",
     imagen: "/images/alvearpalace.jpg",
   },
   {
@@ -77,6 +84,7 @@ const productos = [
     moneda: "ARS",
     stock: 40,
     precio: 31000,
+    categoria: "Ropa",
     imagen: "/images/roma1.jpg",
   },
   {
@@ -87,6 +95,7 @@ const productos = [
     moneda: "ARS",
     stock: 60,
     precio: 225000,
+    categoria: "Limpieza",
     imagen: "/images/roma2.jpg",
   },
   {
@@ -97,6 +106,7 @@ const productos = [
     moneda: "ARS",
     stock: 100,
     precio: 88000,
+    categoria: "Ropa",
     imagen: "/images/roma3.jpg",
   },
   {
@@ -107,6 +117,7 @@ const productos = [
     moneda: "ARS",
     stock: 50,
     precio: 125000,
+    categoria: "Ropa",
     imagen: "/images/trocadero.jpg",
   },
   {
@@ -117,6 +128,7 @@ const productos = [
     moneda: "ARS",
     stock: 45,
     precio: 142000,
+    categoria: "Tecnologia",
     imagen: "/images/madrid1.jpg",
   },
   {
@@ -127,6 +139,7 @@ const productos = [
     moneda: "ARS",
     stock: 90,
     precio: 86000,
+    categoria: "Tecnologia",
     imagen: "/images/madrid2.jpg",
   },
   {
@@ -137,6 +150,7 @@ const productos = [
     moneda: "ARS",
     stock: 55,
     precio: 215000,
+    categoria: "Tecnologia",
     imagen: "/images/lemeurice.jpg",
   },
   {
@@ -147,6 +161,7 @@ const productos = [
     moneda: "ARS",
     stock: 70,
     precio: 98000,
+    categoria: "Tecnologia",
     imagen: "/images/pullman.jpg",
   },
   {
@@ -157,6 +172,7 @@ const productos = [
     moneda: "ARS",
     stock: 40,
     precio: 72000,
+    categoria: "Tecnologia",
     imagen: "/images/llaollao.jpg",
   },
   {
@@ -167,6 +183,7 @@ const productos = [
     moneda: "ARS",
     stock: 140,
     precio: 21000,
+    categoria: "Vehiculos",
     imagen: "/images/skybariloche.jpg",
   },
   {
@@ -177,6 +194,7 @@ const productos = [
     moneda: "ARS",
     stock: 34,
     precio: 68000,
+    categoria: "Vehiculos",
     imagen: "/images/cordobacenter.jpg",
   },
   {
@@ -187,6 +205,7 @@ const productos = [
     moneda: "ARS",
     stock: 50,
     precio: 89000,
+    categoria: "Vehiculos",
     imagen: "/images/alvearpalace.jpg",
   },
   {
@@ -197,6 +216,7 @@ const productos = [
     moneda: "ARS",
     stock: 90,
     precio: 35000,
+    categoria: "Vehiculos",
     imagen: "/images/roma1.jpg",
   },
 ];

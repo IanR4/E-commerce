@@ -21,9 +21,10 @@ const DropdownCategorias = () => {
     "Limpieza",
     "Cocina",
     "Vehiculos",
-    "Tecnología",
+    "Tecnologia",
     "Ropa",
     "Muebles",
+    "Ver Todos",
   ];
 
   return (

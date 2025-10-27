@@ -10,29 +10,59 @@ const Search = () => {
   const outlet = useOutletContext();
   const productos = outlet?.productos || [];
   const { searchText } = useParams();
+  const { categoriaName } = useParams();
   const [productosFiltrados, setProductosFiltrados] = useState(null); // null = not loaded yet
   const [loading, setLoading] = useState(false);
 
-  const filtrarProductos = (searchText) => {
-    if (searchText.trim() === "") {
+  const filtrarProductos = (searchText, categoriaName) => {
+    // Normalize inputs to avoid crashes when params are undefined
+    const q = (searchText || "").toString();
+    const cat = (categoriaName || "").toString();
+
+    if (cat == "Ver Todos") {
       setProductosFiltrados(productos);
-    } else {
+      return;
+    }
+
+    if (cat.trim() !== "") {
       const filtered = productos.filter((producto) =>
-        producto.titulo.toLowerCase().includes(searchText.toLowerCase())
+        producto.categoria.toLowerCase().includes(cat.toLowerCase())
       );
       setProductosFiltrados(filtered);
+      return;
     }
+
+    // If search text is empty (or not provided) show all productos
+    if (q.trim() === "") {
+      setProductosFiltrados(productos);
+      return;
+    }
+
+    // Otherwise filter by title
+    const filtered = productos.filter((producto) =>
+      producto.titulo.toLowerCase().includes(q.toLowerCase())
+    );
+    setProductosFiltrados(filtered);
   };
 
   const cargarProductos = async () => {
     setLoading(true);
     const productosCargados = await getProductosSlowly();
     // Si hay un searchText en la URL, filtramos sobre los cargados
-    if (searchText) {
+
+    if (categoriaName == "Ver Todos") {
+      setProductosFiltrados(productos);
+    }
+    else if (categoriaName) {
       const filtered = productosCargados.filter((producto) =>
-        producto.titulo.toLowerCase().includes(searchText.toLowerCase())
+        producto.categoria.toLowerCase().includes(categoriaName.toLowerCase())
       );
       setProductosFiltrados(filtered);
+    } else if (searchText) {
+        const filtered = productosCargados.filter((producto) =>
+          producto.titulo.toLowerCase().includes(searchText.toLowerCase())
+        );
+        setProductosFiltrados(filtered);
     } else {
       setProductosFiltrados(productosCargados);
     }
@@ -46,10 +76,10 @@ const Search = () => {
 
   // Filtrar automáticamente cuando cambia el searchText o los productos
   useEffect(() => {
-    if(searchText) {
-      filtrarProductos(searchText);
-    }
-  }, [searchText, productos]);
+    // Always attempt to filter when params or productos change.
+    // filtrarProductos handles empty/undefined inputs and will show all productos when searchText is empty.
+    filtrarProductos(searchText, categoriaName);
+  }, [searchText, categoriaName, productos]);
 
   // Render states: loading spinner, no results, or table
   if (loading || productosFiltrados === null) {
@@ -69,6 +99,7 @@ const Search = () => {
       </div>
     );
   }
+  
 
   return (
     <div>
