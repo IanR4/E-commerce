@@ -5,6 +5,9 @@ import './Navbar.css';
 import {FaShoppingCart} from 'react-icons/fa';
 import '../../index.css';
 import AccomodationSearchBar from "../accommodationSearchBar/AccomodationSearchBar";
+import DropdownCategorias from "../dropdown/DropdownCategorias";  
+import DropdownUtilities from "../dropdown/DropdownUtilities";  
+
 
 const Navbar = ({carrito}) => {
   const navigate = useNavigate()
@@ -30,11 +33,18 @@ const Navbar = ({carrito}) => {
     <header className="navbar-bg">
       <nav className="navbar">
         <div className="navbar-section left">
-          <button className="menu-icon">☰</button>
+          <DropdownUtilities/>
         </div>
 
         <div className="navbar-section center-left">
             <AccomodationSearchBar></AccomodationSearchBar>
+            <div className="utilities">
+            <Link to={`/Contacto`} className="link-no-style"><h3 className="utilities-text"> Contacto </h3></Link>
+            <Link to={`/Nosotros`} className="link-no-style"><h3 className="utilities-text"> Nosotros </h3></Link>
+            <Link to={`/Soporte`} className="link-no-style"><h3 className="utilities-text"> Soporte </h3></Link>
+            <Link to={`/FAQ`} className="link-no-style"><h3 className="utilities-text"> FAQ </h3></Link>
+            <DropdownCategorias/>
+          </div>
         </div>
 
         <div className="navbar-section center">
