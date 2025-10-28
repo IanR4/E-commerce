@@ -1,5 +1,4 @@
-import "./CarritoItem.css";
-import { Link } from "react-router-dom";   
+import "./CarritoItem.css";  
 import "../../index.css"
 
 const CarritoItem = ({producto, onRemove}) => {

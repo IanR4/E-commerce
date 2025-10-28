@@ -1,0 +1,40 @@
+
+.nosotros-root {
+	display: flex;
+	justify-content: center;
+	padding: 24px;
+}
+
+.nosotros-card {
+	max-width: 900px;
+	padding: 30px;
+}
+
+.nosotros-intro {
+	margin-top: 8px;
+	margin-bottom: 50px;
+	line-height: 1.5;
+}
+
+.valores-list {
+	display: flex;
+    margin-top: 20px;
+	gap: 18px;
+	flex-wrap: wrap;
+}
+
+.valor-item {
+	flex: 1 1 250px;
+	background: #fafafa;
+	border-radius: 6px;
+	padding: 12px;
+}
+
+.valor-item h4 {
+	margin: 0 0 8px 0;
+}
+
+.valor-item p {
+	margin: 0;
+	font-size: 0.95rem;
+}
