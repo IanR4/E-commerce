@@ -1,0 +1,61 @@
+.product-table {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	width: 100%;
+    align-self: middle;
+    align-items: center;
+}
+
+.product-row {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column; /* mobile: items apilados */
+	gap: 1rem;
+}
+
+.product-cell {
+	padding: 0;
+	margin: 0;
+    width: 20rem;
+    height: 20rem;
+    display: flex;
+}
+
+/* Asegurar que el contenido del CarouselItem ocupe todo el ancho de la celda */
+.product-cell .carousel-card,
+.product-cell .producto-card {
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.product-empty {
+	text-align: center;
+	padding: 1rem;
+	color: #555;
+}
+
+@media (max-width: 1024px) { /* sm */
+	.product-cell {
+        width: 14rem;
+    }
+}
+
+/* Breakpoints (similares a Bootstrap) */
+@media (min-width: 750px) { /* sm */
+	.product-row {
+		flex-direction: row; /* horizontal */
+	}
+}
+
+
+/* no additional rules for md/lg needed; rows are already configured to display horizontally at sm+ */
+
+/* Small visual polish */
+.list-group-item {
+	background: transparent;
+	border: none;
+}
+
