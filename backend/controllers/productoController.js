@@ -9,7 +9,7 @@ class ProductoController {
     }
 
     getProductos = (req, res) => {
-        const { page = 1, limit = 9 } = req.query;
+        const { page = 1, limit = 100 } = req.query;
 
         this.productoService.getProductos({ page, limit })
             .then(({ data, status }) => res.status(status).json(data))

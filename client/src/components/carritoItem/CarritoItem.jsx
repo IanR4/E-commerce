@@ -7,10 +7,10 @@ const CarritoItem = ({producto, onRemove}) => {
   }
 
   return (
-    <div key={producto.id} className="carrito-card">
+    <div key={producto._id} className="carrito-card">
       <div className="producto-carrito-card">
         <img
-          src={producto.imagen}
+          src={producto.foto}
           alt={producto.titulo}
           className="producto-carrito-image"
         />
