@@ -49,7 +49,7 @@ const Navbar = ({carrito}) => {
 
         <div className="navbar-section center">
           <div className="brand">
-            <Link to={`/`} className="link-no-style"><h1 className="brand-text"> Tienda Sol </h1><img id="brand-image" src="images/sheratonsalta.jpg"/></Link>
+            <Link to={`/`} className="link-no-style"><h1 className="brand-text"> Tienda Sol </h1><img id="brand-image" src="images/logosol.jpg"/></Link>
           </div>
         </div>
 

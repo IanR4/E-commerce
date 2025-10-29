@@ -32,7 +32,8 @@ function App() {
   };
 
   const removerDelCarrito = (id) => {
-    setCarrito(prev => prev.filter(p => String(p.id) !== String(id)));
+    // Accept either backend `_id` or frontend `id` as identifier.
+    setCarrito(prev => prev.filter(p => String(p._id) !== String(id) && String(p.id) !== String(id)));
   };
 
   return (

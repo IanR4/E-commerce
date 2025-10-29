@@ -3,7 +3,10 @@ import "../../index.css"
 
 const CarritoItem = ({producto, onRemove}) => {
   const handleRemove = () => {
-    if (typeof onRemove === 'function') onRemove(producto.id);
+    // Some product objects use `_id` (from backend) while others may use `id`.
+    // Ensure we pass the actual identifier to the remover handler.
+    const identifier = producto._id ?? producto.id;
+    if (typeof onRemove === 'function') onRemove(identifier);
   }
 
   return (
