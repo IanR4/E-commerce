@@ -1,45 +1,33 @@
-.dropdown {
-  position: relative;
-  display: inline-block;
-  overflow: visible;
-  margin: 0.5rem;
+/* Estilos para la lista de notificaciones */
+
+.notificaciones-list{
+	list-style: none;
+	padding: 0;
+	margin: 0;
 }
 
-.dropdown-btn {
-  color: var(--primary-white);
-  border: none;
-  padding: 8px 12px;
-  font-size: 1rem;
-  cursor: pointer;
-  border-radius: 4px;
+.notificaciones-list li{
+	margin-bottom: 8px;
 }
 
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background-color: #1b2838;
-  border: 2px solid #2a475e;
-  border-radius: 4px;
-  width: 2rem;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-  z-index: 1001;
+.no-notificaciones{
+	color: #6b7280;
+	padding: 12px 8px;
+	background: #fafafa;
+	border: 1px dashed #e5e7eb;
+	border-radius: 8px;
+	text-align: center;
 }
 
-.dropdown-item {
-  color: var(--primary-white);
-  cursor: pointer;
-  transition: background 0.2s;
+/* pequeño ajuste para contenedor padre si es necesario */
+.notificaciones-container{
+	max-width: 900px;
+	margin: 0 auto;
+	padding: 8px;
 }
 
-.dropdown-item:hover {
-  background-color: #2a475e;
-  color: black;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-5px); }
-  to { opacity: 1; transform: translateY(0); }
+.notificaciones-list li > .notificacion-card{
+	margin: 0;
 }
 
 

@@ -1,27 +1,45 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import "./NotificacionDetail.css"
 
-const NotificacionDetail = ({notificacion}) => {
+const formatDate = (iso) => {
+  if (!iso) return '—';
+  try {
+    return new Date(iso).toLocaleString();
+  } catch (e) {
+    return iso;
+  }
+}
+
+const NotificacionDetail = ({ notificacion = {} }) => {
+  const { _id, usuario, mensaje, leida, fechaLeida, fecha, __v } = notificacion;
+
   return (
-    <div key={notificacion.id} className="carousel-card">
-      <div className="producto-card">
-        {/* contenido que se anima al hacer hover */}
-        <div className="producto-body">
-          <div className="producto-info">
-            <h3 className="producto-name">{notificacion.titulo}</h3>
-            <div className="producto-details">
-              <span className="producto-price">
-                ${notificacion.precio.toLocaleString("es-AR")}
-              </span>
-            </div>
-          </div>
+    <div className={`notificacion-card ${leida ? 'leida' : 'no-leida'}`} key={_id}>
+      <div className="notificacion-card-header">
+        <div className="notificacion-meta">
+          <span className="notificacion-id">ID: {_id || '—'}</span>
+          <span className={`notificacion-leida-badge ${leida ? 'leida-true' : 'leida-false'}`}>
+            {leida ? 'Leída' : 'No leída'}
+          </span>
+        </div>
+        <div className="notificacion-fechas">
+          <span className="notificacion-fecha">Fecha: {formatDate(fecha)}</span>
+          {fechaLeida && <span className="notificacion-fechaLeida">; Fecha lectura: {formatDate(fechaLeida)}</span>}
+        </div>
+      </div>
+
+      <div className="notificacion-card-body">
+        <div className="notificacion-row">
+          <strong>Usuario:</strong>
+          <span className="notificacion-usuario">{usuario || '—'}</span>
         </div>
 
-        {/* botón fuera del bloque animado para que no se mueva al hacer hover */}
-        <div className="ver-detalles-container">
-          <span className="ver-detalles">
-            <Link to={`/productos/${producto._id}`} className="link-no-style">Ver Detalles</Link>
-          </span>
+        <div className="notificacion-row">
+          <strong>Mensaje:</strong>
+          <div className="notificacion-mensaje">
+            {/* preserva saltos de línea y formato del backend */}
+            <pre className="mensaje-pre">{mensaje || ''}</pre>
+          </div>
         </div>
       </div>
     </div>

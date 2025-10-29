@@ -2,14 +2,14 @@ import React, { useState, useRef, useEffect } from "react";
 import "./Notificaciones.css";
 import { Link } from 'react-router';
 import NotificacionDetail from "./NotificacionDetail.jsx";
-import { getNotificacionesNoLeidas } from "../../../service/productosService.js"
+import { getNotificacionesLeidas } from "../../../service/productosService.js"
 
 const Notificaciones = () => {
   const [notificaciones, setNotificaciones] = useState([]);
 
   const cargarnotificaciones = async () => {
         try {
-          const notificacionesCargados = await getNotificacionesNoLeidas();
+          const notificacionesCargados = await getNotificacionesLeidas("68e636efd15618341978b277");
           console.log("Notificaciones cargados:", notificacionesCargados);
           setNotificaciones(notificacionesCargados)
         } catch (error) {
@@ -24,17 +24,20 @@ const Notificaciones = () => {
     }, [])
 
   return (
-    <div className="dropdown">
-        <ul className={`dropdown-menu`}>
-          {notificaciones.map((notificacion) => (
-            <li key={notificacion.id}>
-                <NotificacionDetail notificacion={notificacion} className="link-no-style">
-                </NotificacionDetail>
-            </li>
-          ))}
+    <div className="notificaciones-container">
+        <ul className="notificaciones-list">
+          {notificaciones.length === 0 ? (
+            <li className="no-notificaciones">No hay notificaciones</li>
+          ) : (
+            notificaciones.map((notificacion) => (
+              <li key={notificacion._id}>
+                <NotificacionDetail notificacion={notificacion} />
+              </li>
+            ))
+          )}
         </ul>
     </div>
   );
 };
 
-export default DropdownCategorias;
+export default Notificaciones;
