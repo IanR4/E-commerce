@@ -13,4 +13,8 @@ export class EnPreparacionEstado extends EstadoPedido {
     }
     return Promise.resolve();
   }
+
+  generarNotificacion(pedido) {
+    return null;
+  }
 }

@@ -11,14 +11,14 @@ class ProductoController {
     getProducto = (req, res) => {
         const productoId = req.params.productoId;
         this.productoValidator.validarProductoId(productoId);
-        this.productoService.getProducto(productoId)
+        return this.productoService.getProducto(productoId)
             .then(({ data, status }) => res.status(status).json(data))
     };
 
     postProducto = (req, res) => {
         const productoData = req.body;
         const resultBody = this.productoValidator.validarProducto(productoData);
-        this.productoService.postProducto(resultBody)
+        return this.productoService.postProducto(resultBody)
             .then(({ data, status }) => res.status(status).json(data))
     }
 
@@ -30,7 +30,7 @@ class ProductoController {
         const { titulo, categoria, descripcion, precioMin, precioMax, orden } = req.query;
 
         // Obtener productos del vendedor y aplicar filtros
-        this.productoService.getProductosPorVendedor(vendedorId, { page, limit }, { titulo, categoria, descripcion, precioMin, precioMax, orden })
+        return this.productoService.getProductosPorVendedor(vendedorId, { page, limit }, { titulo, categoria, descripcion, precioMin, precioMax, orden })
             .then(({ data, status }) => res.status(status).json(data))
     }
 }

@@ -40,12 +40,6 @@ class PedidoValidator {
         }
         return listaPedido;
     }
-
-    validarStockPedido(pedido) {
-        if(!pedido.validarStock()){
-            return Promise.reject(new StockError("No hay stock suficiente para completar el pedido"));
-        }
-    }
 }
 
 const itemPedidoSchema = z.object({

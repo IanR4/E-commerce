@@ -7,22 +7,22 @@ import { EntregadoEstado } from "./estados/EntregadoEstado.js";
 import { CanceladoEstado } from "./estados/CanceladoEstado.js";
 
 export class EstadoPedidoFactory {
+  static estadosRegistry = {
+    [EstadoPedidoEnum.Pendiente]: PendienteEstado,
+    [EstadoPedidoEnum.Confirmado]: ConfirmadoEstado,
+    [EstadoPedidoEnum.EnPreparacion]: EnPreparacionEstado,
+    [EstadoPedidoEnum.Enviado]: EnviadoEstado,
+    [EstadoPedidoEnum.Entregado]: EntregadoEstado,
+    [EstadoPedidoEnum.Cancelado]: CanceladoEstado
+  };
+
   static crearEstado(tipoEstado) {
-    switch (tipoEstado) {
-      case EstadoPedidoEnum.Pendiente:
-        return new PendienteEstado();
-      case EstadoPedidoEnum.Confirmado:
-        return new ConfirmadoEstado();
-      case EstadoPedidoEnum.EnPreparacion:
-        return new EnPreparacionEstado();
-      case EstadoPedidoEnum.Enviado:
-        return new EnviadoEstado();
-      case EstadoPedidoEnum.Entregado:
-        return new EntregadoEstado();
-      case EstadoPedidoEnum.Cancelado:
-        return new CanceladoEstado();
-      default:
-        throw new Error(`Estado no válido: ${tipoEstado}`);
+    const EstadoClase = this.estadosRegistry[tipoEstado];
+    
+    if (!EstadoClase) {
+      throw new Error(`Estado no válido: ${tipoEstado}`);
     }
+    
+    return new EstadoClase();
   }
 }

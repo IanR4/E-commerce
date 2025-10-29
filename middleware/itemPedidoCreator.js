@@ -1,6 +1,6 @@
 import {ItemPedido} from "../models/entities/itemPedido.js"
 import ProductoRepository from "../models/repositories/productoRepository.js";
-import productoValidator from "../validators/productoValidator.js";
+import { StockError } from "../errors/errors.js";
 
 class itemPedidoCreator {
 
@@ -13,12 +13,21 @@ class itemPedidoCreator {
                     if (!producto) {
                         throw { name: "NotFoundError", message: "Producto no encontrado" };
                     }
-                    return new ItemPedido(
-                        producto,
-                        item.cantidad,
-                        producto.precio
-                    );
-                });
+                    // Validar stock disponible
+                    if (!producto.estaDisponible(item.cantidad)) {
+                        throw new StockError(`Stock insuficiente para el producto: ${producto.titulo}`);
+                    }
+                    
+                    // Reducir stock del producto
+                    producto.reducirStock(item.cantidad);
+                    
+                    // Guardar el producto actualizado (con el nuevo stock)
+                    return ProductoRepository.actualizar(producto._id, producto)
+                        .then(() => {
+                            // Crear ItemPedido con el snapshot embebido
+                            return new ItemPedido(producto, item.cantidad);
+                        });
+                });                
         });
         // Esperar todas las promesas y devolver el array de items
         return Promise.all(promesas);

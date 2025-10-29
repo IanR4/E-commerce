@@ -9,4 +9,8 @@ export class PendienteEstado extends EstadoPedido {
   validarTransicion(pedido, usuario) {
     return Promise.resolve();
   }
+
+  generarNotificacion(pedido) {
+    return null;
+  }
 }

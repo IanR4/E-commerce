@@ -13,4 +13,18 @@ export class ConfirmadoEstado extends EstadoPedido {
     }
     return Promise.resolve();
   }
+
+  generarNotificacion(pedido) {
+    const productosDescripcion = pedido.items
+      .map(item => `${item.productoEmbebido.titulo} (x${item.cantidad})`)
+      .join(', ');
+    
+    return `Su pedido ha sido confirmado. El pedido con ID ${pedido._id} ha sido creado por el comprador con ID ${pedido.comprador}. ` +
+          `La dirección de entrega es ${pedido.direccionEntrega}. ` +
+          `El pedido incluye: ${productosDescripcion}.`;
+  }
+
+  obtenerDestinatarioNotificacion(pedido) {
+    return pedido.items[0].productoEmbebido.vendedor;
+  }
 }

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import mongoose from "mongoose";
 import { BadRequestError, NotFoundError, ValidationError, StockError } from "../errors/errors.js";
 import UsuarioRepository from "../models/repositories/usuarioRepository.js";
 import { TipoUsuario } from "../models/entities/tipoUsuario.js";
@@ -12,11 +13,14 @@ class UsuarioValidator {
         if (!usuarioId) {
             throw new BadRequestError("Invalid usuarioId parameter");
         }
+        if (!mongoose.Types.ObjectId.isValid(usuarioId)) {
+            throw new BadRequestError("Invalid usuarioId format");
+        }
     }
 
-    validarUsuario(usuario) {
+    validarUsuario(usuarioBody) {
         try {
-            return usuarioSchema.parse(usuario);
+            return usuarioSchema.parse(usuarioBody);
         }
         catch(error) {
             throw new ValidationError("Invalid request body", error.errors);
@@ -24,27 +28,33 @@ class UsuarioValidator {
     }
 
     buscarUsuario(usuarioId) {
-        const usuario = this.usuarioRepository.findById(usuarioId);
-        if(!usuario) {
-            return Promise.reject(new NotFoundError("Usuario no encontrado"));
-        }
-        return usuario;
+        return this.usuarioRepository.findById(usuarioId)
+            .then(usuario => {
+                if (!usuario) {
+                    throw new NotFoundError("Usuario no encontrado");
+                }
+                return usuario;
+            });
     }
 
     buscarComprador(compradorId) {
-        const comprador = this.usuarioRepository.findById(compradorId);
-        if(!comprador) {
-            return Promise.reject(new NotFoundError("Comprador no encontrado"));
-        }
-        return comprador;
+        return this.usuarioRepository.findById(compradorId)
+            .then(comprador => {
+                if (!comprador) {
+                    throw new NotFoundError("Comprador no encontrado");
+                }
+                return comprador;
+            });
     }
 
     buscarVendedor(vendedorId) {
-        const vendedor = this.usuarioRepository.findById(vendedorId);
-        if(!vendedor) {
-            return Promise.reject(new NotFoundError("Vendedor no encontrado"));
-        }
-        return vendedor;
+        return this.usuarioRepository.findById(vendedorId)
+            .then(vendedor => {
+                if (!vendedor) {
+                    throw new NotFoundError("Vendedor no encontrado");
+                }
+                return vendedor;
+            });
     }
 }
 

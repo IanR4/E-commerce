@@ -5,7 +5,6 @@ import { Moneda } from '../models/entities/moneda.js';
 import { cambioEstadoPedidoSchema } from './cambioEstadoPedidoSchema.js';
 import { itemPedidoSchema } from './itemPedidoSchema.js';
 import { CambioEstadoPedido } from '../models/entities/cambioEstadoPedido.js';
-import { direccionEntregaSchema } from './direccionEntregaSchema.js';
 
 const pedidoSchema = new mongoose.Schema({
     comprador: {

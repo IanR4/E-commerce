@@ -13,4 +13,12 @@ export class CanceladoEstado extends EstadoPedido {
     }
     return Promise.resolve();
   }
+
+  generarNotificacion(pedido) {
+    return `Su pedido ha sido cancelado. ID de pedido: ${pedido._id}`;
+  }
+
+  obtenerDestinatarioNotificacion(pedido) {
+    return pedido.items[0].productoEmbebido.vendedor;
+  }
 }

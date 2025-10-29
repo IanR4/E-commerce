@@ -6,9 +6,7 @@ import ItemPedidoCreator from "../middleware/itemPedidoCreator.js";
 import { EstadoPedidoFactory } from "../models/entities/estadoPedidoFactory.js";
 import PedidoValidator from "../validators/pedidoValidator.js"
 import UsuarioValidator from "../validators/usuarioValidator.js"
-import { FactoryNotificacion } from "../models/entities/factoryNotificacion.js";
-// import { FactoryNotificacion } from "../models/entities/factoryNotificacion.js"; // Eliminado: ya no se usa notificación
-// import { Usuario } from "../models/entities/usuario.js";
+import { Notificacion } from "../models/entities/notificacion.js";
 
 export default class PedidoService {
     constructor() {
@@ -17,7 +15,6 @@ export default class PedidoService {
         this.pedidoRepository = PedidoRepository;
         this.usuarioRepository = UsuarioRepository;
         this.notificacionRepository = NotificacionRepository;
-        this.factoryNotificacion = new FactoryNotificacion();
     }
 
     getPedido(pedidoId) {
@@ -42,8 +39,7 @@ export default class PedidoService {
                             pedidoData.moneda,
                             pedidoData.direccionEntrega
                         );
-                        //this.pedidoValidator.validarStockPedido(nuevoPedido);
-                        //nuevoPedido.reducirStockItems();
+                        
                         return this.pedidoRepository.crearPedido(nuevoPedido)
                             .then(pedidoGuardado => {
                                 return {
@@ -63,47 +59,48 @@ export default class PedidoService {
                     .then(usuario => {
                         if (pedidoData.estado && pedidoData.estado !== pedido.estado) {
                             const nuevoEstadoInstancia = EstadoPedidoFactory.crearEstado(pedidoData.estado);
+                            
                             return Promise.resolve(nuevoEstadoInstancia.validarTransicion(pedido, usuario))
                                 .then(() => {
+                                    // Actualizar el estado del pedido
                                     if (typeof pedido.actualizarEstado === 'function') {
                                         pedido.actualizarEstado(pedidoData.estado, usuario, pedidoData.motivo);
                                     } else {
                                         pedido.estado = pedidoData.estado;
                                     }
+
+                                    const mensajeNotificacion = nuevoEstadoInstancia.generarNotificacion(pedido);
+                                    const destinatarioId = nuevoEstadoInstancia.obtenerDestinatarioNotificacion(pedido);
+
+                                    // Si el estado requiere notificación
+                                    if (mensajeNotificacion && destinatarioId) {
+                                        return this.usuarioRepository.findById(destinatarioId)
+                                            .then(destinatario => {
+                                                const notificacion = new Notificacion(destinatario, mensajeNotificacion);
+                                                const notificacionData = {
+                                                    usuario: destinatario._id,
+                                                    mensaje: notificacion.mensaje,
+                                                    leida: false
+                                                };
+                                                return this.notificacionRepository.crearNotificacion(notificacionData);
+                                            })
+                                            .then(() => pedido);
+                                    }
+
                                     return pedido;
                                 });
                         }
-                        return pedido; // No cambia el estado
+                        return pedido;
                     })
                     .then(pedidoProcesado => {
-                        // Crear la notificación y guardarla en la base de datos
-                        return this.factoryNotificacion.crearSegunPedido(pedidoProcesado)
-                            .then(notificacion => {
-                                if (notificacion) {
-                                    // Si el destinatario es un objeto usuario, obtener su id
-                                    const usuarioDestino = notificacion.usuarioDestino?._id || notificacion.usuarioDestino || notificacion.usuario;
-                                    const notificacionData = {
-                                        usuario: usuarioDestino,
-                                        mensaje: notificacion.mensaje,
-                                        leida: false
-                                    };
-                                    return this.notificacionRepository.crearNotificacion(notificacionData);
-                                }
-                                return null;
-                            })
-                            .then(() => {
-                                // Actualizar el pedido después de crear la notificación
-                                return this.pedidoRepository.actualizarPedido(pedidoId, pedidoProcesado)
-                                    .then(pedidoRes => ({
-                                        data: pedidoRes,
-                                        status: 200
-                                    }));
-                            });
+                        return this.pedidoRepository.actualizarPedido(pedidoId, pedidoProcesado)
+                            .then(pedidoRes => ({
+                                data: pedidoRes,
+                                status: 200
+                            }));
                     });
             });
     }
-
-    
 
     getPedidosUsuario(usuarioId) {
         return Promise.resolve(this.pedidoValidator.buscarPedidoUsuario(usuarioId))

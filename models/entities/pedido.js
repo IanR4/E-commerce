@@ -13,7 +13,10 @@ export class Pedido {
     }
 
     calcularTotal() {
-        return this.items.reduce((total, item) => total + item.subtotal, 0)
+        return this.items.reduce((total, item) => {
+            const subtotal = item.precioUnitario * item.cantidad;
+            return total + subtotal;
+        }, 0);
     }
 
     actualizarEstado(nuevoEstado, quien, motivo) {
@@ -23,16 +26,9 @@ export class Pedido {
         this.historialEstados.push(cambioEstadoPedido)
     }
 
-    validarStock() {
-        return this.items.every((itemPedido) => itemPedido.producto.estaDisponible(itemPedido.cantidad))
-    }
-
     tieneItemsDe(usuario) {
-        return this.items.every((item) => item.producto.vendedor === usuario)
+        return this.items.every((item) => {
+            return item.productoEmbebido.vendedor.toString() === usuario.toString();
+        });
     }
-
-    reducirStockItems() {
-        this.items.forEach((item) => item.producto.reducirStock(item.cantidad));
-    }
-
-}  
+}

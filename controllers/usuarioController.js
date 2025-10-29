@@ -9,19 +9,33 @@ class UsuarioController{
     this.usuarioService = new UsuarioService();
   }
 
-  getUsuario = (req, res) => {
+  getUsuario = (req, res, next) => {
     const usuarioId = req.params.usuarioId;
-    this.usuarioValidator.validarUsuarioId(usuarioId);
-    this.usuarioService.getUsuario(usuarioId)
-      .then(({ data, status }) => res.status(status).json(data));
+
+    try {
+      this.usuarioValidator.validarUsuarioId(usuarioId);
+    } catch (error) {
+      return next(error);
+    }
+    return this.usuarioService.getUsuario(usuarioId)
+      .then(({ data, status }) => res.status(status).json(data))
+      .catch(next);
   };
 
-  postUsuario = (req, res) => {
+  postUsuario = (req, res, next) => {
     const usuarioData = req.body;
-    const resultBody = this.usuarioValidator.validarUsuario(usuarioData);
-    this.usuarioService.postUsuario(resultBody)
+    let resultBody;
+
+    try {
+      resultBody = this.usuarioValidator.validarUsuario(usuarioData);
+    } catch (error) {
+      return next(error);
+    }
+
+    return this.usuarioService.postUsuario(resultBody)
       .then(({ data, status }) => res.status(status).json(data))
-  }
+      .catch(next);
+  };
   
 }
 

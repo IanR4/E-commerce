@@ -1,10 +1,34 @@
 import mongoose from 'mongoose';
 
 export const itemPedidoSchema = new mongoose.Schema({
-    producto: {
+    productoId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Producto',
         required: true
+    },
+
+    productoEmbebido: {
+        titulo: {
+            type: String,
+            required: true
+        },
+        descripcion: {
+            type: String,
+            required: true
+        },
+        categorias: {
+            type: [String],
+            default: []
+        },
+        fotos: {
+            type: [String],
+            default: []
+        },
+        vendedor: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Usuario',
+            required: true
+        }
     },
     cantidad: {
         type: Number,

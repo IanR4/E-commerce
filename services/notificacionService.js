@@ -2,7 +2,6 @@ import UsuarioRepository from "../models/repositories/usuarioRepository.js";
 import UsuarioValidator from "../validators/usuarioValidator.js"
 import NotificacionValidator from "../validators/notificacionValidator.js"
 import NotificacionRepository from "../models/repositories/notificacionRepository.js";
-import { FactoryNotificacion } from "../models/entities/factoryNotificacion.js";
 
 export default class NotificacionService {
     constructor() {
@@ -10,7 +9,6 @@ export default class NotificacionService {
         this.usuarioValidator = UsuarioValidator;
         this.notificacionValidator = NotificacionValidator;
         this.notificacionRepository = NotificacionRepository;
-        this.factoryNotificacion = new FactoryNotificacion();
     }
 
     getNotificacionesLeidasUsuario(usuarioId) {

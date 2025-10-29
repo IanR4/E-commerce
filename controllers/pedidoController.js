@@ -12,14 +12,14 @@ class PedidoController {
     getPedido = (req, res) => {
         const pedidoId = req.params.pedidoId;
         this.pedidoValidator.validarPedidoId(pedidoId);
-        this.pedidoService.getPedido(pedidoId)
+        return this.pedidoService.getPedido(pedidoId)
             .then(({ data, status }) => res.status(status).json(data))
     };
 
     postPedido = (req, res) => {
         const pedidoData = req.body;
         const resultBody = this.pedidoValidator.validarPedido(pedidoData);
-        this.pedidoService.postPedido(resultBody)
+        return this.pedidoService.postPedido(resultBody)
             .then(({ data, status }) => res.status(status).json(data))
     }
 
@@ -27,7 +27,7 @@ class PedidoController {
         const pedidoId = req.params.pedidoId; 
         this.pedidoValidator.validarPedidoId(pedidoId);
         const pedidoData = req.body;
-        this.pedidoService.patchPedido(pedidoId, pedidoData)
+        return this.pedidoService.patchPedido(pedidoId, pedidoData)
             .then(({ data, status }) => res.status(status).json(data))
             .catch(next); 
     }
@@ -35,13 +35,10 @@ class PedidoController {
     getPedidosUsuario = (req, res) => {
         const usuarioId = req.params.usuarioId;
         this.usuarioValidator.validarUsuarioId(usuarioId);
-        this.pedidoService.getPedidosUsuario(usuarioId)
+        return this.pedidoService.getPedidosUsuario(usuarioId)
             .then(({ data, status }) => res.status(status).json(data))
     };
 }
-
-
-
 
 export default new PedidoController();
 

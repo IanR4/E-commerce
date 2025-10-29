@@ -14,6 +14,10 @@ class ProductoRepository {
         return this.model.findOne({ _id: productoId }).exec();
     }
 
+    actualizar(productoId, productoData) {
+        return this.model.findByIdAndUpdate(productoId, productoData, { new: true }).exec();
+    }
+
     ordenarProductos(productos, orden) {
         if (orden == "precioAsc") {
             console.log(productos);

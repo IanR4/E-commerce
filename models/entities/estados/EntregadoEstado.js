@@ -13,4 +13,8 @@ export class EntregadoEstado extends EstadoPedido {
     }
     return Promise.resolve();
   }
+  
+  generarNotificacion(pedido) {
+    return null;
+  }
 }
