@@ -52,11 +52,13 @@ export default class ProductoService {
             const totalPaginas = Math.ceil(cantidadTotal / elementosPorPagina)
 
             return {
-                pagina: numeroPagina,
-                entradasPagina: elementosPorPagina,
-                cantidadTotal: cantidadTotal,
-                totalPaginas: totalPaginas,
-                data: productosRes.slice(offset, offset + elementosPorPagina),
+                data: {
+                    pagina: numeroPagina,
+                    entradasPagina: elementosPorPagina,
+                    cantidadTotal: cantidadTotal,
+                    totalPaginas: totalPaginas,
+                    productos: productosRes.slice(offset, offset + elementosPorPagina)
+                },
                 status: 200
             };
         });
