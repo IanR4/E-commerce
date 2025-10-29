@@ -41,7 +41,6 @@ const Navbar = ({carrito}) => {
             <div className="utilities">
             <Link to={`/Contacto`} className="link-no-style"><h3 className="utilities-text"> Contacto </h3></Link>
             <Link to={`/Nosotros`} className="link-no-style"><h3 className="utilities-text"> Nosotros </h3></Link>
-            <Link to={`/Soporte`} className="link-no-style"><h3 className="utilities-text"> Soporte </h3></Link>
             <Link to={`/FAQ`} className="link-no-style"><h3 className="utilities-text"> FAQ </h3></Link>
             <DropdownCategorias/>
           </div>

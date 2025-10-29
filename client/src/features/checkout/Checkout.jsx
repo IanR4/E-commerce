@@ -44,7 +44,7 @@ const Checkout = ({ carrito, limpiarCarrito, removerDelCarrito }) => {
         <h3>Ya casi estamos...</h3>
         <div>
           {carrito.map((producto, index) => (
-            <div key={producto.id ?? index}>
+            <div key={producto._id ?? index}>
               <CarritoItem producto={producto} onRemove={removerDelCarrito} />
             </div>
           ))}

@@ -11,7 +11,9 @@ const Home = () => {
 
     return (
       <>
-
+        <div className="banner">
+          <img className="home-banner" src="/images/bannerhome.jpg" alt="Banner Principal"/>
+        </div>
         {!productos.length ? <div className="spinner">
           <Spinner/>
         </div> :
