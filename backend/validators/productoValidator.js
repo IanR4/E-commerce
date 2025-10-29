@@ -42,7 +42,7 @@ const productoSchema = z.object({
     precio: z.number().nonnegative(),
     moneda: z.nativeEnum(Moneda),
     stock: z.number().nonnegative(),
-    fotos: z.array(z.string().url())
+    foto: z.string().optional(),
 })
 
 

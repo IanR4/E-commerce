@@ -4,12 +4,12 @@ import "../../index.css"
 
 const CarouselItem = ({producto}) => {
   return (
-    <div key={producto.id} className="carousel-card">
+    <div key={producto._id} className="carousel-card">
       <div className="producto-card">
         {/* contenido que se anima al hacer hover */}
         <div className="producto-body">
           <img
-            src={producto.imagen}
+            src={producto.foto}
             alt={producto.titulo}
             className="producto-image"
           />

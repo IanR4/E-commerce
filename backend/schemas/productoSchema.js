@@ -42,8 +42,7 @@ const productoSchema = new mongoose.Schema({
         default: 0
     },
     foto: {
-        type: String,
-        default: ''
+        type: String
     },
     activo: {
         type: Boolean,

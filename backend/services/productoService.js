@@ -53,7 +53,7 @@ export default class ProductoService {
                     productoData.precio,
                     productoData.moneda,
                     productoData.stock,
-                    productoData.fotos
+                    productoData.foto
                 );
                 return ProductoRepository.crearProducto(nuevoProducto);
             })

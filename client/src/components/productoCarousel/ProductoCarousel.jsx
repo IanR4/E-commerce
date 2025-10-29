@@ -34,7 +34,7 @@ export default function ProdcutoCarousel({productos}) {
               transform: `translateX(-${index * (100 / visible)}%)`,
             }}>
             {productos.map((producto) => (
-              <CarouselItem producto={producto} key={producto.id}/> 
+              <CarouselItem producto={producto} key={producto._id}/> 
             ))}
           </div>
         </div>
