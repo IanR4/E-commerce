@@ -13,7 +13,8 @@ describe("ProductoRepository - ordenarProductos masVendidos", () => {
     ];
 
     ProductoRepository.model = {
-      aggregate: jest.fn(() => ({ exec: () => Promise.resolve(mockAggRes) }))
+      aggregate: jest.fn(() => ({ exec: () => Promise.resolve(mockAggRes) })),
+      hydrate: jest.fn((d) => d)
     };
 
     const res = await ProductoRepository.ordenarProductos(mockQuery, 'masVendidos');
@@ -34,14 +35,19 @@ describe("ProductoRepository - ordenarProductos masVendidos", () => {
     const filtros = { orden: 'masVendidos' };
     const mockReturn = [{ _id: 'p1', ventasTotal: 50 }];
 
-    const spy = jest.spyOn(ProductoRepository, 'ordenarProductos').mockResolvedValue(mockReturn);
+  const vendorId = '507f1f77bcf86cd799439011';
+  const spy = jest.spyOn(ProductoRepository, 'ordenarProductos').mockResolvedValue(mockReturn);
 
-    const res = await ProductoRepository.findByVendedor('507f1f77bcf86cd799439011', filtros);
+  const res = await ProductoRepository.findByVendedor(vendorId, filtros);
 
-    expect(spy).toHaveBeenCalledWith(expect.objectContaining({ vendedor: '507f1f77bcf86cd799439011' }), 'masVendidos');
-    expect(res).toEqual(mockReturn);
+  expect(spy).toHaveBeenCalled();
+  const calledQuery = spy.mock.calls[0][0];
+  expect(calledQuery).toHaveProperty('vendedor');
+  // Si se convierte a ObjectId, su toString debe ser igual al id original
+  expect(String(calledQuery.vendedor)).toBe(vendorId);
+  expect(res).toEqual(mockReturn);
 
-    spy.mockRestore();
+  spy.mockRestore();
   });
 
   test("ordenarProductos con 'precioAsc' usa find().sort({precio:1}).exec()", async () => {

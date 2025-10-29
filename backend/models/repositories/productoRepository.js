@@ -1,4 +1,5 @@
 import { ProductoModel } from '../../schemas/productoSchema.js';
+import mongoose from 'mongoose';
 
 class ProductoRepository {
     constructor() {
@@ -49,15 +50,28 @@ class ProductoRepository {
                     }
                 },
                 { $sort: { ventasTotal: -1 } }
-            ]).exec();
+            ]).exec().then(results => {
+                if (typeof this.model.hydrate === 'function') {
+                    return results.map(r => this.model.hydrate(r));
+                }
+                return results;
+            });
         }
         return this.model.find(query).exec();
     }
 
     findByVendedor(vendedorId, filtros) {
         const { titulo, categoria, descripcion, precioMin, precioMax, orden } = filtros || {}
+        // Convertir vendedorId a ObjectId para que $match en aggregation funcione correctamente, despues cuando hagamos el embebido puede ser que haya que cambiarlo
+        let vendedorOid = vendedorId;
+        try {
+            vendedorOid = new mongoose.Types.ObjectId(vendedorId);
+        } catch (e) {
+            // si no es un ObjectId válido, dejar el valor original y permitir que la consulta falle o devuelva vacío
+            vendedorOid = vendedorId;
+        }
         const query = {
-            vendedor: vendedorId,
+            vendedor: vendedorOid,
             ...(titulo && { titulo: { $regex: titulo, $options: "i" } }),
             ...(categoria && { categorias: categoria }),
             ...(descripcion && { descripcion: { $regex: descripcion, $options: "i" } }),
