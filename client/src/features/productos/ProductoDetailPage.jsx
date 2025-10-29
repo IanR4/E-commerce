@@ -84,7 +84,7 @@ const ProductoDetailPage = ({ carrito, actualizarCarrito }) => {
       </div>
 
       <div className="points-section">
-        Con esta reserva sumás puntos
+        Con esta compra sumás puntos
       </div>
       
       <div className="reservar-container">
