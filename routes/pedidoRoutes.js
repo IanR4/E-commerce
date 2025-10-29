@@ -4,10 +4,6 @@ import PedidoController from "../controllers/pedidoController.js";
 export default function pedidoRoutes() {
     const router = express.Router();
 
-    router.get("/pedidos", (req, res, next) => {
-        PedidoController.getPedido(req, res).catch(next);
-    });
-
     router.get("/pedido/:pedidoId", (req, res, next) => {
         PedidoController.getPedido(req, res).catch(next);
     });

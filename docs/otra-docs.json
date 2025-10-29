@@ -122,14 +122,6 @@
                 }
             }
         },
-        "/pedidos": {
-            "get": {
-                "summary": "Obtener todos los pedidos",
-                "responses": {
-                    "200": { "description": "Lista de pedidos" }
-                }
-            }
-        },
         "/usuario/{usuarioId}/notificaciones/leidas": {
             "get": {
                 "summary": "Obtener notificaciones leídas de un usuario",
