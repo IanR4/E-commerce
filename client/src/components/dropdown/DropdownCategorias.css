@@ -1,5 +1,5 @@
 .dropdown {
-  position: relative;
+  position: fixed;
   display: inline-block;
   overflow: visible;
   margin: 0.5rem;
@@ -12,6 +12,7 @@
   font-size: 1rem;
   cursor: pointer;
   border-radius: 4px;
+  font-weight: 600;
 }
 
 .dropdown-menu {

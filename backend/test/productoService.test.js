@@ -47,7 +47,7 @@ describe("ProductoService con mocks", () => {
   test("consultar productos de un vendedor", async () => {
     const res = await productoService.getProductosPorVendedor(mockVendedor.id, { page: 1, limit: 10 }, {});
     expect(res.status).toBe(200);
-    expect(res.data).toEqual([mockProducto]);
+    expect(res.data.productos).toEqual([mockProducto]);
   });
 });
 

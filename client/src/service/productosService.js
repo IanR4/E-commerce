@@ -13,8 +13,7 @@ const API_BASE_URL = process.env.REACT_APP_API_URL
 export const getProducts = async () => {
   try{
     const response = await axios.get(`${API_BASE_URL}/productos`);
-    console.log("Productos obtenidos:", response.data);
-    return response.data;
+    return response.data.productos;
   } catch (error) {
     console.error("Error obteniendo los productos", error);
     throw error;
