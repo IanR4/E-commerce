@@ -1,0 +1,176 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f5f5f5;
+  color: #333;
+  line-height: 1.4;
+}
+
+.producto-detail-container {
+  max-width: 100rem;
+  margin: 20px auto;
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
+}
+
+.producto-header {
+  padding: 20px 24px 16px 24px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.producto-nombre {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--primary-purple);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.producto-stock {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 8px;
+  font-weight: 400;
+}
+
+.producto-ubicacion::before {
+  margin-right: 4px;
+}
+
+.producto-content {
+  display: flex;
+  padding: 0;
+}
+
+.producto-image-section {
+  flex: 0 0 300px;
+  position: relative;
+}
+
+.producto-imagen {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+}
+
+.gallery-button {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.producto-info-section {
+  flex: 1;
+  padding: 20px 24px;
+  position: relative;
+}
+
+.producto-description {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 16px;
+  font-weight: 500;
+  width: 90%;
+}
+
+.producto-price-section {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.producto-precio {
+  font-size: 20px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.price-details {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 12px;
+}
+
+.points-section {
+  padding: 16px 24px;
+  background-color: #f8f9fa;
+  border-top: 1px solid #f0f0f0;
+  font-size: 13px;
+  color: #666;
+}
+
+.reservar{
+  background-color: var(--primary-green);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  min-width: 50px;
+  margin-right: 1rem;
+}
+
+.reservar-container{
+  display: flex;
+  justify-content: right;
+
+}
+
+#unidadesAComprar{
+  color: black;
+}
+
+@media (max-width: 768px) {
+  .producto-content {
+    flex-direction: column;
+  }
+  
+  .producto-image-section {
+    flex: none;
+  }
+  
+  .producto-imagen {
+    height: 180px;
+  }
+  
+  .producto-rating-section {
+    position: static;
+    margin-top: 16px;
+    text-align: left;
+  }
+  
+  .producto-detail-container {
+    margin: 10px;
+    border-radius: 8px;
+  }
+  
+  .producto-header,
+  .producto-info-section {
+    padding: 16px 20px;
+  }
+}
+
+.price-question:hover {
+  color: #004ba0;
+}
+

@@ -32,3 +32,13 @@ export const getProductById = async (id) => {
   }
 }
 
+export const getNotificacionesNoLeidas = async (id) => {
+  try{
+    const response = await axios.get(`${API_BASE_URL}/usuarios/${id}/notificaciones/noleidas`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error al obtener las notificaciones no leídas del usuario con id: ${id}:`, error);
+    throw error;
+  }
+}
+

@@ -10,6 +10,7 @@ import React, {useState} from "react";
 import Contacto from './features/utilities/contacto/Contacto.jsx';
 import FAQ from './features/utilities/faq/FAQ.jsx';
 import Nosotros from './features/utilities/nosotros/Nosotros.jsx';
+import Notificaciones from './features/utilities/notificaciones/NotificacionDetail.jsx';
 
 const theme = createTheme({
   palette: {
@@ -91,6 +92,12 @@ function App() {
               path="/Nosotros" 
               element={
                 <Nosotros
+                />
+              } />
+              <Route 
+              path="/Notificaciones" 
+              element={
+                <Notificaciones
                 />
               } />
           </Route>
