@@ -6,6 +6,29 @@ import UsuarioValidator from "../validators/usuarioValidator.js"
 
 export default class ProductoService {
 
+    getProductos(datosPaginacion) {
+        const { page, limit } = datosPaginacion
+        const numeroPagina = Math.max(Number(page), 1)
+        const elementosPorPagina = Math.min(Math.max(Number(limit), 1), 100)
+        const offset = (numeroPagina - 1) * elementosPorPagina
+
+        return Promise.resolve(ProductoRepository.findAll())
+        .then((productosRes) => {
+            const cantidadTotal = productosRes.length
+            const totalPaginas = Math.ceil(cantidadTotal / elementosPorPagina)
+
+            return {
+                pagina: numeroPagina,
+                entradasPagina: elementosPorPagina,
+                cantidadTotal: cantidadTotal,
+                totalPaginas: totalPaginas,
+                data: productosRes.slice(offset, offset + elementosPorPagina),
+                status: 200
+            };
+        });
+    }
+
+
     getProducto(productoId) {
         return Promise.resolve(ProductoRepository.findById(productoId))
         .then((productoRes) => {
@@ -30,7 +53,7 @@ export default class ProductoService {
                     productoData.precio,
                     productoData.moneda,
                     productoData.stock,
-                    productoData.fotos
+                    productoData.foto
                 );
                 return ProductoRepository.crearProducto(nuevoProducto);
             })

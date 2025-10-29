@@ -41,9 +41,8 @@ const productoSchema = new mongoose.Schema({
         min: 0,
         default: 0
     },
-    fotos: {
-        type: [String],
-        default: []
+    foto: {
+        type: String
     },
     activo: {
         type: Boolean,

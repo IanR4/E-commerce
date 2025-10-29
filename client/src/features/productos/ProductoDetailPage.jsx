@@ -65,7 +65,7 @@ const ProductoDetailPage = ({ carrito, actualizarCarrito }) => {
       <div className="producto-content">
         <div className="producto-image-section">
           <img 
-            src={producto.imagen} 
+            src={producto.foto} 
             alt={producto.titulo} 
             className="producto-imagen"
           />
@@ -84,7 +84,7 @@ const ProductoDetailPage = ({ carrito, actualizarCarrito }) => {
       </div>
 
       <div className="points-section">
-        Con esta reserva sumás puntos
+        Con esta compra sumás puntos
       </div>
       
       <div className="reservar-container">

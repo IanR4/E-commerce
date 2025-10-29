@@ -1,0 +1,33 @@
+/* Estilos para la lista de notificaciones */
+
+.notificaciones-list{
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.notificaciones-list li{
+	margin-bottom: 8px;
+}
+
+.no-notificaciones{
+	color: #6b7280;
+	padding: 12px 8px;
+	background: #fafafa;
+	border: 1px dashed #e5e7eb;
+	border-radius: 8px;
+	text-align: center;
+}
+
+/* pequeño ajuste para contenedor padre si es necesario */
+.notificaciones-container{
+	max-width: 900px;
+	margin: 0 auto;
+	padding: 8px;
+}
+
+.notificaciones-list li > .notificacion-card{
+	margin: 0;
+}
+
+

@@ -12,6 +12,10 @@ export default function productoRoutes() {
         ProductoController.postProducto(req, res).catch(next);
     });
 
+    router.get("/productos", (req, res, next) => {
+        ProductoController.getProductos(req, res).catch(next);
+    });
+
     router.get("/vendedores/:vendedorId/productos", (req, res, next) => {
         ProductoController.getProductosVendedor(req, res).catch(next);
     });

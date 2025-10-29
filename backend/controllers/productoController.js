@@ -8,6 +8,13 @@ class ProductoController {
         this.productoValidator = ProductoValidator;
     }
 
+    getProductos = (req, res) => {
+        const { page = 1, limit = 100 } = req.query;
+
+        return this.productoService.getProductos({ page, limit })
+            .then(({ data, status }) => res.status(status).json(data))
+    }
+
     getProducto = (req, res) => {
         const productoId = req.params.productoId;
         this.productoValidator.validarProductoId(productoId);
@@ -26,7 +33,7 @@ class ProductoController {
         const vendedorId = req.params.vendedorId;
         UsuarioValidator.validarUsuarioId(vendedorId);
 
-        const { page = 1, limit = 10 } = req.query;
+        const { page = 1, limit = 9 } = req.query;
         const { titulo, categoria, descripcion, precioMin, precioMax, orden } = req.query;
 
         // Obtener productos del vendedor y aplicar filtros

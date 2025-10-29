@@ -78,6 +78,15 @@ const Contacto = () => {
             onChange={setValorDe('mensaje')}
           />
         </form>
+        <div className="actions">
+                    
+          <Button 
+            variant="contained" 
+            disabled={!camposCompletos}
+          >
+            Enviar
+          </Button>
+        </div>
       </Card>
     </div>
   );

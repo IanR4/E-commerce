@@ -20,7 +20,6 @@ const DropdownUtilities = () => {
   const utilidades = [
     "Contacto",
     "Nosotros",
-    "Soporte",
     "FAQ",
   ];
 

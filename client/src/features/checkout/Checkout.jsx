@@ -13,10 +13,7 @@ const Checkout = ({ carrito, limpiarCarrito, removerDelCarrito }) => {
     nombre: inicializarCampo(),
     segundoNombre: inicializarCampo(false),
     apellido: inicializarCampo(),
-    email: inicializarCampo(),
-    repetirEmail: inicializarCampo(),
-    fechaEntrada: inicializarCampo(),
-    fechaSalida: inicializarCampo()
+    email: inicializarCampo()
   });
 
   const [campos, setCampos] = useState(inicializarCampos());
@@ -33,7 +30,7 @@ const Checkout = ({ carrito, limpiarCarrito, removerDelCarrito }) => {
   };
 
   const handleGuardar = () => {
-    alert('Reserva guardada exitosamente');
+    alert('Pedido realizado exitosamente');
     limpiarCarrito();
     navigate("/")
   };
@@ -44,12 +41,16 @@ const Checkout = ({ carrito, limpiarCarrito, removerDelCarrito }) => {
         <h3>Ya casi estamos...</h3>
         <div>
           {carrito.map((producto, index) => (
-            <div key={producto.id ?? index}>
+            <div key={producto._id ?? index}>
               <CarritoItem producto={producto} onRemove={removerDelCarrito} />
             </div>
           ))}
         </div>
-        
+
+        <div className="total">
+          <h4>Total: ${carrito.reduce((acc, producto) => acc + producto.precio * producto.cantidadUnidades, 0).toLocaleString("es-AR")}</h4>
+        </div>
+
         <form>
           <TextField
             label="Nombre"
@@ -82,35 +83,6 @@ const Checkout = ({ carrito, limpiarCarrito, removerDelCarrito }) => {
             type="email"
             value={campos.email.valor}
             onChange={setValorDe('email')}
-          />
-          <TextField
-            label="Repetir Email"
-            required
-            fullWidth
-            margin="normal"
-            type="email"
-            value={campos.repetirEmail.valor}
-            onChange={setValorDe('repetirEmail')}
-          />
-          <TextField
-            label="Fecha de entrada"
-            required
-            fullWidth
-            margin="normal"
-            type="date"
-            InputLabelProps={{ shrink: true }}
-            value={campos.fechaEntrada.valor}
-            onChange={setValorDe('fechaEntrada')}
-          />
-          <TextField
-            label="Fecha de salida"
-            required
-            fullWidth
-            margin="normal"
-            type="date"
-            InputLabelProps={{ shrink: true }}
-            value={campos.fechaSalida.valor}
-            onChange={setValorDe('fechaSalida')}
           />
           <div className="actions">
             <Button onClick={() => {}}>Cancelar</Button>

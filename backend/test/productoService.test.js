@@ -18,7 +18,7 @@ describe("ProductoService con mocks", () => {
     vendedor: vendedorObjectId,
     titulo: "Helado",
       descripcion: "Sabor vainilla",
-      fotos: [],
+      foto: "",
       precio: 100,
       moneda: "DolarUsa",
       stock: 10,

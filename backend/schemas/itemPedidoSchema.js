@@ -20,9 +20,8 @@ export const itemPedidoSchema = new mongoose.Schema({
             type: [String],
             default: []
         },
-        fotos: {
-            type: [String],
-            default: []
+        foto: {
+            type: String
         },
         vendedor: {
             type: mongoose.Schema.Types.ObjectId,

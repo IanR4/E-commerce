@@ -10,6 +10,7 @@ import React, {useState} from "react";
 import Contacto from './features/utilities/contacto/Contacto.jsx';
 import FAQ from './features/utilities/faq/FAQ.jsx';
 import Nosotros from './features/utilities/nosotros/Nosotros.jsx';
+import Notificaciones from './features/utilities/notificaciones/Notificaciones.jsx';
 
 const theme = createTheme({
   palette: {
@@ -31,7 +32,8 @@ function App() {
   };
 
   const removerDelCarrito = (id) => {
-    setCarrito(prev => prev.filter(p => String(p.id) !== String(id)));
+    // Accept either backend `_id` or frontend `id` as identifier.
+    setCarrito(prev => prev.filter(p => String(p._id) !== String(id) && String(p.id) !== String(id)));
   };
 
   return (
@@ -91,6 +93,12 @@ function App() {
               path="/Nosotros" 
               element={
                 <Nosotros
+                />
+              } />
+              <Route 
+              path="/Notificaciones" 
+              element={
+                <Notificaciones
                 />
               } />
           </Route>

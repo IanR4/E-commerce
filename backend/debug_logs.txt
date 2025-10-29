@@ -1,0 +1,29 @@
+[productoRepository] 2025-10-29T16:12:13.939Z masVendidos - query: {"vendedor":"68e636efd15618341978b277"}
+[productoRepository] 2025-10-29T16:12:13.939Z masVendidos - aggregate returned count: 0 ids: []
+[productoRepository] 2025-10-29T16:12:13.939Z masVendidos - hydrated count: 0
+[productoRepository] 2025-10-29T16:12:16.618Z masVendidos - query: {"vendedor":"68e636efd15618341978b277"}
+[productoRepository] 2025-10-29T16:12:16.618Z masVendidos - aggregate returned count: 0 ids: []
+[productoRepository] 2025-10-29T16:12:16.618Z masVendidos - hydrated count: 0
+[productoRepository] 2025-10-29T16:12:55.475Z masVendidos - query: {"vendedor":"68e636efd15618341978b277"}
+[productoRepository] 2025-10-29T16:12:55.475Z masVendidos - aggregate returned count: 0 ids: []
+[productoRepository] 2025-10-29T16:12:55.475Z masVendidos - hydrated count: 0
+[productoRepository] 2025-10-29T16:13:05.598Z masVendidos - query: {"vendedor":"68e636efd15618341978b277"}
+[productoRepository] 2025-10-29T16:13:05.598Z masVendidos - vendedor type: String toString: 68e636efd15618341978b277
+[productoRepository] 2025-10-29T16:13:05.598Z masVendidos - aggregate returned count: 0 ids: []
+[productoRepository] 2025-10-29T16:13:05.598Z masVendidos - hydrated count: 0
+[productoRepository] 2025-10-29T16:13:29.821Z masVendidos - query: {"vendedor":"68e636efd15618341978b277"}
+[productoRepository] 2025-10-29T16:13:29.821Z masVendidos - vendedor type: String toString: 68e636efd15618341978b277
+[productoRepository] 2025-10-29T16:13:29.821Z masVendidos - aggregate returned count: 0 ids: []
+[productoRepository] 2025-10-29T16:13:29.821Z masVendidos - hydrated count: 0
+[productoRepository] 2025-10-29T16:13:47.228Z masVendidos - query: {"vendedor":"68e636efd15618341978b277"}
+[productoRepository] 2025-10-29T16:13:47.228Z masVendidos - vendedor type: String toString: 68e636efd15618341978b277
+[productoRepository] 2025-10-29T16:13:47.228Z masVendidos - aggregate returned count: 0 ids: []
+[productoRepository] 2025-10-29T16:13:47.228Z masVendidos - hydrated count: 0
+[productoRepository] 2025-10-29T16:14:20.734Z masVendidos - query: {"vendedor":"68e636efd15618341978b277"}
+[productoRepository] 2025-10-29T16:14:20.734Z masVendidos - vendedor type: String toString: 68e636efd15618341978b277
+[productoRepository] 2025-10-29T16:14:20.734Z masVendidos - aggregate returned count: 0 ids: []
+[productoRepository] 2025-10-29T16:14:20.734Z masVendidos - hydrated count: 0
+[productoRepository] 2025-10-29T16:15:00.220Z masVendidos - query: {"vendedor":"68e636efd15618341978b277"}
+[productoRepository] 2025-10-29T16:15:00.220Z masVendidos - vendedor type: ObjectId toString: 68e636efd15618341978b277
+[productoRepository] 2025-10-29T16:15:00.220Z masVendidos - aggregate returned count: 2 ids: ["68e6381ed15618341978b27a","69023929aa7d6c4e5ce2cc57"]
+[productoRepository] 2025-10-29T16:15:00.220Z masVendidos - hydrated count: 2
