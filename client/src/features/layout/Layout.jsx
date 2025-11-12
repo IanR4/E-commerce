@@ -3,6 +3,7 @@ import Navbar from "../../components/headers/Navbar.jsx";
 import { useState, useEffect } from "react";
 import { getProductosSlowly } from "../../service/productosService.js";
 import { getProducts } from "../../service/productosService.js";
+import Footer from "../../components/footer/Footer.jsx";
 
 const Layout = ({carrito}) => {
   const [productos, setProductos] = useState([]);
@@ -27,6 +28,7 @@ const Layout = ({carrito}) => {
         <>
           <Navbar carrito={carrito}></Navbar>
           <Outlet context={{productos}} />
+          <Footer></Footer>
         </>
     )
 }

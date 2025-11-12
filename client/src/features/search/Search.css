@@ -1,10 +1,10 @@
 .home-body{
-        display: flex;
-        position: relative;
-        top: -1.5rem;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
+    display: flex;
+    position: relative;
+    top: -1.5rem;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
 
 /* Estilos para la pantalla cuando no se encuentran productos */
