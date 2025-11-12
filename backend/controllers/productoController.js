@@ -10,8 +10,9 @@ class ProductoController {
 
     getProductos = (req, res) => {
         const { page = 1, limit = 100 } = req.query;
+        const { titulo, categoria, descripcion, precioMin, precioMax, orden } = req.query;
 
-        return this.productoService.getProductos({ page, limit })
+        return this.productoService.getProductos({ page, limit }, { titulo, categoria, descripcion, precioMin, precioMax, orden })
             .then(({ data, status }) => res.status(status).json(data))
     }
 

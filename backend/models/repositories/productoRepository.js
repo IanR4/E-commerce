@@ -90,6 +90,24 @@ class ProductoRepository {
         };
         return this.ordenarProductos(query, orden);
     }
+
+    findByFiltros(filtros) {
+        const { titulo, categoria, descripcion, precioMin, precioMax, orden } = filtros || {}
+        const query = {
+            ...(titulo && { titulo: { $regex: titulo, $options: "i" } }),
+            ...(categoria && { categorias: categoria }),
+            ...(descripcion && { descripcion: { $regex: descripcion, $options: "i" } }),
+            ...(precioMin !== undefined || precioMax !== undefined
+                ? {
+                    precio: {
+                        ...(precioMin !== undefined ? { $gte: parseFloat(precioMin) } : {}),
+                        ...(precioMax !== undefined ? { $lte: parseFloat(precioMax) } : {})
+                    }
+                }
+                : {})
+        };
+        return this.ordenarProductos(query, orden);
+    }
 }
 
 export default new ProductoRepository();

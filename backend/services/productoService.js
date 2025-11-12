@@ -6,13 +6,13 @@ import UsuarioValidator from "../validators/usuarioValidator.js"
 
 export default class ProductoService {
 
-    getProductos(datosPaginacion) {
+    getProductos(datosPaginacion, filtros) {
         const { page, limit } = datosPaginacion
         const numeroPagina = Math.max(Number(page), 1)
         const elementosPorPagina = Math.min(Math.max(Number(limit), 1), 100)
         const offset = (numeroPagina - 1) * elementosPorPagina
 
-        return Promise.resolve(ProductoRepository.findAll())
+        return Promise.resolve(ProductoRepository.findByFiltros(filtros))
         .then((productosRes) => {
             const cantidadTotal = productosRes.length
             const totalPaginas = Math.ceil(cantidadTotal / elementosPorPagina)

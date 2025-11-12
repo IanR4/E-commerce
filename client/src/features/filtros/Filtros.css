@@ -67,3 +67,12 @@
   background-color: #2a475e;
   color: black;
 }
+
+.MuiListItemText-primary {
+  text-align: center;
+}
+
+#boton-filtros{
+  background-color: var(--primary-blue);
+  color: var(--primary-white);
+}
