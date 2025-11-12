@@ -52,3 +52,11 @@
         text-align: center;
     }
 }
+
+.ResultadoBusqueda {
+    display: flex;
+    gap: 20px; 
+    align-self: center;
+    width: 100%;
+    justify-content: center;
+}

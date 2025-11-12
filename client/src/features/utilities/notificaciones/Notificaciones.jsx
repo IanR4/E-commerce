@@ -7,16 +7,17 @@ import { getNotificacionesLeidas } from "../../../service/productosService.js"
 const Notificaciones = () => {
   const [notificaciones, setNotificaciones] = useState([]);
 
-  const cargarnotificaciones = async () => {
-        try {
-          const notificacionesCargados = await getNotificacionesLeidas("68e636efd15618341978b277");
-          console.log("Notificaciones cargados:", notificacionesCargados);
-          setNotificaciones(notificacionesCargados)
-        } catch (error) {
-          console.error('Error cargando notificaciones en Layout:', error);
-          setNotificaciones([]);
-        }
-      }
+  const cargarnotificaciones = () => {
+    return getNotificacionesLeidas("68e636efd15618341978b277")
+      .then((notificacionesCargados) => {
+        console.log("Notificaciones cargados:", notificacionesCargados);
+        setNotificaciones(notificacionesCargados);
+      })
+      .catch((error) => {
+        console.error('Error cargando notificaciones en Layout:', error);
+        setNotificaciones([]);
+      });
+  }
 
   
   useEffect(() => {

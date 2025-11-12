@@ -1,0 +1,69 @@
+.filter-drawer {
+  width: 280px;
+  flex-shrink: 0;
+}
+
+.filter-drawer .MuiDrawer-paper {
+  width: 280px;
+  box-sizing: border-box;
+  padding: 16px;
+}
+
+.titulo-item-text .MuiListItemText-primary {
+  font-size: 5rem;
+  font-weight: 600;
+}
+
+.price-range {
+  display: flex;           /* Activa el layout horizontal */
+  align-items: center;     /* Centra verticalmente los inputs */
+  gap: 8px;                /* Espacio entre los dos inputs */
+}
+
+.sliderMin,
+.sliderMax {
+  width: 100%;
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.sliderMin:focus,
+.sliderMax:focus {
+  border-color: #1976d2; /* azul estilo MUI */
+}
+
+.descripcion-input {
+  width: 100%;
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #1b2838;
+  border: 2px solid #2a475e;
+  border-radius: 4px;
+  width: 2rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  z-index: 1001;
+}
+
+
+.dropdown-item {
+  color: var(--primary-white);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.dropdown-item:hover {
+  background-color: #2a475e;
+  color: black;
+}

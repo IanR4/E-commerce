@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { getProductosSlowly } from "../../service/productosService.js";
 import ProductoTable from "../../components/productoTable/ProductoTable.jsx";
+import Filtros from "../filtros/Filtros.jsx";
 
 const Search = () => {
   const outlet = useOutletContext();
@@ -75,9 +76,15 @@ const Search = () => {
   
 
   return (
-    <div>
-      <ProductoTable productos={productosFiltrados} />
+    <div className="ResultadoBusqueda">
+      <div>
+      <Filtros></Filtros>
+      </div>
+      <div>
+        <ProductoTable productos={productosFiltrados} />
+      </div>
     </div>
+    
   );
 };
 

@@ -7,16 +7,15 @@ import { getProducts } from "../../service/productosService.js";
 const Layout = ({carrito}) => {
   const [productos, setProductos] = useState([]);
 
-    const cargarProductos = async () => {
-      try {
-        const productosCargados = await getProducts();
-        console.log("Productos cargados:", productosCargados);
-        setProductos(productosCargados)
-      } catch (error) {
-        console.error('Error cargando productos en Layout:', error);
-        // Mantener productos como [] o mostrar fallback en la UI
-        setProductos([]);
-      }
+    const cargarProductos = () => {
+      return getProducts()
+        .then((productosCargados) => {
+          setProductos(productosCargados);
+        })
+        .catch((error) => {
+          console.error('Error cargando productos en Layout:', error);
+          setProductos([]);
+        });
     }
 
     // Para que cuando se monte el componente los cargue

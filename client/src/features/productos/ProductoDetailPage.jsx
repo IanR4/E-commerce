@@ -13,9 +13,11 @@ const ProductoDetailPage = ({ carrito, actualizarCarrito }) => {
   const [producto, setProducto] = useState(null);
 
   useEffect(() => {
-    const cargarProducto = async () => {
-        const data = await getProductById(id); // llamada al backend
-        setProducto(data);
+    const cargarProducto = () => {
+      return getProductById(id)
+        .then((data) => {
+          setProducto(data);
+        })
     };
     cargarProducto();
   }, [id]);
