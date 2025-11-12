@@ -27,7 +27,7 @@ const Layout = ({carrito}) => {
     return(
         <>
           <Navbar carrito={carrito}></Navbar>
-          <Outlet context={{productos}} />
+          <Outlet context={{productos}} className = "main" />
           <Footer></Footer>
         </>
     )

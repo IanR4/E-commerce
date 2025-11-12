@@ -50,13 +50,13 @@ const Filtros = () => {
   return (
     <>
       <aside className="filter-drawer" aria-label="Filtros de productos">
-        <Typography variant="h2" gutterBottom>
+        <h2 gutterBottom className="filtros-title">
           Filtros
-        </Typography>
+        </h2>
         <Divider />
         <List>
         <ListItem >
-          <ListItemText primary="Precio" primaryTypographyProps={{ fontSize: '2rem', fontWeight: 200 }}/>
+          <ListItemText primary="Precio" primaryTypographyProps={{ fontSize: '1.3rem', fontWeight: 200 }}/>
         </ListItem>
         <div className="price-range">
           <input
@@ -76,7 +76,7 @@ const Filtros = () => {
           />
         </div>
         <ListItem>
-          <ListItemText primary="Descripcion" primaryTypographyProps={{ fontSize: '2rem', fontWeight: 200 }} />
+          <ListItemText primary="Descripcion" primaryTypographyProps={{ fontSize: '1.3rem', fontWeight: 200 }} />
         </ListItem>
         <input
           value={description}
@@ -86,7 +86,7 @@ const Filtros = () => {
           className="descripcion-input"
         />
         <ListItem>
-          <ListItemText primary="Categoria" primaryTypographyProps={{ fontSize: '2rem', fontWeight: 200 }} />
+          <ListItemText primary="Categoria" primaryTypographyProps={{ fontSize: '1.3rem', fontWeight: 200 }} />
         </ListItem>
         <FormGroup>
           {categories.map((cat, i) => (
@@ -103,7 +103,7 @@ const Filtros = () => {
           ))}
         </FormGroup>
         <ListItem>
-          <ListItemText primary="Vendedor" primaryTypographyProps={{ fontSize: '2rem', fontWeight: 200 }} />
+          <ListItemText primary="Vendedor" primaryTypographyProps={{ fontSize: '1.3rem', fontWeight: 200 }} />
         </ListItem>
         <input
           value={vendedor}

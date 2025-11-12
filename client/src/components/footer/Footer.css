@@ -5,6 +5,9 @@
   margin-top: auto;
   border-top: 4px solid #3498db;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: sticky;
+  bottom: 0;
+  width: 100%;
 }
 
 .footer {
@@ -15,6 +18,7 @@
   gap: 2rem;
   align-self: center;
   justify-items: center; /* center grid items horizontally */
+  
 }
 
 /* Utilities Section */

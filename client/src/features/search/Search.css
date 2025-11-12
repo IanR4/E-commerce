@@ -57,7 +57,18 @@
     display: flex;
     gap: 20px; 
     align-self: center;
+    margin-bottom: 1.5rem;
     width: 100%;
     justify-content: center;
     align-items: flex-start; /* align filter and product table at the same top line */
 }
+
+.dropdown {
+    color: black;
+}
+
+.dropdown-btn{
+    background-color: var(--primary-blue);
+    color: var(--primary-white); 
+}
+

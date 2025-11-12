@@ -6,7 +6,7 @@
      This lets the footer naturally sit below the filters (no overlap). */
   position: sticky;
   top: 8rem;       /* distance from top (header height + gap) */
-  max-height: calc(100vh - 8rem - 6rem); /* keep room for header and footer */
+  max-height: calc(100vh - 6rem); /* keep room for header and footer */
   overflow: auto;  /* internal scroll when filters exceed available height */
   background: #fff;
   z-index: 3000;    /* still above page content but below navbar */
@@ -28,6 +28,12 @@
   display: flex;           /* Activa el layout horizontal */
   align-items: center;     /* Centra verticalmente los inputs */
   gap: 8px;                /* Espacio entre los dos inputs */
+}
+
+.filtros-title {
+  font-weight: 700;
+  text-align: center;
+  display: block;
 }
 
 .sliderMin,

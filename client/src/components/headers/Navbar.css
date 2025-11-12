@@ -22,7 +22,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1rem;
     color: var(--primary-white);
     position: relative;
     overflow: visible;
@@ -36,12 +35,12 @@
 
 /* Centrar y espaciar */
 .navbar-section.center-left {
-    flex: 1; /* el buscador ocupa el espacio disponible */
     justify-content: left ;
     margin-left: 2rem;
 }
 
 .navbar-section.center {
+    flex: 0.7;
     justify-content: center;
 }
 .utilities{
@@ -59,7 +58,8 @@
 }
 
 .navbar-section.right {
-    justify-content: flex-end;
+    flex: 0.1;
+    margin-right: 2rem;
 }
 
 .menu-icon {

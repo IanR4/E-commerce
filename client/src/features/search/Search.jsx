@@ -2,18 +2,33 @@ import ProductoCarousel from "../../components/productoCarousel/ProductoCarousel
 import "./Search.css";
 import { useOutletContext } from "react-router";
 import { useParams } from "react-router-dom";
-import React, { useState, useEffect } from "react";
 import { getProductosSlowly } from "../../service/productosService.js";
 import ProductoTable from "../../components/productoTable/ProductoTable.jsx";
 import Filtros from "../filtros/Filtros.jsx";
+import { Link } from "react-router-dom";
+import React, { useState, useRef, useEffect } from "react";
 
 const Search = () => {
   const outlet = useOutletContext();
   const productos = outlet?.productos || [];
+  const [open, setOpen] = useState(false);
+  const dropdownRef = useRef(null);
   const { searchText } = useParams();
   const { categoriaName } = useParams();
   const [productosFiltrados, setProductosFiltrados] = useState(null); // null = not loaded yet
   const [loading, setLoading] = useState(false);
+
+  const dropdown = [
+    "Menor Precio",
+    "Mayor Precio",
+    "Mas Relevantes",
+  ];
+
+  const filtros = [
+    "precioAsc",
+    "precioDesc",
+    "masVendidos",
+  ];
 
   const filtrarProductos = (searchText, categoriaName) => {
     // Normalize inputs to avoid crashes when params are undefined
@@ -76,15 +91,32 @@ const Search = () => {
   
 
   return (
-    <div className="ResultadoBusqueda">
-      <div>
-      <Filtros></Filtros>
+    <>
+      <div className="ResultadoBusqueda">
+        <div>
+        <Filtros></Filtros>
+        </div>
+        <div>
+          <div className="dropdown" ref={dropdownRef}>
+            <button className="dropdown-btn" onClick={() => setOpen(!open)}>
+              Ordenar por ▾
+            </button>
+            {open && (
+                <ul className={`dropdown-menu ${open ? "show" : ""}`}>
+                  {dropdown.map((cat, i) => (
+                    <Link to={`/productos/${filtros[i]}`} className="link-no-style">
+                      <li key={i} className="dropdown-item">
+                        {cat}
+                      </li>
+                    </Link>
+                  ))}
+                </ul>
+              )}
+          </div>
+          <ProductoTable productos={productosFiltrados} />
+        </div>
       </div>
-      <div>
-        <ProductoTable productos={productosFiltrados} />
-      </div>
-    </div>
-    
+    </>
   );
 };
 

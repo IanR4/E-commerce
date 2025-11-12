@@ -9,9 +9,6 @@ const Footer = () => {
     <footer className="footer-bg" anchor="bottom">
       <nav className="footer">
         <div className="utilities">
-          <h4 style={{ marginTop: 0, color: '#3498db' }}>
-            Información
-          </h4>
           <Link to="/Contacto" className="link-no-style">
             <h3 className="utilities-text">Contacto</h3>
           </Link>

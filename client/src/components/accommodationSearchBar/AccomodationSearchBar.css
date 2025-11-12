@@ -3,7 +3,7 @@
   align-items: flex-end;
   background-color: var(--primary-blue);
   border-radius: 2px;
-  max-width: 600px;
+  width: 80%;
 }
 
 .search-field {
@@ -31,6 +31,7 @@
   padding-right: 0rem;
   background-color: #fff;
   transition: border-color 0.2s ease;
+  width: 100%;
 }
 
 .input-wrapper:focus-within {

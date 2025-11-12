@@ -37,17 +37,13 @@ const Navbar = ({carrito}) => {
         </div>
 
         <div className="navbar-section center-left">
-            <AccomodationSearchBar></AccomodationSearchBar>
-            <div className="utilities">
-            <Link to={`/Notificaciones`} className="link-no-style"><h3 className="utilities-text"> Notificaciones </h3></Link>
-            <DropdownCategorias/>
-            </div>
-        </div>
-
-        <div className="navbar-section center">
           <div className="brand">
             <Link to={`/`} className="link-no-style"><h1 className="brand-text"> Tienda Sol </h1><img id="brand-image" src="images/logosol.jpg"/></Link>
           </div>
+        </div>
+
+        <div className="navbar-section center">
+          <AccomodationSearchBar></AccomodationSearchBar>
         </div>
 
         <div className="navbar-section right">
@@ -63,3 +59,8 @@ const Navbar = ({carrito}) => {
 };
 
 export default Navbar;
+
+{/* <div className="utilities">
+            <Link to={`/Notificaciones`} className="link-no-style"><h3 className="utilities-text"> Notificaciones </h3></Link>
+            <DropdownCategorias/>
+            </div> */}
