@@ -6,7 +6,7 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="footer-bg">
+    <footer className="footer-bg" anchor="bottom">
       <nav className="footer">
         <div className="utilities">
           <h4 style={{ marginTop: 0, color: '#3498db' }}>

@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Card, TextField, Button } from '@mui/material';
+import { Button } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 
-import { Drawer, List, ListItem, ListItemText, Typography, Divider } from '@mui/material';
+import { List, ListItem, ListItemText, Typography, Divider } from '@mui/material';
 
 import './Filtros.css';
 
@@ -48,16 +48,13 @@ const Filtros = () => {
     };
 
   return (
-    <Drawer 
-        className="filter-drawer"
-        variant="permanent"
-        anchor="center"
-    >
-      <Typography variant="h2" gutterBottom>
-        Filtros
-      </Typography>
-      <Divider />
-      <List>
+    <>
+      <aside className="filter-drawer" aria-label="Filtros de productos">
+        <Typography variant="h2" gutterBottom>
+          Filtros
+        </Typography>
+        <Divider />
+        <List>
         <ListItem >
           <ListItemText primary="Precio" primaryTypographyProps={{ fontSize: '2rem', fontWeight: 200 }}/>
         </ListItem>
@@ -121,8 +118,10 @@ const Filtros = () => {
             Buscar
           </Button>
         </div>
-      </List>
-    </Drawer>
+        </List>
+      </aside>
+      <div className="filter-spacer" aria-hidden="true" />
+    </>
   );
 }
 
