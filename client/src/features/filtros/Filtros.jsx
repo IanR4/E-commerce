@@ -55,69 +55,77 @@ const Filtros = () => {
         </h2>
         <Divider />
         <List>
-        <ListItem >
-          <ListItemText primary="Precio" primaryTypographyProps={{ fontSize: '1.3rem', fontWeight: 200 }}/>
-        </ListItem>
-        <div className="price-range">
-          <input
-            value={minPrice}
-            onChange={(e) => setMinPrice(e.target.value.replace(/[^0-9]/g, ''))}
-            type="text"
-            placeholder="Minimo"
-            className="sliderMin"
-          /> 
-          -
-          <input
-            value={maxPrice}
-            onChange={(e) => setMaxPrice(e.target.value.replace(/[^0-9]/g, ''))}
-            type="text"
-            placeholder="Maximo"
-            className="sliderMax"
-          />
-        </div>
-        <ListItem>
-          <ListItemText primary="Descripcion" primaryTypographyProps={{ fontSize: '1.3rem', fontWeight: 200 }} />
-        </ListItem>
-        <input
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          type="text"
-          placeholder="Descripcion del producto"
-          className="descripcion-input"
-        />
-        <ListItem>
-          <ListItemText primary="Categoria" primaryTypographyProps={{ fontSize: '1.3rem', fontWeight: 200 }} />
-        </ListItem>
-        <FormGroup>
-          {categories.map((cat, i) => (
-            <FormControlLabel
-              key={i}
-              control={
-                <Checkbox
-                  checked={selectedCategories.includes(cat)}
-                  onChange={() => toggleCategory(cat)}
-                />
-              }
-              label={`${cat}`}
+          <div className="filtros-item">
+            <ListItem >
+              <ListItemText primary="Precio" primaryTypographyProps={{ fontSize: '1.3rem', fontWeight: 200 }}/>
+            </ListItem>
+            <div className="price-range">
+              <input
+                value={minPrice}
+                onChange={(e) => setMinPrice(e.target.value.replace(/[^0-9]/g, ''))}
+                type="text"
+                placeholder="Minimo"
+                className="sliderMin"
+              /> 
+              -
+              <input
+                value={maxPrice}
+                onChange={(e) => setMaxPrice(e.target.value.replace(/[^0-9]/g, ''))}
+                type="text"
+                placeholder="Maximo"
+                className="sliderMax"
+              />
+            </div>
+          </div>
+          <div className="filtros-item">
+            <ListItem>
+              <ListItemText primary="Descripcion" primaryTypographyProps={{ fontSize: '1.3rem', fontWeight: 200 }} />
+            </ListItem>
+            <input
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              type="text"
+              placeholder="Descripcion del producto"
+              className="descripcion-input"
             />
-          ))}
-        </FormGroup>
-        <ListItem>
-          <ListItemText primary="Vendedor" primaryTypographyProps={{ fontSize: '1.3rem', fontWeight: 200 }} />
-        </ListItem>
-        <input
-          value={vendedor}
-          onChange={(e) => setVendor(e.target.value)}
-          type="text"
-          placeholder="Nombre del vendedor"
-          className="descripcion-input"
-        />
+          </div>
+          <div className="filtros-item">
+            <ListItem>
+              <ListItemText primary="Categoria" primaryTypographyProps={{ fontSize: '1.3rem', fontWeight: 200 }} />
+            </ListItem>
+            <FormGroup>
+              {categories.map((cat, i) => (
+                <FormControlLabel
+                  key={i}
+                  control={
+                    <Checkbox
+                      checked={selectedCategories.includes(cat)}
+                      onChange={() => toggleCategory(cat)}
+                    />
+                  }
+                  label={`${cat}`}
+                />
+              ))}
+            </FormGroup>
+          </div>
+          <div className="filtros-item">
+            <ListItem>
+              <ListItemText primary="Vendedor" primaryTypographyProps={{ fontSize: '1.3rem', fontWeight: 200 }} />
+            </ListItem>
+            <input
+              value={vendedor}
+              onChange={(e) => setVendor(e.target.value)}
+              type="text"
+              placeholder="Nombre del vendedor"
+              className="descripcion-input"
+            />
+          </div>
 
-        <div style={{ marginTop: 16, textAlign: 'center' }}>
-          <Button variant="contained" id="boton-filtros" onClick={handleSearch}>
-            Buscar
-          </Button>
-        </div>
+          <div style={{ marginTop: 16, textAlign: 'center' }}>
+            <Button variant="contained" id="boton-filtros" onClick={handleSearch}>
+              Buscar
+            </Button>
+          </div>
         </List>
       </aside>
       <div className="filter-spacer" aria-hidden="true" />

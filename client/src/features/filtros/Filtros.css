@@ -1,16 +1,14 @@
 .filter-drawer {
   width: 280px;
   box-sizing: border-box;
-  padding: 16px;
+  padding: 8px 16px 16px 16px;
   /* Use sticky so the sidebar stays visible while scrolling but remains in the page flow.
      This lets the footer naturally sit below the filters (no overlap). */
   position: sticky;
   top: 8rem;       /* distance from top (header height + gap) */
-  max-height: calc(100vh - 6rem); /* keep room for header and footer */
+  /*max-height: calc(100vh - 6rem); /* keep room for header and footer */
   overflow: auto;  /* internal scroll when filters exceed available height */
-  background: #fff;
   z-index: 3000;    /* still above page content but below navbar */
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 
 /* spacer used inside the flow to reserve space for the fixed sidebar */
@@ -93,7 +91,22 @@
   color: var(--primary-white);
 }
 
+.filtros-item {
+    width: 100%;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 0rem 1rem 1rem 1rem;
+    margin-bottom: 1rem;
+    background-color: #ffffff;
+}
+
 /* Responsive: hide permanent sidebar on small screens so it doesn't cover content */
 @media (max-width: 900px) {
   .filter-drawer, .filter-spacer { display: none; }
+}
+
+@media (max-height: 800px) {
+  .filter-drawer {
+    /*max-height: calc(100vh - 6rem); /* keep room for header and footer */
+  }
 }
