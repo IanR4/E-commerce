@@ -11,6 +11,7 @@ import Contacto from './features/utilities/contacto/Contacto.jsx';
 import FAQ from './features/utilities/faq/FAQ.jsx';
 import Nosotros from './features/utilities/nosotros/Nosotros.jsx';
 import Notificaciones from './features/utilities/notificaciones/Notificaciones.jsx';
+import Sesion from './features/sesion/Sesion.jsx';
 
 const theme = createTheme({
   palette: {
@@ -99,6 +100,12 @@ function App() {
               path="/Notificaciones" 
               element={
                 <Notificaciones
+                />
+              } />
+              <Route 
+              path="/Sesion" 
+              element={
+                <Sesion
                 />
               } />
           </Route>

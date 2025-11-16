@@ -10,11 +10,16 @@ import DropdownUtilities from "../dropdown/DropdownUtilities";
 
 
 const Navbar = ({carrito}) => {
+  const [open, setOpen] = useState(false);
   const navigate = useNavigate()
   const [cantUnidades, setCantUnidades] = useState(0);
 
   const irAChekout = () => {
     navigate("/checkout")
+  }
+
+  const irASesion = () => {
+    navigate("/Sesion")
   }
 
   const cantUnidadesEnCarrito = () => {
@@ -47,6 +52,9 @@ const Navbar = ({carrito}) => {
         </div>
 
         <div className="navbar-section right">
+          <button className={`sesion`} onClick={irASesion} >
+            Iniciar Sesión
+          </button>
           <button className="cart" onClick={irAChekout}>
             <FaShoppingCart color="white"/>
             <span className="cart-count">{cantUnidades}</span>

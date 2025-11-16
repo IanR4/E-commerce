@@ -36,6 +36,16 @@ class UsuarioController{
       .then(({ data, status }) => res.status(status).json(data))
       .catch(next);
   };
+
+
+  getUsuarioLogin = (req, res, next) => {
+    const usuarioData = req.body;
+
+    return this.usuarioService.getUsuarioLogin(usuarioData)
+      .then(({ data, status }) => res.status(status).json(data))
+      .catch(next);
+  };
+
   
 }
 

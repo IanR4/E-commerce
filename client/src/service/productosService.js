@@ -21,3 +21,5 @@ export const getNotificacionesLeidas = (id) => {
     .then((response) => response.data)
 }
 
+
+

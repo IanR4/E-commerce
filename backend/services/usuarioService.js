@@ -31,4 +31,15 @@ export default class UsuarioService {
                 status: 201
             }));
     }
+
+
+    getUsuarioLogin(usuarioData){
+        return Promise.resolve(this.usuarioValidator.buscarUsuarioLogin(usuarioData))
+        .then((usuarioRes) => {
+            return {
+                data: usuarioRes,
+                status: 200
+            };
+        });
+    }
 }

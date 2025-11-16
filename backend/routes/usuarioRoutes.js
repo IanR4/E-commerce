@@ -6,6 +6,8 @@ export default function usuarioRoutes() {
 
     router.get("/usuario/:usuarioId", UsuarioController.getUsuario);
 
+    router.get("/usuario", UsuarioController.getUsuarioLogin);
+
     router.post("/usuario", UsuarioController.postUsuario);
 
     return router;

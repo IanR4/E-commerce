@@ -37,6 +37,16 @@ class UsuarioValidator {
             });
     }
 
+    buscarUsuarioLogin(usuarioData) {
+        return this.usuarioRepository.findByUser(usuarioData)
+            .then(usuario => {
+                if (!usuario) {
+                    throw new NotFoundError("Mail no encontrado");
+                }
+                return usuario;
+            });
+    }
+
     buscarComprador(compradorId) {
         return this.usuarioRepository.findById(compradorId)
             .then(comprador => {
@@ -62,6 +72,7 @@ const usuarioSchema = z.object({
     nombre: z.string().min(3).max(20),
     email: z.string().email(),
     telefono: z.string().min(8).max(15),
+    password: z.string().min(3).max(100),
     tipo: z.nativeEnum(TipoUsuario)
 })
 

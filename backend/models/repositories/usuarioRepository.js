@@ -13,6 +13,10 @@ class UsuarioRepository {
     findById(usuarioId){
         return this.model.findOne({ _id: usuarioId }).exec();
     }
+
+    findByUser(email, password){
+        return this.model.findOne({ email: email, password: password }).exec();
+    }
 }
 
 export default new UsuarioRepository();
