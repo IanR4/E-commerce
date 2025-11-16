@@ -5,8 +5,9 @@ import { useParams } from "react-router-dom";
 import { getProductosSlowly } from "../../service/productosService.js";
 import ProductoTable from "../../components/productoTable/ProductoTable.jsx";
 import Filtros from "../filtros/Filtros.jsx";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import React, { useState, useRef, useEffect } from "react";
+import { getProductsFiltered } from "../../service/productosService.js"
 
 const Search = () => {
   const outlet = useOutletContext();
@@ -17,6 +18,11 @@ const Search = () => {
   const { categoriaName } = useParams();
   const [productosFiltrados, setProductosFiltrados] = useState(null); // null = not loaded yet
   const [loading, setLoading] = useState(false);
+
+  const [searchParams] = useSearchParams();
+
+  const categoria = searchParams.get("categoria");
+  const titulo = searchParams.get("titulo");
 
   const dropdown = [
     "Menor Precio",

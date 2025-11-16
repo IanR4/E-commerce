@@ -24,7 +24,7 @@ const CarouselItem = ({producto}) => {
         </div>
 
         {/* botón fuera del bloque animado para que no se mueva al hacer hover */}
-        <div className="ver-detalles-container">
+        <div className="botones-container">
           <span className="ver-detalles">
             <Link to={`/productos/${producto._id}`} className="link-no-style">Ver Detalles</Link>
           </span>
