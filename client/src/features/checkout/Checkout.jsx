@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { Card, TextField, Button } from '@mui/material';
 import { useNavigate } from "react-router-dom";
-import CarritoItem from '../../components/carritoItem/CarritoItem.jsx';
 
 import './Checkout.css';
 
-const Checkout = ({ carrito, limpiarCarrito, removerDelCarrito }) => {
+const Checkout = ({ carrito, limpiarCarrito }) => {
   const inicializarCampo = (requerido = true) => ({ valor: '', requerido });
   const navigate = useNavigate()
 
@@ -38,19 +37,6 @@ const Checkout = ({ carrito, limpiarCarrito, removerDelCarrito }) => {
   return (
     <div className="root">
       <Card className="form-container">
-        <h3>Ya casi estamos...</h3>
-        <div>
-          {carrito.map((producto, index) => (
-            <div key={producto._id ?? index}>
-              <CarritoItem producto={producto} onRemove={removerDelCarrito} />
-            </div>
-          ))}
-        </div>
-
-        <div className="total">
-          <h4>Total: ${carrito.reduce((acc, producto) => acc + producto.precio * producto.cantidadUnidades, 0).toLocaleString("es-AR")}</h4>
-        </div>
-
         <form>
           <TextField
             label="Nombre"

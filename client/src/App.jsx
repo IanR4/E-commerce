@@ -5,6 +5,7 @@ import Layout from './features/layout/Layout.jsx';
 import ProductoDetailPage from './features/productos/ProductoDetailPage.jsx';
 import Search from './features/search/Search.jsx';
 import {createTheme, ThemeProvider} from "@mui/material"
+import Carrito from './features/carrito/Carrito.jsx';
 import Checkout from './features/checkout/Checkout.jsx';
 import React, {useState} from "react";
 import Contacto from './features/utilities/contacto/Contacto.jsx';
@@ -52,9 +53,9 @@ function App() {
               } 
             />
             <Route 
-              path="/checkout" 
+              path="/carrito" 
               element={
-              <Checkout 
+              <Carrito 
                 carrito={carrito}
                 limpiarCarrito={limpiarCarrito}
                 removerDelCarrito={removerDelCarrito}
@@ -99,6 +100,14 @@ function App() {
               path="/Notificaciones" 
               element={
                 <Notificaciones
+                />
+              } />
+              <Route
+              path="/checkout"
+              element={
+                <Checkout
+                  carrito={carrito}
+                  limpiarCarrito={limpiarCarrito}
                 />
               } />
           </Route>

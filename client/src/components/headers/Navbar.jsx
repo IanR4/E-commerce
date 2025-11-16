@@ -13,8 +13,8 @@ const Navbar = ({carrito}) => {
   const navigate = useNavigate()
   const [cantUnidades, setCantUnidades] = useState(0);
 
-  const irAChekout = () => {
-    navigate("/checkout")
+  const irACarrito = () => {
+    navigate("/carrito")
   }
 
   const cantUnidadesEnCarrito = () => {
@@ -47,7 +47,7 @@ const Navbar = ({carrito}) => {
         </div>
 
         <div className="navbar-section right">
-          <button className="cart" onClick={irAChekout}>
+          <button className="cart" onClick={irACarrito}>
             <FaShoppingCart color="white"/>
             <span className="cart-count">{cantUnidades}</span>
           </button>
