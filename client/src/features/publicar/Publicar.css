@@ -1,0 +1,61 @@
+
+.publicar-container {
+	max-width: 800px;
+	margin: 24px auto;
+	padding: 20px;
+	background: #fff;
+	border-radius: 8px;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.publicar-title {
+	margin: 0 0 12px 0;
+	font-size: 1.5rem;
+	color: #222;
+}
+
+.publicar-form {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.publicar-label {
+	font-weight: 600;
+	font-size: 0.9rem;
+}
+
+.publicar-input,
+.publicar-textarea,
+.publicar-select {
+	padding: 8px 10px;
+	border: 1px solid #ddd;
+	border-radius: 6px;
+	font-size: 1rem;
+}
+
+.publicar-textarea { min-height: 100px; resize: vertical }
+
+.publicar-row {
+	display: flex;
+	gap: 12px;
+	flex-wrap: wrap;
+}
+
+.publicar-col { flex: 1 1 150px }
+
+.publicar-button {
+	margin-top: 8px;
+	padding: 10px 16px;
+	background: #2b6cb0;
+	color: white;
+	border: none;
+	border-radius: 6px;
+	cursor: pointer;
+}
+
+.publicar-button:disabled { opacity: 0.7; cursor: not-allowed }
+
+.publicar-error { color: #b00020; padding: 8px; background: #fff0f1; border-radius: 6px }
+.publicar-success { color: #135e0d; padding: 8px; background: #f0fff4; border-radius: 6px }
+

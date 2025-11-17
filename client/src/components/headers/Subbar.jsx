@@ -9,9 +9,9 @@ import DropdownCategorias from "../dropdown/DropdownCategorias";
 import DropdownUtilities from "../dropdown/DropdownUtilities"; 
 import Login from "../login/Login";
 
-const Subbar = ({carrito}) => {
+
+const Subbar = () => {
   const navigate = useNavigate()
-  const [cantUnidades, setCantUnidades] = useState(0);
   const [openLogin, setOpenLogin] = useState(false);
   const [user, setUser] = useState(null);
   const [showUserMenu, setShowUserMenu] = useState(false);
@@ -70,17 +70,6 @@ const Subbar = ({carrito}) => {
     navigate("/checkout")
   }
 
-  const cantUnidadesEnCarrito = () => {
-    let suma = 0
-    for (const producto of carrito) {
-      suma += producto.cantidadUnidades
-    }
-    return suma;
-  }
-
-  useEffect(() => {
-    setCantUnidades(cantUnidadesEnCarrito());
-  }, [carrito]);
 
   return (
     <div className="subbar-bg">
@@ -109,7 +98,7 @@ const Subbar = ({carrito}) => {
             <Link to={`/Notificaciones`} className="link-no-style"><h3 className="utilities-text"> Notificaciones </h3></Link>
         
             {user && isUserSeller(user) ? (
-                <button className="publish-button" onClick={() => navigate('/publicar')}><h3 className="utilities-text"> Publicar producto </h3></button>
+                <button className="publish-button" onClick={() => navigate('/Publicar')}><h3 className="utilities-text"> Publicar producto </h3></button>
             ) : ("")}  
         </div>
          

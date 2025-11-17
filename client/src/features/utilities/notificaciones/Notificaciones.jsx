@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import "./Notificaciones.css";
 import { Link } from 'react-router';
 import NotificacionDetail from "./NotificacionDetail.jsx";
-import { getNotificacionesLeidas } from "../../../service/productosService.js"
+import { getNotificacionesLeidas } from "../../../service/notificacionesService.js"
 
 const Notificaciones = () => {
   const [notificaciones, setNotificaciones] = useState([]);

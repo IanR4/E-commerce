@@ -76,7 +76,7 @@ const Navbar = ({carrito}) => {
     </header>
 
     <div className="subheader">
-      <Subbar carrito={carrito}></Subbar>
+      <Subbar></Subbar>
     </div>
     </>
   );

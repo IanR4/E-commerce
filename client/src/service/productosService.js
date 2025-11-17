@@ -15,9 +15,10 @@ export const getProductById = (id) => {
     .then((response) => response.data)
 }
 
-export const getNotificacionesLeidas = (id) => {
+
+export const postProduct = (titulo, descripcion, categorias, precio, moneda, stock, foto) => {
   return axios
-    .get(`${API_BASE_URL}/usuarios/68e636efd15618341978b277/notificaciones/leidas`)
+    .post(`${API_BASE_URL}/producto`, { titulo, descripcion, categorias, precio, moneda, stock, foto })
     .then((response) => response.data)
 }
 

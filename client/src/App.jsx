@@ -12,6 +12,7 @@ import FAQ from './features/utilities/faq/FAQ.jsx';
 import Nosotros from './features/utilities/nosotros/Nosotros.jsx';
 import Notificaciones from './features/utilities/notificaciones/Notificaciones.jsx';
 import Sesion from './features/sesion/Sesion.jsx';
+import Publicar from './features/publicar/Publicar.jsx';
 
 const theme = createTheme({
   palette: {
@@ -106,6 +107,12 @@ function App() {
               path="/Sesion" 
               element={
                 <Sesion
+                />
+              } />
+              <Route 
+              path="/Publicar" 
+              element={
+                <Publicar
                 />
               } />
           </Route>
