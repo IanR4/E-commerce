@@ -6,20 +6,19 @@ import {FaShoppingCart} from 'react-icons/fa';
 import '../../index.css';
 import AccomodationSearchBar from "../accommodationSearchBar/AccomodationSearchBar";
 import DropdownCategorias from "../dropdown/DropdownCategorias";  
-import DropdownUtilities from "../dropdown/DropdownUtilities";  
-
+import DropdownUtilities from "../dropdown/DropdownUtilities"; 
+import Login from "../login/Login";
 
 const Navbar = ({carrito}) => {
-  const [open, setOpen] = useState(false);
   const navigate = useNavigate()
   const [cantUnidades, setCantUnidades] = useState(0);
+  const [openLogin, setOpenLogin] = useState(false);
+
+  const abrirLogin = () => setOpenLogin(true);
+  const cerrarLogin = () => setOpenLogin(false);
 
   const irAChekout = () => {
     navigate("/checkout")
-  }
-
-  const irASesion = () => {
-    navigate("/Sesion")
   }
 
   const cantUnidadesEnCarrito = () => {
@@ -52,15 +51,17 @@ const Navbar = ({carrito}) => {
         </div>
 
         <div className="navbar-section right">
-          <button className={`sesion`} onClick={irASesion} >
-            Iniciar Sesión
+          <button className="login-button" onClick={abrirLogin}>
+            Iniciar sesión
           </button>
+
           <button className="cart" onClick={irAChekout}>
             <FaShoppingCart color="white"/>
             <span className="cart-count">{cantUnidades}</span>
           </button>
         </div>
       </nav>
+      <Login open={openLogin} onClose={cerrarLogin} />
     </header>
     
   );
