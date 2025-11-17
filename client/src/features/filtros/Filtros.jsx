@@ -8,6 +8,7 @@ import RadioGroup from '@mui/material/RadioGroup';
 import { List, ListItem, ListItemText, Divider } from '@mui/material';
 
 import './Filtros.css';
+import usuarios from '../../mockdata/usuarios';
 
 const Filtros = () => {
   const navigate = useNavigate();
@@ -31,11 +32,24 @@ const Filtros = () => {
   const handleSearch = () => {
     const params = new URLSearchParams();
 
-    if (minPrice !== '') params.set('minPrice', minPrice);
-    if (maxPrice !== '') params.set('maxPrice', maxPrice);
+    if (minPrice !== '') params.set('precioMin', minPrice);
+    if (maxPrice !== '') params.set('precioMax', maxPrice);
     if (description.trim() !== '') params.set('descripcion', description.trim());
-    if (vendedor.trim() !== '') params.set('vendedor', vendedor.trim());
     if (selectedCategory) params.set('categoria', selectedCategory); // ← solo una categoría
+
+    // If vendedor provided, attempt to resolve by name to an id in local mockdata
+    if (vendedor.trim() !== '') {
+      const match = usuarios.find(u => u.nombre.toLowerCase() === vendedor.trim().toLowerCase());
+      if (match) {
+        // navigate to vendor-specific products route
+        navigate(`/vendedores/${match._id}/productos?${params.toString()}`);
+        return;
+      } else {
+        // If no exact match, notify user and abort navigation
+        alert('Vendedor no encontrado. Verifique el nombre e intente nuevamente.');
+        return;
+      }
+    }
 
     navigate(`/productos?${params.toString()}`);
   };

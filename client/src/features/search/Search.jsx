@@ -14,8 +14,7 @@ const Search = () => {
   const productos = outlet?.productos || [];
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const { searchText } = useParams();
-  const { categoriaName } = useParams();
+  const { searchText, categoriaName, vendedorId } = useParams();
   const [productosFiltrados, setProductosFiltrados] = useState(null); // null = not loaded yet
   const [loading, setLoading] = useState(false);
 
@@ -23,6 +22,11 @@ const Search = () => {
 
   const categoria = searchParams.get("categoria");
   const titulo = searchParams.get("titulo");
+  const descripcion = searchParams.get("descripcion");
+  const precioMin = searchParams.get("precioMin");
+  const precioMax = searchParams.get("precioMax");
+  const vendedor = searchParams.get("vendedor");
+  const orden = searchParams.get("orden");
 
   const dropdown = [
     "Menor Precio",
@@ -37,44 +41,93 @@ const Search = () => {
   ];
 
   const filtrarProductos = (searchText, categoriaName) => {
-    // Normalize inputs to avoid crashes when params are undefined
-    const q = (searchText || "").toString();
-    const cat = (categoriaName || "").toString();
+    // Build filter inputs giving precedence to explicit search params
+    const q = (titulo || searchText || "").toString();
+    const cat = (categoria || categoriaName || "").toString();
+    const desc = (descripcion || "").toString();
+    const minP = precioMin ? Number(precioMin) : null;
+    const maxP = precioMax ? Number(precioMax) : null;
+    const vend = vendedor || null;
 
-    if (cat == "Ver Todos") {
-      setProductosFiltrados(productos);
-      return;
+    // Start from all productos
+    let results = Array.isArray(productos) ? productos.slice() : [];
+
+    // Category filter
+    if (cat && cat.trim() !== "") {
+      if (cat === "Ver Todos") {
+        // keep all
+      } else {
+        results = results.filter((producto) =>
+          Array.isArray(producto.categorias) && producto.categorias.some(c => c.toLowerCase().includes(cat.toLowerCase()))
+        );
+      }
     }
 
-    if (cat.trim() !== "") {
-      const filtered = productos.filter((producto) =>
-        producto.categorias.some(c => c.toLowerCase().includes(cat.toLowerCase()))
+    // Title / quick search filter
+    if (q && q.trim() !== "") {
+      results = results.filter((producto) =>
+        producto.titulo && producto.titulo.toLowerCase().includes(q.toLowerCase())
       );
-      setProductosFiltrados(filtered);
-      return;
     }
 
-    // If search text is empty (or not provided) show all productos
-    if (q.trim() === "") {
-      setProductosFiltrados(productos);
-      return;
+    // Description filter
+    if (desc && desc.trim() !== "") {
+      results = results.filter((producto) =>
+        producto.descripcion && producto.descripcion.toLowerCase().includes(desc.toLowerCase())
+      );
     }
 
-    // Otherwise filter by title
-    const filtered = productos.filter((producto) =>
-      producto.titulo.toLowerCase().includes(q.toLowerCase())
-    );
-    setProductosFiltrados(filtered);
+    // Vendedor filter (works with string or object)
+    if (vend && vend.trim() !== "") {
+      results = results.filter((producto) => {
+        if (!producto.vendedor) return false;
+        if (typeof producto.vendedor === 'string') {
+          return producto.vendedor.toLowerCase().includes(vend.toLowerCase());
+        }
+        // try common object shapes
+        const nombre = producto.vendedor.nombre || producto.vendedor.username || producto.vendedor.email || '';
+        return nombre.toLowerCase().includes(vend.toLowerCase());
+      });
+    }
+
+    // Price range filter
+    if (minP !== null) {
+      results = results.filter((producto) => Number(producto.precio) >= minP);
+    }
+    if (maxP !== null) {
+      results = results.filter((producto) => Number(producto.precio) <= maxP);
+    }
+
+    setProductosFiltrados(results);
   };
 
  
 
-  // Filtrar automáticamente cuando cambia el searchText o los productos
+  // Filtrar automáticamente cuando cambia el searchText, productos o params
   useEffect(() => {
-    // Always attempt to filter when params or productos change.
-    // filtrarProductos handles empty/undefined inputs and will show all productos when searchText is empty.
-    filtrarProductos(searchText, categoriaName);
-  }, [searchText, categoriaName, productos]);
+    // If route contains a vendedorId, request filtered products from backend
+    const fetchByVendedor = async () => {
+      if (!vendedorId) return false;
+      setLoading(true);
+      try {
+        const productosBackend = await getProductsFiltered(vendedorId, titulo, categoria, descripcion, precioMin, precioMax, orden);
+        setProductosFiltrados(Array.isArray(productosBackend) ? productosBackend : []);
+      } catch (err) {
+        console.error('Error fetching productos por vendedor:', err);
+        setProductosFiltrados([]);
+      } finally {
+        setLoading(false);
+      }
+      return true;
+    };
+
+    // If we fetched by vendedor, skip local filtering
+    fetchByVendedor().then(fetched => {
+      if (!fetched) {
+        filtrarProductos(searchText, categoriaName);
+      }
+    });
+  }, [searchText, categoriaName, productos, searchParams.toString(), vendedorId]);
 
   // Render states: loading spinner, no results, or table
   if (loading || productosFiltrados === null) {

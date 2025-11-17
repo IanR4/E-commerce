@@ -78,6 +78,20 @@ function App() {
                 <Search
                 />
               } />
+              <Route
+              path="/productos"
+              element={
+                <Search
+                />
+              }
+              />
+              <Route
+              path="/vendedores/:vendedorId/productos"
+              element={
+                <Search
+                />
+              }
+              />
               <Route 
               path="/Contacto" 
               element={
