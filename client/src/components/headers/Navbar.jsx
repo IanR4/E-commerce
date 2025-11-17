@@ -1,5 +1,5 @@
 import { Link } from 'react-router';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
 import './Navbar.css';
 import {FaShoppingCart} from 'react-icons/fa';
@@ -8,14 +8,26 @@ import AccomodationSearchBar from "../accommodationSearchBar/AccomodationSearchB
 import DropdownCategorias from "../dropdown/DropdownCategorias";  
 import DropdownUtilities from "../dropdown/DropdownUtilities"; 
 import Login from "../login/Login";
+import Subbar from "./Subbar.jsx";
 
 const Navbar = ({carrito}) => {
   const navigate = useNavigate()
   const [cantUnidades, setCantUnidades] = useState(0);
-  const [openLogin, setOpenLogin] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const userMenuRef = useRef(null);
 
-  const abrirLogin = () => setOpenLogin(true);
-  const cerrarLogin = () => setOpenLogin(false);
+
+
+  // close user menu when clicking outside
+  useEffect(() => {
+    const onDocClick = (e) => {
+      if (showUserMenu && userMenuRef.current && !userMenuRef.current.contains(e.target)) {
+        setShowUserMenu(false);
+      }
+    }
+    document.addEventListener('click', onDocClick);
+    return () => document.removeEventListener('click', onDocClick);
+  }, [showUserMenu]);
 
   const irAChekout = () => {
     navigate("/checkout")
@@ -34,6 +46,7 @@ const Navbar = ({carrito}) => {
   }, [carrito]);
 
   return (
+    <>
     <header className="navbar-bg">
       <nav className="navbar">
         <div className="navbar-section left">
@@ -51,25 +64,23 @@ const Navbar = ({carrito}) => {
         </div>
 
         <div className="navbar-section right">
-          <button className="login-button" onClick={abrirLogin}>
-            Iniciar sesión
-          </button>
-
           <button className="cart" onClick={irAChekout}>
             <FaShoppingCart color="white"/>
             <span className="cart-count">{cantUnidades}</span>
           </button>
+          
         </div>
       </nav>
-      <Login open={openLogin} onClose={cerrarLogin} />
+
+      
     </header>
-    
+
+    <div className="subheader">
+      <Subbar carrito={carrito}></Subbar>
+    </div>
+    </>
   );
 };
 
 export default Navbar;
 
-{/* <div className="utilities">
-            <Link to={`/Notificaciones`} className="link-no-style"><h3 className="utilities-text"> Notificaciones </h3></Link>
-            <DropdownCategorias/>
-            </div> */}

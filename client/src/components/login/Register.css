@@ -1,0 +1,77 @@
+.register-form-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.form.register-form {
+  width: 380px;
+  background: var(--primary-white);
+  color: var(--primary-blue);
+  padding: 1.25rem;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.form-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.8rem;
+}
+
+.input-container {
+  margin-bottom: 0.6rem;
+}
+
+.input-container input,
+.tipo-select {
+  width: 100%;
+  padding: 0.5rem 0.6rem;
+  border-radius: 6px;
+  border: 1px solid rgba(0,0,0,0.12);
+}
+
+.tipo-label {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: rgba(0,0,0,0.7);
+  font-size: 0.8rem;
+}
+
+.tipo-select {
+  font-size: 0.95rem;
+}
+
+.register-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-top: 0.6rem;
+}
+
+button.submit {
+  background: var(--primary-blue);
+  color: var(--primary-white);
+  border: none;
+  padding: 0.5rem 0.9rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button.secondary {
+  background: transparent;
+  border: 1px solid rgba(0,0,0,0.08);
+  padding: 0.45rem 0.75rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.error {
+  color: #c53030;
+  margin-top: 0.4rem;
+}
+
+.success {
+  color: #2f855a;
+  margin-top: 0.4rem;
+}

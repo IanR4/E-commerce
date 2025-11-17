@@ -4,6 +4,7 @@ import productoRoutes from "./productoRoutes.js";
 import usuarioRoutes from "./usuarioRoutes.js";
 import notificacionRoutes from "./notificacionRoutes.js";
 import swaggerRoutes from "./swaggerRoutes.js";
+import authRoutes from "./authRoutes.js";
 
 const routes = [
     healthRoutes,
@@ -11,7 +12,8 @@ const routes = [
     productoRoutes,
     usuarioRoutes,
     notificacionRoutes,
-    swaggerRoutes
+    swaggerRoutes,
+    authRoutes
 ];
 
 export default routes;

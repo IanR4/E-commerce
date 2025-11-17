@@ -30,7 +30,7 @@ const DropdownCategorias = () => {
   return (
     <div className="dropdown" ref={dropdownRef}>
       <button className="dropdown-btn" onClick={() => setOpen(!open)}>
-        Categorías ▾
+        <h3 className="utilities-text"> Categorías ▾ </h3>
       </button>
 
       {open && (
