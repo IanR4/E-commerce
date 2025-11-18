@@ -16,9 +16,25 @@ export const getProductById = (id) => {
 }
 
 
-export const postProduct = (titulo, descripcion, categorias, precio, moneda, stock, foto) => {
+export const postProduct = (vendedor, titulo, descripcion, categoria, precio, moneda, stock, foto) => {
+  // backend expects `categorias` as an array and moneda to match its enum values
+  const monedaMap = {
+    'ARS': 'PesoArg',
+    'ARS$': 'PesoArg',
+    'ARS ': 'PesoArg',
+    'PEN': 'PesoArg',
+    'USD': 'DolarUsa',
+    'REAL': 'Real',
+    'Real': 'Real',
+    'DolarUsa': 'DolarUsa',
+    'PesoArg': 'PesoArg'
+  }
+
+  const monedaValue = monedaMap[moneda] || moneda || 'PesoArg'
+  const categorias = categoria ? (Array.isArray(categoria) ? categoria : [categoria]) : []
+
   return axios
-    .post(`${API_BASE_URL}/producto`, { titulo, descripcion, categorias, precio, moneda, stock, foto })
+    .post(`${API_BASE_URL}/producto`, { vendedor, titulo, descripcion, categorias, precio, moneda: monedaValue, stock, foto })
     .then((response) => response.data)
 }
 

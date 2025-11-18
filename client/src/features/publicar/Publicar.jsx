@@ -7,7 +7,7 @@ const Publicar = () => {
 	const [form, setForm] = useState({
 		titulo: '',
 		descripcion: '',
-		categorias: '',
+		categoria: '',
 		precio: '',
 		moneda: 'PEN',
 		stock: '',
@@ -23,7 +23,7 @@ const Publicar = () => {
 		setForm((prev) => ({ ...prev, [name]: value }))
 	}
 
-	const handleSubmit = async (e) => {
+	const handleSubmit = (e) => {
 		e.preventDefault()
 		setError(null)
 		setSuccess(null)
@@ -34,39 +34,59 @@ const Publicar = () => {
 		}
 
 		setLoading(true)
+		const precioNum = parseFloat(form.precio)
+		const stockNum = parseInt(form.stock || '0', 10)
+
+		// obtener id del vendedor desde localStorage (guardado en Subbar como { displayName, raw })
+		let vendedorId = null
 		try {
-			const categoriasArr = form.categorias
-				.split(',')
-				.map((c) => c.trim())
-				.filter(Boolean)
-
-			const precioNum = parseFloat(form.precio)
-			const stockNum = parseInt(form.stock || '0', 10)
-
-			const result = await postProduct(
-				form.titulo,
-				form.descripcion,
-				categoriasArr,
-				precioNum,
-				form.moneda,
-				stockNum,
-				form.foto
-			)
-
-			setSuccess('Producto creado correctamente')
-
-			// Si la API devuelve el producto con id, redirigir a su página
-			const newId = result?.producto?._id || result?.id || result?.producto?.id
-			if (newId) {
-				navigate(`/producto/${newId}`)
-			} else {
-				setForm({ titulo: '', descripcion: '', categorias: '', precio: '', moneda: 'PEN', stock: '', foto: '' })
+			const stored = localStorage.getItem('user')
+			if (stored) {
+				const parsed = JSON.parse(stored)
+				const raw = parsed?.raw ?? parsed
+				vendedorId = raw?._id
 			}
 		} catch (err) {
-			setError(err?.response?.data?.message || err.message || 'Error al crear el producto')
-		} finally {
-			setLoading(false)
+			// ignore parse errors
 		}
+
+		if (!vendedorId) {
+			setLoading(false)
+			setError('Debes iniciar sesión como vendedor para publicar')
+			return
+		}
+
+		// asegurar que la URL de la foto comience con /images/
+		const fotoPath = form.foto
+			? (form.foto.startsWith('/images/') ? form.foto : `/images/${form.foto.replace(/^\/+/, '')}`)
+			: ''
+
+		postProduct(
+			vendedorId,
+			form.titulo,
+			form.descripcion,
+			form.categoria,
+			precioNum,
+			form.moneda,
+			stockNum,
+			fotoPath
+		)
+			.then((result) => {
+				setSuccess('Producto creado correctamente')
+
+				const newId = (result && (result.producto && (result.producto._id || result.producto.id))) || result?.id || null
+				if (newId) {
+					navigate(`/producto/${newId}`)
+				} else {
+					setForm({ titulo: '', descripcion: '', categoria: '', precio: '', moneda: 'PEN', stock: '', foto: '' })
+				}
+			})
+			.catch((err) => {
+				setError(err?.response?.data?.message || err.message || 'Error al crear el producto')
+			})
+			.finally(() => {
+				setLoading(false)
+			})
 	}
 
 	return (
@@ -83,8 +103,8 @@ const Publicar = () => {
 				<label className="publicar-label">Descripción</label>
 				<textarea className="publicar-textarea" name="descripcion" value={form.descripcion} onChange={handleChange} />
 
-				<label className="publicar-label">Categorías (separadas por coma)</label>
-				<input className="publicar-input" name="categorias" value={form.categorias} onChange={handleChange} />
+				<label className="publicar-label">Categoría</label>
+				<input className="publicar-input" name="categoria" value={form.categoria} onChange={handleChange} />
 
 				<div className="publicar-row">
 					<div className="publicar-col">
@@ -94,9 +114,9 @@ const Publicar = () => {
 					<div className="publicar-col">
 						<label className="publicar-label">Moneda</label>
 						<select className="publicar-input" name="moneda" value={form.moneda} onChange={handleChange}>
-							<option value="PEN">PEN</option>
-							<option value="USD">USD</option>
-							<option value="EUR">EUR</option>
+							<option value="PesoArg">ARS</option>
+							<option value="DolarUsa">USD</option>
+							<option value="Real">REAL</option>
 						</select>
 					</div>
 					<div className="publicar-col">
