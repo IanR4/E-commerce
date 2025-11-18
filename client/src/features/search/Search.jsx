@@ -18,6 +18,8 @@ const Search = () => {
   const [productosFiltrados, setProductosFiltrados] = useState(null); // null = not loaded yet
   const [loading, setLoading] = useState(false);
 
+  const [filtradoDropdown, setFiltradoDropdown] = useState("");
+
   const [searchParams] = useSearchParams();
 
   const categoria = searchParams.get("categoria");
@@ -158,21 +160,24 @@ const Search = () => {
         <div>
           <div className="dropdown" ref={dropdownRef}>
             <button className="dropdown-btn" onClick={() => setOpen(!open)}>
-              Ordenar por ▾
+              Ordenar por {dropdown[filtros.indexOf(filtradoDropdown)]} ▾
             </button>
             {open && (
                 <ul className={`dropdown-menu ${open ? "show" : ""}`}>
                   {dropdown.map((cat, i) => (
-                    <Link to={`/productos/${filtros[i]}`} className="link-no-style">
+                    <button onClick={() => setFiltradoDropdown(filtros[i])} key={i} className="dropdown-item">
+                      {cat}
+                    </button>
+                    /*<Link to={`/productos/${filtros[i]}`} className="link-no-style">
                       <li key={i} className="dropdown-item">
                         {cat}
                       </li>
-                    </Link>
+                    </Link>*/
                   ))}
                 </ul>
               )}
           </div>
-          <ProductoTable productos={productosFiltrados} />
+          <ProductoTable productos={productosFiltrados} filtradoDropdown={filtradoDropdown} />
         </div>
       </div>
     </>
