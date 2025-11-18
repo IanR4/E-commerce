@@ -6,4 +6,5 @@ export const getUsuario = (id) => {
   return axios
     .get(`${API_BASE_URL}/usuario/${id}`)
     .then((response) => response.data)
+    .catch((error) => { return null });
   }
