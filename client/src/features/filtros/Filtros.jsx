@@ -42,7 +42,7 @@ const Filtros = () => {
       const match = usuarios.find(u => u.nombre.toLowerCase() === vendedor.trim().toLowerCase());
       if (match) {
         // navigate to vendor-specific products route
-        navigate(`/vendedores/${match._id}/productos?${params.toString()}`);
+        navigate(`/busqueda/${match._id}?${params.toString()}`);
         return;
       } else {
         // If no exact match, notify user and abort navigation

@@ -64,8 +64,8 @@
   border-radius: 0.5rem;
 }
 
-.ver-detalles {
-  margin: 0;
+.ver-detalles, .comprar-ahora {
+  margin: 0.5rem;
   background-color: var(--primary-green);
   color: white;
   font-size: 0.9rem;
@@ -73,6 +73,12 @@
   padding: 0.5rem 0.75rem;
   border-radius: 0.5rem;
   display: inline-block;
+}
+
+#comprarAhora{
+  background-color: rgb(197, 95, 95);
+  padding: 0.5rem 0.75rem;
+  margin:0;
 }
 
 .producto-price {

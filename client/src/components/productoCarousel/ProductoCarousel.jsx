@@ -2,8 +2,8 @@ import React, { useState, useEffect} from "react";
 import "./ProductoCarousel.css";
 import CarouselItem from "../productoItem/CarouselItem";
 
-export default function ProdcutoCarousel({productos}) {
 
+export default function ProductoCarousel({productos}) {
   useEffect(() => {
     setIndex(0);
   }, [productos]);

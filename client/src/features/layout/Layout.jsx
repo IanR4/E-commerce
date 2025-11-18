@@ -4,8 +4,10 @@ import { useState, useEffect } from "react";
 import { getProductosSlowly } from "../../service/productosService.js";
 import { getProducts } from "../../service/productosService.js";
 import Footer from "../../components/footer/Footer.jsx";
+import {useCarritoContext} from '../../store/CarritoContext.jsx'
 
-const Layout = ({carrito}) => {
+const Layout = () => {
+  const { carrito } = useCarritoContext();
   const [productos, setProductos] = useState([]);
 
     const cargarProductos = () => {

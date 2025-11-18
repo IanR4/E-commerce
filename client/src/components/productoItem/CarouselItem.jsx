@@ -1,8 +1,18 @@
 import "./CarouselItem.css";
-import { Link } from "react-router-dom";   
+import { Link, useNavigate } from "react-router-dom";   
 import "../../index.css"
+import {useCarritoContext} from '../../store/CarritoContext.jsx'
 
+const conUnidades = (unidades, producto) => ({ ...producto, cantidadUnidades: unidades });
 const CarouselItem = ({producto}) => {
+  const { actualizarCarrito } = useCarritoContext();
+  const navigate = useNavigate()
+
+  const reservar = () => {
+    actualizarCarrito(conUnidades(1, producto))
+    navigate("/carrito")
+  }
+
   return (
     <div key={producto._id} className="carousel-card">
       <div className="producto-card">
@@ -25,6 +35,7 @@ const CarouselItem = ({producto}) => {
 
         {/* botón fuera del bloque animado para que no se mueva al hacer hover */}
         <div className="botones-container">
+          <button className="comprar-ahora" id="comprarAhora" onClick={reservar}>Comprar Ahora</button>
           <span className="ver-detalles">
             <Link to={`/productos/${producto._id}`} className="link-no-style">Ver Detalles</Link>
           </span>

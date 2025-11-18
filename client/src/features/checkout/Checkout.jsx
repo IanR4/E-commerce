@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Card, TextField, Button } from '@mui/material';
 import { useNavigate } from "react-router-dom";
+import {useCarritoContext} from '../../store/CarritoContext.jsx'
 
 import './Checkout.css';
 
-const Checkout = ({ carrito, limpiarCarrito }) => {
+const Checkout = () => {
+  const { limpiarCarrito, carrito } = useCarritoContext();
   const inicializarCampo = (requerido = true) => ({ valor: '', requerido });
   const navigate = useNavigate()
 

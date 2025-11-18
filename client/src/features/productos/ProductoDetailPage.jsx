@@ -5,9 +5,11 @@ import { useNavigate } from "react-router-dom";
 import { ButtonGroup, Button } from '@mui/material';
 import "./ProductoDetailPage.css"
 import { getProductById } from "../../service/productosService.js"
+import {useCarritoContext} from '../../store/CarritoContext.jsx'
 
 const conUnidades = (cantidadUnidades, producto) => ({...producto, cantidadUnidades})
-const ProductoDetailPage = ({ carrito, actualizarCarrito }) => {
+const ProductoDetailPage = () => {
+  const { carrito, actualizarCarrito } = useCarritoContext();
   const navigate = useNavigate()
   const { id } = useParams();
   const [producto, setProducto] = useState(null);

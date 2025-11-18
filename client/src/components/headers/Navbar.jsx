@@ -7,9 +7,11 @@ import '../../index.css';
 import AccomodationSearchBar from "../accommodationSearchBar/AccomodationSearchBar";
 import DropdownCategorias from "../dropdown/DropdownCategorias";  
 import DropdownUtilities from "../dropdown/DropdownUtilities";  
+import { useCarritoContext } from '../../store/CarritoContext.jsx'
 
 
-const Navbar = ({carrito}) => {
+const Navbar = () => {
+  const { carrito } = useCarritoContext();
   const navigate = useNavigate()
   const [cantUnidades, setCantUnidades] = useState(0);
 

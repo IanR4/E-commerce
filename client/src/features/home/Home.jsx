@@ -18,7 +18,7 @@ const Home = () => {
           <Spinner/>
         </div> :
           <div>
-            <ProductoCarousel productos={productos} />
+            <ProductoCarousel productos={productos}/>
           </div>
         }
       </>

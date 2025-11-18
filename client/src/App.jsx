@@ -12,6 +12,7 @@ import Contacto from './features/utilities/contacto/Contacto.jsx';
 import FAQ from './features/utilities/faq/FAQ.jsx';
 import Nosotros from './features/utilities/nosotros/Nosotros.jsx';
 import Notificaciones from './features/utilities/notificaciones/Notificaciones.jsx';
+import { CarritoProvider } from './store/CarritoContext.jsx';
 
 const theme = createTheme({
   palette: {
@@ -24,8 +25,8 @@ const theme = createTheme({
 function App() {
   const [carrito, setCarrito] = useState([]);
 
-  const actualizarCarrito = (hotel) => {
-    setCarrito([...carrito, hotel]);
+  const actualizarCarrito = (producto) => {
+    setCarrito([...carrito, producto]);
   };
 
   const limpiarCarrito = () => {
@@ -39,16 +40,15 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
+      <CarritoProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Layout  carrito={carrito}/>} >
-            <Route index element={<Home />} />
+          <Route path="/" element={<Layout/>} >
+            <Route index element={<Home/>} />
             <Route 
               path="/productos/:id" 
               element={
                 <ProductoDetailPage
-                  carrito={carrito}
-                  actualizarCarrito={actualizarCarrito}
                 />
               } 
             />
@@ -56,12 +56,9 @@ function App() {
               path="/carrito" 
               element={
               <Carrito 
-                carrito={carrito}
-                limpiarCarrito={limpiarCarrito}
-                removerDelCarrito={removerDelCarrito}
               />} />
             <Route 
-              path="/busqueda/:searchText" 
+              path="/busqueda/:searchText/" 
               element={
                 <Search
                 />
@@ -120,13 +117,12 @@ function App() {
               path="/checkout"
               element={
                 <Checkout
-                  carrito={carrito}
-                  limpiarCarrito={limpiarCarrito}
                 />
               } />
           </Route>
         </Routes>
       </BrowserRouter>
+      </CarritoProvider>
     </ThemeProvider>
   );
 }
