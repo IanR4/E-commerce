@@ -9,7 +9,7 @@ export default function Login({ open, onClose }) {
     const isEmailValid = /^\S+@\S+\.\S+$/.test(email);
 
     if (!open) return null;
-    const isValid = email.trim() !== "" && password.trim() !== "";
+    const isValid = isEmailValid && password.trim() !== "";
     return (
         <div className="login-modal-overlay">
             <div className="login-modal-content">

@@ -16,10 +16,11 @@ const Sesion = () => {
 
     const isValid =
         tipoUsuario !== "" && 
-        email.trim() !== "" && 
-        nombre.trim() !== "" &&
-        telefono.trim() !== "" && 
-        password.trim() !== "";
+        nombre.trim() !== "" && 
+        password.trim() !== "" &&
+        isEmailValid &&
+        isTelefonoValid;
+
 
     return (
         <div className="sesion-container">
