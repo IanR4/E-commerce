@@ -8,7 +8,18 @@ const Notificaciones = () => {
   const [notificaciones, setNotificaciones] = useState([]);
 
   const cargarnotificaciones = () => {
-    return getNotificacionesLeidas("68e636efd15618341978b277")
+    let vendedorId = null
+    try {
+      const stored = localStorage.getItem('user')
+      if (stored) {
+        const parsed = JSON.parse(stored)
+        const raw = parsed?.raw ?? parsed
+        vendedorId = raw?._id
+      }
+    } catch (err) {
+      // ignore parse errors
+    }
+    return getNotificacionesLeidas(vendedorId)
       .then((notificacionesCargados) => {
         console.log("Notificaciones cargados:", notificacionesCargados);
         setNotificaciones(notificacionesCargados);
