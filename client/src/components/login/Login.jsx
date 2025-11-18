@@ -9,6 +9,9 @@ export default function Login({ open, onClose, onLoginSuccess }) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [showRegister, setShowRegister] = useState(false);
+    const [emailTouched, setEmailTouched] = useState(false);
+    const isEmailValid = /^\S+@\S+\.\S+$/.test(email);
+    const isValid = isEmailValid && password.trim() !== "";
 
     if (!open) return null;
 
@@ -36,12 +39,12 @@ export default function Login({ open, onClose, onLoginSuccess }) {
             setError(message);
         }
     }
-    
-    return (
-        <div className="modal-overlay">
-            <div className="modal-content">
 
-                <button className="close-btn" onClick={onClose}>X</button>
+    return (
+        <div className="login-modal-overlay">
+            <div className="login-modal-content">
+
+                <button className="login-close-btn" onClick={onClose}>X</button>
 
                 {showRegister ? (
                     <Register
@@ -54,7 +57,7 @@ export default function Login({ open, onClose, onLoginSuccess }) {
                         }}
                     />
                 ) : (
-                <form className="form" onSubmit={handleSubmit}>
+                <form className="login-form" onSubmit={handleSubmit}>
                     <p className="form-title">Ingresá tu cuenta</p>
 
                     <div className="input-container">
@@ -63,9 +66,13 @@ export default function Login({ open, onClose, onLoginSuccess }) {
                             placeholder="Ingresar email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
+                            onBlur={() => setEmailTouched(true)}
                             required
                         />
                     </div>
+                    {emailTouched && !isEmailValid && (
+                        <p className="error-text">Ingrese un email válido.</p>
+                    )}
 
                     <div className="input-container">
                         <input
@@ -79,12 +86,12 @@ export default function Login({ open, onClose, onLoginSuccess }) {
 
                     {error && <p className="error">{error}</p>}
 
-                    <button type="submit" className="submit" disabled={loading}>
-                        {loading ? "Ingresando..." : "Iniciar sesión"}
+                    <button type="submit" className="submit" disabled={!isValid}>
+                        Iniciar sesión
                     </button>
 
-                    <p className="signup-link">
-                        <a href="#" onClick={(e) => { e.preventDefault(); setShowRegister(true); }}>Crear cuenta</a>
+                    <p className="login-signup-link">
+                        <a href="/Sesion">Crear cuenta</a>
                     </p>
                 </form>
                 )}

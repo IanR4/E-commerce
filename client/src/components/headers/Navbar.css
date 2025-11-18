@@ -70,6 +70,20 @@
     cursor: pointer;
 }
 
+/* BOTÓN INICIAR SESIÓN */ 
+.login-button { 
+    margin-right: 1rem; 
+    color: white; 
+    background: transparent; 
+    border: none; 
+    padding: 0.4rem 0.8rem; 
+    border-radius: 0.4rem; 
+    cursor: pointer; 
+    font-size: 0.9rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
 .cart {
     background: none;
     border: none;
