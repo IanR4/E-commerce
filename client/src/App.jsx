@@ -103,7 +103,7 @@ function App() {
                 />
               } />
               <Route 
-              path="/Sesion" 
+              path="/CrearCuenta" 
               element={
                 <Sesion
                 />

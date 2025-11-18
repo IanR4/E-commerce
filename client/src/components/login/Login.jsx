@@ -91,7 +91,7 @@ export default function Login({ open, onClose, onLoginSuccess }) {
                     </button>
 
                     <p className="login-signup-link">
-                        <a href="/Sesion">Crear cuenta</a>
+                        <a href="/CrearCuenta">Crear cuenta</a>
                     </p>
                 </form>
                 )}
