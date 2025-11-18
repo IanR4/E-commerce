@@ -2,7 +2,7 @@ import ProductoCarousel from "../../components/productoCarousel/ProductoCarousel
 import "./Search.css";
 import { useOutletContext } from "react-router";
 import { useParams } from "react-router-dom";
-import { getProductosSlowly } from "../../service/productosService.js";
+// Use backend filtering helper; remove incorrect/unused import
 import ProductoTable from "../../components/productoTable/ProductoTable.jsx";
 import Filtros from "../filtros/Filtros.jsx";
 import { Link, useSearchParams } from "react-router-dom";
@@ -43,7 +43,9 @@ const Search = () => {
     "masVendidos",
   ];
 
-  const filtrarProductos = (searchText, categoriaName) => {
+
+  // Permite pasar una lista base de productos para filtrar (por defecto usa el estado productos)
+  const filtrarProductos = (searchText, categoriaName, productosBase = null) => {
     // Build filter inputs giving precedence to explicit search params
     const q = (titulo || searchText || "").toString();
     const cat = (categoria || categoriaName || "").toString();
@@ -51,9 +53,11 @@ const Search = () => {
     const minP = precioMin ? Number(precioMin) : null;
     const maxP = precioMax ? Number(precioMax) : null;
     const vend = vendedor || null;
-
-    // Start from all productos
-    let results = Array.isArray(productos) ? productos.slice() : [];
+    
+    // Usa productosBase si se provee, si no usa el estado productos
+    let results = Array.isArray(productosBase)
+      ? productosBase.slice()
+      : (Array.isArray(productos) ? productos.slice() : []);
 
     // Category filter
     if (cat && cat.trim() !== "") {
@@ -106,31 +110,35 @@ const Search = () => {
 
  
   
-  // Filtrar automáticamente cuando cambia el searchText, productos o params
+  // Filtrar automáticamente cuando cambia el searchText o params
   useEffect(() => {
-    // If route contains a vendedorId, request filtered products from backend
-    const fetchByVendedor = async () => {
-      if (!vendedorId) return false;
+    const fetchProductos = async () => {
       setLoading(true);
       try {
-        const productosBackend = await getProductsFiltered(vendedorId, titulo, categoria, descripcion, precioMin, precioMax, orden);
-        setProductos(Array.isArray(productosBackend) ? productosBackend : []);
+        const productosBackend = await getProductsFiltered(
+          vendedorId,
+          titulo,
+          categoria,
+          descripcion,
+          precioMin,
+          precioMax,
+          orden
+        );
+        const lista = Array.isArray(productosBackend) ? productosBackend : [];
+        setProductos(lista);
+        // Apply client-side filters on the fetched list to avoid race conditions
+        filtrarProductos(searchText, categoriaName, lista);
       } catch (err) {
-        console.error('Error fetching productos por vendedor:', err);
+        console.error("Error fetching productos:", err);
         setProductos([]);
+        filtrarProductos(searchText, categoriaName, []);
       } finally {
         setLoading(false);
       }
-      return true;
     };
 
-    // If we fetched by vendedor, skip local filtering
-    fetchByVendedor().then(fetched => {
-      if (!fetched) {
-        filtrarProductos(searchText, categoriaName);
-      }
-    });
-  }, [searchText, categoriaName, productos, searchParams.toString(), vendedorId]);
+    fetchProductos();
+  }, [searchText, categoriaName, searchParams.toString(), vendedorId]);
   
 
 
@@ -180,7 +188,7 @@ const Search = () => {
                 </ul>
               )}
           </div>
-          <ProductoTable productos={productos} filtradoDropdown={filtradoDropdown} />
+          <ProductoTable productos={productosFiltrados} filtradoDropdown={filtradoDropdown} />
         </div>
       </div>
     </>
