@@ -1,12 +1,18 @@
 import React, { useState } from 'react'
+import { useEffect } from "react";
 import './AccomodationSearchBar.css';
 import { FaSearch } from 'react-icons/fa';
 import { Button, TextField } from "@mui/material";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 const AccomodationSearchBar = () => {
   const [searchText, setSearchText] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    setSearchText("");
+  }, [location.pathname]);
 
   return (
     <div className="accommodation-search">
@@ -22,13 +28,13 @@ const AccomodationSearchBar = () => {
             inputProps={{
               onKeyDown: (e) => {
                 if (e.key === 'Enter') {
-                  navigate(`/busqueda/${searchText}`);
+                  navigate(`/productos?titulo=${searchText}`);
                 }
               }
             }}
           />
 
-          <Link to={`/busqueda/${searchText}`} className="link-no-style">
+          <Link to={`/productos?titulo=${searchText}`} className="link-no-style">
             <Button id="boton" variant="outlined">
               <FaSearch className='button-icon' />
             </Button>

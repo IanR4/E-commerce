@@ -14,7 +14,7 @@ const Search = () => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
   const { searchText, categoriaName, vendedorId } = useParams();
-  const [productosFiltrados, setProductosFiltrados] = useState(null); // null = not loaded yet
+  const [productosFiltrados, setProductosFiltrados] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const [filtradoDropdown, setFiltradoDropdown] = useState("");
@@ -140,7 +140,6 @@ const Search = () => {
     fetchProductos();
   }, [searchText, categoriaName, searchParams.toString(), vendedorId]);
   
-
 
   // Render states: loading spinner, no results, or table
   if (loading || productosFiltrados === null) {

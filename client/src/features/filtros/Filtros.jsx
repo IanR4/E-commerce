@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import { Button } from '@mui/material';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
-
-import { List, ListItem, ListItemText, Divider } from '@mui/material';
+import { List, ListItem, ListItemText, Divider } from '@mui/material'
+import { getUsuario } from '../../service/usuariosService.js';
 
 import './Filtros.css';
-import usuarios from '../../mockdata/usuarios';
+
 
 const Filtros = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   // Estados para los filtros
   const [minPrice, setMinPrice] = useState('');
@@ -32,23 +33,33 @@ const Filtros = () => {
   const handleSearch = () => {
     const params = new URLSearchParams();
 
+    const currentParams = new URLSearchParams(location.search);
+    const titulo = currentParams.get('titulo') || '';
+    if (titulo) params.set('titulo', titulo);
+
     if (minPrice !== '') params.set('precioMin', minPrice);
     if (maxPrice !== '') params.set('precioMax', maxPrice);
     if (description.trim() !== '') params.set('descripcion', description.trim());
-    if (selectedCategory) params.set('categoria', selectedCategory); // ← solo una categoría
+    if (selectedCategory) params.set('categoria', selectedCategory);
 
-    // If vendedor provided, attempt to resolve by name to an id in local mockdata
     if (vendedor.trim() !== '') {
+      /*
       const match = usuarios.find(u => u.nombre.toLowerCase() === vendedor.trim().toLowerCase());
       if (match) {
-        // navigate to vendor-specific products route
-        navigate(`/busqueda/${match._id}?${params.toString()}`);
-        return;
-      } else {
-        // If no exact match, notify user and abort navigation
-        alert('Vendedor no encontrado. Verifique el nombre e intente nuevamente.');
+        navigate(`/vendedores/${match._id}/productos?${params.toString()}`);
         return;
       }
+      */
+      getUsuario(vendedor.trim()).then((user) => {
+        if (user) {
+          navigate(`/vendedores/${user._id}/productos?${params.toString()}`);
+          return;
+        }
+        else {
+          alert('Vendedor no encontrado. Verifique el nombre e intente nuevamente.');
+          return;
+        }
+      });
     }
 
     navigate(`/productos?${params.toString()}`);
@@ -133,7 +144,7 @@ const Filtros = () => {
               value={vendedor}
               onChange={(e) => setVendor(e.target.value)}
               type="text"
-              placeholder="Nombre del vendedor"
+              placeholder="ID del vendedor"
               className="descripcion-input"
             />
           </div>
