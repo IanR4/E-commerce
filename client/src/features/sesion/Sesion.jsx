@@ -1,12 +1,17 @@
 import { useState } from "react";
 import './Sesion.css';
+import { register } from '../../service/usuariosService.js';
 
 const Sesion = () => {
-    const [tipoUsuario, setTipoUsuario] = useState("");
+    // use `tipo` state below for user type (Comprador / Vendedor)
     const [email, setEmail] = useState("");
     const [nombre, setNombre] = useState("");
     const [telefono, setTelefono] = useState("");
     const [password, setPassword] = useState("");
+    const [tipo, setTipo] = useState('Comprador');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [success, setSuccess] = useState(null);
 
     const [emailTouched, setEmailTouched] = useState(false);
     const [telefonoTouched, setTelefonoTouched] = useState(false);
@@ -15,27 +20,50 @@ const Sesion = () => {
     const isTelefonoValid = /^[0-9]{8,}$/.test(telefono);
 
     const isValid =
-        tipoUsuario !== "" && 
+        tipo !== "" && 
         nombre.trim() !== "" && 
         password.trim() !== "" &&
         isEmailValid &&
         isTelefonoValid;
 
+     const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError(null);
+        setSuccess(null);
+                if (!['Comprador', 'Vendedor'].includes(tipo)) {
+          setError('Tipo inválido');
+          return;
+        }
+        setLoading(true);
+        try {
+                    const resp = await register(email, password, nombre, tipo, telefono);
+          setLoading(false);
+          setSuccess('Cuenta creada correctamente');
+        } catch (err) {
+          setLoading(false);
+          let message = 'Error al crear la cuenta';
+          if (err?.response?.data?.message) message = err.response.data.message;
+          else if (err?.response?.status === 400) message = 'Datos inválidos';
+          else if (err?.message) message = err.message;
+          setError(message);
+        }
+      };
+
 
     return (
         <div className="sesion-container">
 
-            <form className="sesion-form">
+            <form className="sesion-form" onSubmit={handleSubmit}>
                 <p className="form-title">Crear cuenta</p>
                 <div className="input-container">
                     <select
-                        value={tipoUsuario}
-                        onChange={(e) => setTipoUsuario(e.target.value)}
+                        value={tipo}
+                        onChange={(e) => setTipo(e.target.value)}
                         className="select-input"
                     >
                         <option value="">Seleccione tipo de usuario</option>
-                        <option value="cliente">Cliente</option>
-                        <option value="vendedor">Vendedor</option>
+                        <option value="Comprador">Comprador</option>
+                        <option value="Vendedor">Vendedor</option>
                     </select>
                 </div>
                 <div className="input-container">
