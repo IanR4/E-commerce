@@ -21,7 +21,7 @@ export const getNotificacionesLeidas = (id) => {
     .then((response) => response.data)
 }
 
-export const getProductsFiltered = (vendedor, titulo, categoria, descripcion, precioMin, precioMax, orden) => {
+export const getProductsFiltered = (vendedor = "", titulo = "", categoria = "", descripcion = "", precioMin = "", precioMax = "", orden = "masVendidos") => {
   const queryFiltros = extraerFiltros(titulo, categoria, descripcion, precioMin, precioMax, orden)
   var rutaVendedor = vendedor?`/vendedores/${vendedor}`:``
   return axios

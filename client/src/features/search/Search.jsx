@@ -11,7 +11,6 @@ import { getProductsFiltered } from "../../service/productosService.js"
 
 const Search = () => {
   const outlet = useOutletContext();
-  const productos = outlet?.productos || [];
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
   const { searchText, categoriaName, vendedorId } = useParams();
@@ -30,6 +29,8 @@ const Search = () => {
   const vendedor = searchParams.get("vendedor");
   const orden = searchParams.get("orden");
 
+  const [productos, setProductos] = useState([]);
+  
   const dropdown = [
     "Menor Precio",
     "Mayor Precio",
@@ -104,7 +105,7 @@ const Search = () => {
   };
 
  
-
+  
   // Filtrar automáticamente cuando cambia el searchText, productos o params
   useEffect(() => {
     // If route contains a vendedorId, request filtered products from backend
@@ -113,10 +114,10 @@ const Search = () => {
       setLoading(true);
       try {
         const productosBackend = await getProductsFiltered(vendedorId, titulo, categoria, descripcion, precioMin, precioMax, orden);
-        setProductosFiltrados(Array.isArray(productosBackend) ? productosBackend : []);
+        setProductos(Array.isArray(productosBackend) ? productosBackend : []);
       } catch (err) {
         console.error('Error fetching productos por vendedor:', err);
-        setProductosFiltrados([]);
+        setProductos([]);
       } finally {
         setLoading(false);
       }
@@ -130,6 +131,8 @@ const Search = () => {
       }
     });
   }, [searchText, categoriaName, productos, searchParams.toString(), vendedorId]);
+  
+
 
   // Render states: loading spinner, no results, or table
   if (loading || productosFiltrados === null) {
@@ -177,7 +180,7 @@ const Search = () => {
                 </ul>
               )}
           </div>
-          <ProductoTable productos={productosFiltrados} filtradoDropdown={filtradoDropdown} />
+          <ProductoTable productos={productos} filtradoDropdown={filtradoDropdown} />
         </div>
       </div>
     </>
