@@ -98,7 +98,10 @@ const Subbar = () => {
             <Link to={`/Notificaciones`} className="link-no-style"><h3 className="utilities-text"> Notificaciones </h3></Link>
         
             {user && isUserSeller(user) ? (
-                <button className="publish-button" onClick={() => navigate('/Publicar')}><h3 className="utilities-text"> Publicar producto </h3></button>
+                <>
+                  <button className="publish-button" onClick={() => navigate('/Publicar')}><h3 className="utilities-text"> Publicar producto </h3></button>
+                  <button className="publish-button" onClick={() => navigate('/mis-productos')} style={{ marginLeft: '8px' }}><h3 className="utilities-text"> Mis productos </h3></button>
+                </>
             ) : ("")}  
         </div>
          

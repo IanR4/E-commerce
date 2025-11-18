@@ -1,0 +1,58 @@
+.visualizacion-container {
+  max-width: 1100px;
+  margin: 24px auto;
+  padding: 16px;
+}
+
+.visualizacion-title {
+  margin: 0 0 12px 0;
+  font-size: 1.5rem;
+  color: #222;
+}
+
+.visualizacion-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  grid-auto-rows: 1fr; /* ensure rows are equal height */
+}
+
+.visualizacion-item {
+  display: flex;
+  align-items: stretch;
+  /* make card fill the grid cell */
+  height: 100%;
+}
+
+/* Ensure the CarouselItem card fills the grid cell when used here */
+.visualizacion-item .carousel-card {
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 0.25rem !important;
+}
+
+.visualizacion-item .producto-card {
+  height: auto !important;
+  min-height: 18rem;
+}
+
+/* When using ProductCard, ensure it stretches to fill the cell */
+.visualizacion-item .pv-card {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.visualizacion-item .producto-image {
+  height: 160px; /* slightly smaller to fit cards */
+}
+
+.visualizacion-empty {
+  color: #666;
+}
+
+.visualizacion-spinner,
+.visualizacion-error {
+  text-align: center;
+  padding: 24px;
+}

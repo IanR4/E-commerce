@@ -11,8 +11,8 @@ import Contacto from './features/utilities/contacto/Contacto.jsx';
 import FAQ from './features/utilities/faq/FAQ.jsx';
 import Nosotros from './features/utilities/nosotros/Nosotros.jsx';
 import Notificaciones from './features/utilities/notificaciones/Notificaciones.jsx';
-import Sesion from './features/sesion/Sesion.jsx';
 import Publicar from './features/publicar/Publicar.jsx';
+import VisualizacionProducto from './features/visualizacionProducto/VisualizacionProducto.jsx';
 
 const theme = createTheme({
   palette: {
@@ -104,16 +104,15 @@ function App() {
                 />
               } />
               <Route 
-              path="/Sesion" 
-              element={
-                <Sesion
-                />
-              } />
-              <Route 
               path="/Publicar" 
               element={
                 <Publicar
                 />
+              } />
+              <Route 
+              path="/mis-productos"
+              element={
+                <VisualizacionProducto />
               } />
           </Route>
         </Routes>

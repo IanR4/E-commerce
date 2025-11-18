@@ -15,6 +15,12 @@ export const getProductById = (id) => {
     .then((response) => response.data)
 }
 
+export const getProductVendedor = (vendedor_id) => {
+  return axios
+    .get(`${API_BASE_URL}/vendedores/${vendedor_id}/productos`)
+    .then((response) => response.data)
+}
+
 
 export const postProduct = (vendedor, titulo, descripcion, categoria, precio, moneda, stock, foto) => {
   // backend expects `categorias` as an array and moneda to match its enum values
