@@ -1,4 +1,5 @@
 .navbar-bg {
+    z-index: 4000;
     background-color: var(--primary-blue);
     font-size: 1.5rem;
     height: 5rem;
