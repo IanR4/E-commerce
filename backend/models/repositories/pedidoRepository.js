@@ -21,6 +21,11 @@ class PedidoRepository {
     findByUser(usuarioId) {
         return this.model.find({ comprador: usuarioId }).exec();
     }
+
+    findByVendedor(vendedorId) {
+        // buscá pedidos que tengan al menos un item cuyo productoEmbebido.vendedor sea vendedorId
+        return this.model.find({ 'items.productoEmbebido.vendedor': vendedorId }).exec();
+    }
 }
 
 export default new PedidoRepository();

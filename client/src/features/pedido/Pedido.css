@@ -1,0 +1,102 @@
+.pedido-container {
+  max-width: 1100px;
+  margin: 1.5rem auto;
+  padding: 1rem;
+  background: var(--surface, #fff);
+  color: var(--text, #222);
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.pedido-container h2 {
+  margin: 0 0 1rem 0;
+  color: var(--primary-blue);
+}
+
+.pedidos-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.pedido-card {
+  border: 1px solid rgba(0,0,0,0.06);
+  padding: 0.75rem;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.pedido-header {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.pedido-meta {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+  color: #444;
+}
+
+.items-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 0.5rem;
+}
+
+.items-table th,
+.items-table td {
+  padding: 0.5rem 0.6rem;
+  border-bottom: 1px solid rgba(0,0,0,0.04);
+  text-align: left;
+  font-size: 0.95rem;
+}
+
+.items-table th {
+  color: var(--primary-blue);
+  font-weight: 600;
+}
+
+.item-title {
+  max-width: 420px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.pedido-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+}
+
+.total {
+  background: rgba(0,0,0,0.03);
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+@media (max-width: 700px) {
+  .pedido-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+  }
+
+  .pedido-meta {
+    gap: 1rem;
+  }
+
+  .items-table th,
+  .items-table td {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.5rem;
+  }
+}

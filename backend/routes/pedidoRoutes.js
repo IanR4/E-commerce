@@ -20,5 +20,9 @@ export default function pedidoRoutes() {
         PedidoController.getPedidosUsuario(req, res).catch(next);
     });
 
+    router.get("/vendedores/:vendedorId/pedidos", (req, res, next) => {
+        PedidoController.getPedidosVendedor(req, res).catch(next);
+    });
+
     return router;
 }

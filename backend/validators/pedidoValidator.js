@@ -40,6 +40,17 @@ class PedidoValidator {
         }
         return listaPedido;
     }
+
+    buscarPedidoVendedor(vendedorId) {
+        if (!vendedorId) {
+            return Promise.reject(new BadRequestError("Invalid vendedorId parameter"));
+        }
+        const listaPedido = this.pedidoRepository.findByVendedor(vendedorId);
+        if(!listaPedido) {
+            return Promise.reject(new NotFoundError("Lista de pedidos por vendedor no encontrada"));
+        }
+        return listaPedido;
+    }
 }
 
 const itemPedidoSchema = z.object({

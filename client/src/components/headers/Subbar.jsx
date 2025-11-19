@@ -96,6 +96,10 @@ const Subbar = () => {
             )}
 
             <Link to={`/Notificaciones`} className="link-no-style"><h3 className="utilities-text"> Notificaciones </h3></Link>
+
+            {user && (
+              <Link to={`/mis-pedidos`} className="link-no-style"><h3 className="utilities-text"> Mis pedidos </h3></Link>
+            )}
         
             {user && isUserSeller(user) ? (
                 <>

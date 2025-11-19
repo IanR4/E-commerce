@@ -111,4 +111,14 @@ export default class PedidoService {
             };
         });
     }
+
+    getPedidosVendedor(vendedorId) {
+        return Promise.resolve(this.pedidoValidator.buscarPedidoVendedor(vendedorId))
+        .then((listaPedidos) => {
+            return {
+                data: listaPedidos,
+                status: 200
+            };
+        });
+    }
 }

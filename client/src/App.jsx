@@ -13,6 +13,7 @@ import Nosotros from './features/utilities/nosotros/Nosotros.jsx';
 import Notificaciones from './features/utilities/notificaciones/Notificaciones.jsx';
 import Publicar from './features/publicar/Publicar.jsx';
 import VisualizacionProducto from './features/visualizacionProducto/VisualizacionProducto.jsx';
+import Pedido from './features/pedido/Pedido.jsx';
 
 const theme = createTheme({
   palette: {
@@ -113,6 +114,11 @@ function App() {
               path="/mis-productos"
               element={
                 <VisualizacionProducto />
+              } />
+              <Route 
+              path="/mis-pedidos"
+              element={
+                <Pedido />
               } />
           </Route>
         </Routes>

@@ -38,6 +38,13 @@ class PedidoController {
         return this.pedidoService.getPedidosUsuario(usuarioId)
             .then(({ data, status }) => res.status(status).json(data))
     };
+
+    getPedidosVendedor = (req, res) => {
+        const vendedorId = req.params.vendedorId;
+        this.usuarioValidator.validarUsuarioId(vendedorId);
+        return this.pedidoService.getPedidosVendedor(vendedorId)
+            .then(({ data, status }) => res.status(status).json(data))
+    };
 }
 
 export default new PedidoController();
