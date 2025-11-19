@@ -126,6 +126,17 @@
   color: var(--muted);
 }
 
+.leer {
+  background-color: var(--primary-blue);
+  color: white;
+  font-size: 0.9rem;
+  font-weight: bold;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  display: inline-block;
+  margin-left: auto;
+}
+
 @media (max-width: 640px){
   .notificacion-card-header{flex-direction:column;align-items:flex-start}
   .notificacion-fechas{text-align:left}
