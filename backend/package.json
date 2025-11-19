@@ -1,8 +1,10 @@
 {
   "name": "tp",
   "version": "1.0.0",
-  "description": "",
+  "description": "Tienda Sol - Backend API",
   "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
     "test": "jest"
   },
   "type": "module",
@@ -24,9 +26,7 @@
     "@babel/preset-env": "^7.28.3",
     "jest": "^30.1.3"
   },
-  "swaggerDependenciesAdded": true,
-  "dependenciesSwaggerNote": "Se agregan dependencias para documentacion Swagger",
-  "swagger": {
-    "version": "3.0.3"
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
