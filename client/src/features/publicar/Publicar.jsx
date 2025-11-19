@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from "react";
 import './Publicar.css'
 import { postProduct } from '../../service/productosService.js'
 import { useNavigate } from 'react-router-dom'
+import { FaThList } from 'react-icons/fa';
 
 const Publicar = () => {
 	const [form, setForm] = useState({
@@ -17,10 +18,29 @@ const Publicar = () => {
 	const [error, setError] = useState(null)
 	const [success, setSuccess] = useState(null)
 	const navigate = useNavigate()
+	const [open, setOpen] = useState(false);
+	const dropdownRef = useRef(null);
 
 	const handleChange = (e) => {
 		const { name, value } = e.target
 		setForm((prev) => ({ ...prev, [name]: value }))
+	}
+
+	
+
+	useEffect(() => {
+		const handleClickOutside = (event) => {
+			if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+				setOpen(false);
+			}
+		};
+		document.addEventListener('mousedown', handleClickOutside);
+		return () => document.removeEventListener('mousedown', handleClickOutside);
+	}, []);
+
+	const handleCategoriaClick = (cat) => {
+		setForm((prev) => ({ ...prev, categoria: cat }));
+		setOpen(false);
 	}
 
 	const handleSubmit = (e) => {
@@ -103,9 +123,19 @@ const Publicar = () => {
 				<label className="publicar-label">Descripción</label>
 				<textarea className="publicar-textarea" name="descripcion" value={form.descripcion} onChange={handleChange} />
 
-				<label className="publicar-label">Categoría</label>
-				<input className="publicar-input" name="categoria" value={form.categoria} onChange={handleChange} />
-
+				
+				<div className="publicar-col">
+					<label className="publicar-label">Categoría</label>
+					<select className="publicar-input" name="categoria" value={form.categoria} onChange={handleChange}>
+						<option value="Limpieza">Limpieza</option>
+						<option value="Cocina">Cocina</option>
+						<option value="Vehiculos">Vehiculos</option>
+						<option value="Tecnologia">Tecnologia</option>
+						<option value="Ropa">Ropa</option>
+						<option value="Muebles">Muebles</option>
+					</select>
+				</div>
+				
 				<div className="publicar-row">
 					<div className="publicar-col">
 						<label className="publicar-label">Precio</label>

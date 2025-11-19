@@ -51,7 +51,7 @@
 	justify-content: center;
 }
 
-.publicar-col { flex: 1 1 150px; max-width: 260px }
+.publicar-col { flex: 1 1 50px; max-width: 260px }
 
 .publicar-button {
 	margin-top: 8px;
@@ -67,4 +67,8 @@
 
 .publicar-error { color: #b00020; padding: 8px; background: #fff0f1; border-radius: 6px }
 .publicar-success { color: #135e0d; padding: 8px; background: #f0fff4; border-radius: 6px }
+
+
+
+
 
