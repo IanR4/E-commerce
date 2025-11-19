@@ -215,7 +215,7 @@ const Checkout = () => {
         {/* Columna Derecha: Formulario */}
         <Card className="form-column">
           <Typography variant="h6" className="form-title">Información de Entrega</Typography>
-          <form className="form-delivery">
+          <form className="form1-delivery">
             
             {/* Moneda - Dropdown */}
             <FormControl fullWidth margin="normal" required>

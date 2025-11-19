@@ -125,13 +125,14 @@
     gap: 1.5rem;
   }
 
+  /* On small screens show resumen (order 1) first, then form (order 2) */
   .resumen-column {
     position: static;
-    order: 2;
+    order: 1;
   }
 
   .form-column {
-    order: 1;
+    order: 2;
   }
 
   .productos-lista {
