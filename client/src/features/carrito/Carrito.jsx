@@ -26,13 +26,13 @@ const Carrito = () => {
           <div className="total">
             <h4>Total: ${carrito.reduce((acc, producto) => acc + producto.precio * producto.cantidadUnidades, 0).toLocaleString("es-AR")}</h4>
             <br/>
-            <input type="button" value="Finalizar compra" onClick={() => navigate("/checkout")}/>
+            <input type="button" className="botonFinalizarCompra" value="Finalizar compra" onClick={() => navigate("/checkout")}/>
           </div>
         ) : (
           <div className="carrito-vacio">
             <h4>El carrito está vacío</h4>
             <br/>
-            <input type="button" value="Explorar productos!" onClick={() => navigate("/busqueda/")}/>
+            <input type="button" className="botonExplorarProductos" value="Explorar productos!" onClick={() => navigate("/productos?titulo=")}/>
           </div>
         )}
       </Card>

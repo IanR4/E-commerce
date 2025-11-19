@@ -7,4 +7,4 @@ export const getUsuario = (id) => {
     .get(`${API_BASE_URL}/usuario/${id}`)
     .then((response) => response.data)
     .catch((error) => { return null });
-  }
+}
