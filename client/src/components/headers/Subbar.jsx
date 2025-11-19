@@ -1,6 +1,7 @@
 import { Link } from 'react-router';
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
 import './Subbar.css';
 import {FaShoppingCart} from 'react-icons/fa';
 import '../../index.css';
@@ -10,7 +11,8 @@ import DropdownUtilities from "../dropdown/DropdownUtilities";
 import Login from "../login/Login";
 
 const Subbar = ({carrito}) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const location = useLocation();
   const [cantUnidades, setCantUnidades] = useState(0);
   const [openLogin, setOpenLogin] = useState(false);
   const [user, setUser] = useState(null);
@@ -89,11 +91,13 @@ const Subbar = ({carrito}) => {
         <div className="subbar-section center">
             <DropdownCategorias/>
 
-            {!user ? (
+            {!user && location.pathname !== '/CrearCuenta' && (
                 <button className="login-button" onClick={abrirLogin}>
                     <h3 className="utilities-text"> Iniciar sesión </h3>
                 </button>
-            ) : (
+            )}
+            
+            {user && (
                 <div className="user-dropdown" ref={userMenuRef}>
                   <button className="login-button" onClick={() => setShowUserMenu(s => !s)}>
                     <h3 className="utilities-text">{user.displayName}</h3>
@@ -108,18 +112,17 @@ const Subbar = ({carrito}) => {
 
             <Link to={`/Notificaciones`} className="link-no-style"><h3 className="utilities-text"> Notificaciones </h3></Link>
         
-            {user && isUserSeller(user) ? (
-                <button className="publish-button" onClick={() => navigate('/publicar')}><h3 className="utilities-text"> Publicar producto </h3></button>
-            ) : ("")}  
+            {user && isUserSeller(user) && (
+                <button className="publish-button" onClick={() => navigate('/publicar')}>
+                  <h3 className="utilities-text"> Publicar producto </h3>
+                </button>
+            )}
         </div>
          
-        
       </nav>
       <Login open={openLogin} onClose={cerrarLogin} onLoginSuccess={handleLoginSuccess} />
     </div>
-    
   );
 };
 
 export default Subbar;
-
