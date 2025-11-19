@@ -48,6 +48,13 @@ class ProductoController {
         return this.productoService.deleteProducto(productoId)
             .then(({ data, status }) => res.status(status).json(data))
     }
+
+    patchProducto = (req, res) => {
+        const productoId = req.params.productoId;
+        const productoData = req.body;
+        return this.productoService.patchProducto(productoId, productoData)
+            .then(({ data, status }) => res.status(status).json(data))
+    }
 }
 
 export default new ProductoController();

@@ -101,4 +101,15 @@ export default class ProductoService {
                     .then(() => ({ data: { message: 'Producto eliminado' }, status: 200 }));
             });
     }
+
+    patchProducto(productoId, productoData) {
+        return ProductoValidator.buscarProducto(productoId)
+            .then((producto) => {
+                return ProductoRepository.actualizar(productoId, productoData)
+                    .then((productoActualizado) => ({
+                        data: productoActualizado,
+                        status: 200
+                    }));
+            });
+    }
 }

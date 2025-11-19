@@ -24,5 +24,9 @@ export default function productoRoutes() {
         ProductoController.deleteProducto(req, res).catch(next);
     });
 
+    router.patch("/producto/:productoId", (req, res, next) => {
+        ProductoController.patchProducto(req, res).catch(next);
+    });
+
     return router;
 }
