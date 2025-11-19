@@ -59,9 +59,35 @@ const Checkout = () => {
 
   const handleEnviar = () => {
     const pedido = construirPedido();
-    postPedido(pedido);
-    limpiarCarrito();
-    navigate("/")
+    // require user to be logged in
+    let usuarioLocal = null
+    try {
+      const stored = localStorage.getItem('user')
+      if (stored) {
+        const parsed = JSON.parse(stored)
+        const raw = parsed?.raw ?? parsed
+        usuarioLocal = raw?._id || raw?.id || null
+      }
+    } catch (e) {}
+
+    if (!usuarioLocal) {
+      // friendly UX: inform user they must log in
+      // you can replace with a nicer in-component message if preferred
+      window.alert('Pedido fallido')
+      return
+    }
+
+    // send the pedido and handle result
+    postPedido(pedido)
+      .then(() => {
+        limpiarCarrito();
+        navigate("/")
+      })
+      .catch((err) => {
+        console.error('Error al enviar pedido', err)
+        const msg = err?.response?.data?.message || err.message || 'Error al procesar el pedido'
+        window.alert(msg)
+      })
   };
 
   useEffect(() => {

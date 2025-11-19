@@ -41,3 +41,10 @@ form{
   font-size: 0.875rem;
   min-width: 150px;
 }
+
+.errorFinalizar {
+  color: #b91c1c;
+  margin-bottom: 8px;
+  font-weight: 500;
+  font-size: 1.2rem;
+}

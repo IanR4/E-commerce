@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, TextField, Button } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import CarritoItem from '../../components/carritoItem/CarritoItem.jsx';
@@ -8,6 +8,20 @@ import './Carrito.css';
 
 const Carrito = () => {
   const { removerDelCarrito, limpiarCarrito, carrito } = useCarritoContext();
+  const [userId, setUserId] = useState(null)
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem('user')
+      if (stored) {
+        const parsed = JSON.parse(stored)
+        const raw = parsed?.raw ?? parsed
+        setUserId(raw?._id || raw?.id || null)
+      }
+    } catch (e) {
+      setUserId(null)
+    }
+  }, [])
   const inicializarCampo = (requerido = true) => ({ valor: '', requerido });
   const navigate = useNavigate()
 
@@ -45,7 +59,19 @@ const Carrito = () => {
           <div className="total">
             <h4>Total: ${productosAgrupadosArray.reduce((acc, producto) => acc + (producto.precio * (producto.cantidadUnidades ?? 1)), 0).toLocaleString("es-AR")}</h4>
             <br/>
-            <input type="button" className="botonFinalizarCompra" value="Finalizar compra" onClick={() => navigate("/checkout")}/>
+            {!userId && (
+              <p className="errorFinalizar">
+                Debe iniciar sesión para finalizar
+              </p>
+            )}
+            <input
+              type="button"
+              className="botonFinalizarCompra"
+              value="Finalizar compra"
+              onClick={() => navigate("/checkout")}
+              disabled={!userId}
+              style={!userId ? { opacity: 0.6, cursor: 'not-allowed' } : {}}
+            />
           </div>
         ) : (
           <div className="carrito-vacio">
