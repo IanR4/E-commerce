@@ -15,9 +15,13 @@ export const getProductById = (id) => {
     .then((response) => response.data)
 }
 
-export const getProductVendedor = (vendedor_id) => {
+export const getProductVendedor = (vendedor_id, page = 1, limit = 9) => {
+  const params = new URLSearchParams();
+  if (page) params.set('page', page);
+  if (limit) params.set('limit', limit);
+  const qs = params.toString() ? `?${params.toString()}` : '';
   return axios
-    .get(`${API_BASE_URL}/vendedores/${vendedor_id}/productos`)
+    .get(`${API_BASE_URL}/vendedores/${vendedor_id}/productos${qs}`)
     .then((response) => response.data)
 }
 

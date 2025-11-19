@@ -12,16 +12,28 @@
 
 .visualizacion-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: 1fr; /* mobile: single column */
   gap: 16px;
-  grid-auto-rows: 1fr; /* ensure rows are equal height */
+}
+
+/* From tablet/desktop, show two columns */
+@media (min-width: 700px) {
+  .visualizacion-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Optional: larger screens can still show 3 columns */
+@media (min-width: 1200px) {
+  .visualizacion-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .visualizacion-item {
   display: flex;
   align-items: stretch;
   /* make card fill the grid cell */
-  height: 100%;
 }
 
 /* Ensure the CarouselItem card fills the grid cell when used here */
@@ -33,7 +45,7 @@
 
 .visualizacion-item .producto-card {
   height: auto !important;
-  min-height: 18rem;
+  min-height: 12rem;
 }
 
 /* When using ProductCard, ensure it stretches to fill the cell */

@@ -88,4 +88,17 @@ export default class ProductoService {
             };
         });
     }
+
+    deleteProducto(productoId) {
+        // validate id presence
+        ProductoValidator.validarProductoId(productoId);
+        return ProductoRepository.findById(productoId)
+            .then((producto) => {
+                if (!producto) {
+                    return { data: { message: 'Producto no encontrado' }, status: 404 };
+                }
+                return ProductoRepository.eliminar(productoId)
+                    .then(() => ({ data: { message: 'Producto eliminado' }, status: 200 }));
+            });
+    }
 }

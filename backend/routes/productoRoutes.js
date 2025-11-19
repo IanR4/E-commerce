@@ -20,5 +20,9 @@ export default function productoRoutes() {
         ProductoController.getProductosVendedor(req, res).catch(next);
     });
 
+    router.delete("/producto/:productoId", (req, res, next) => {
+        ProductoController.deleteProducto(req, res).catch(next);
+    });
+
     return router;
 }

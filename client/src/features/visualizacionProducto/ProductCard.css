@@ -1,25 +1,25 @@
-.pv-card {
+.producto-card {
   background: #fff;
+  border: 1px solid rgba(0,0,0,0.06);
+  padding: 0.75rem;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  overflow: hidden;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding: 12px;
-  gap: 12px;
+  transition: background 120ms ease, box-shadow 160ms ease, border-color 120ms ease;
+  width: 100%;
+  position: relative;
 }
 
-/* horizontal image on the left */
-.pv-image-wrap {
-  width: 110px;
-  height: 72px;
-  flex: 0 0 110px;
-  border-radius: 6px;
+/* Top image that fills the card width */
+.pv-image-top {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-height: 220px; /* cap to avoid extremely tall images */
+  border-radius: 8px;
   overflow: hidden;
   background: #f6f6f6;
+  margin-bottom: 12px;
 }
 
+.pv-image-top .pv-image,
 .pv-image {
   width: 100%;
   height: 100%;
@@ -27,35 +27,48 @@
   display: block;
 }
 
-/* body is a row: main text + side meta */
-.pv-body {
+.pv-header {
   display: flex;
-  flex-direction: row;
-  align-items: center;
   justify-content: space-between;
-  width: 100%;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.25rem;
 }
 
-.pv-main {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  flex: 1 1 auto;
-}
+.pv-header-left { display:flex; flex-direction:column }
 
-.pv-title { margin: 0; font-size: 1rem; font-weight: 600; color: #222 }
-.pv-category { font-size: 0.85rem; color: #666 }
-.pv-desc { margin: 0; font-size: 0.9rem; color: #444; max-height: 2.6rem; overflow: hidden; text-overflow: ellipsis }
-
-.pv-side {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 6px;
-  min-width: 110px;
-}
-
-.pv-qty { color: #444 }
+.pv-title { font-weight:700; color:#243447; font-size:1rem; margin:0 0 6px 0 }
+.pv-submeta { display:inline-flex; gap:0.6rem; align-items:center; font-size:0.9rem; color:#54606a }
+.pv-category { font-size:0.9rem; color:#54606a }
+.meta-sep { color: #9aa3ad }
 .pv-price { font-weight: 700; color: #111 }
-.pv-stock { font-size: 0.85rem; color: #666 }
+
+/* Delete button (small, positioned at bottom-right) */
+.pv-delete-btn {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  background: #ef4444;
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.82rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+.pv-delete-btn:hover { background: #dc2626 }
+
+/* Responsive tweaks */
+@media (max-width:700px) {
+  .producto-card { padding-right: calc(56px + 0.5rem); }
+  .pv-delete-btn { right: 10px; bottom: 10px; }
+}
+
+/* Ensure a reasonable minimum width on larger screens so info doesn't wrap oddly */
+@media (min-width:700px) {
+  .producto-card { min-width: 220px; }
+  .pv-image-top { min-width: 220px; }
+}
 

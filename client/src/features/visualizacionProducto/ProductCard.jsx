@@ -1,8 +1,8 @@
 import React from 'react'
+import axios from 'axios'
 import './ProductCard.css'
-import { Link } from 'react-router-dom'
 
-const ProductCard = ({ producto }) => {
+const ProductCard = ({ producto, onDelete }) => {
   const {
     _id,
     titulo,
@@ -16,22 +16,47 @@ const ProductCard = ({ producto }) => {
 
   const categoriaTexto = Array.isArray(categorias) ? categorias.join(', ') : (categorias || '')
 
-  return (
-    <div className="pv-card pv-card-horizontal">
-      <div className="pv-image-wrap">
+  const idVal = _id ? (_id.$oid || _id) : (producto?.id || Math.random())
+  const idStr = String(idVal)
+
+  
+
+    const handleDelete = async () => {
+      const ok = window.confirm('¿Eliminar este producto? Esta acción no se puede deshacer.')
+      if (!ok) return
+      try {
+        const base = process.env.REACT_APP_API_URL || ''
+        await axios.delete(`${base}/producto/${idStr}`)
+        if (typeof onDelete === 'function') {
+          onDelete(idStr)
+        } else {
+          // fallback: reload to reflect changes
+          window.location.reload()
+        }
+      } catch (err) {
+        console.error('Error eliminando producto', err)
+        alert('No se pudo eliminar el producto')
+      }
+    }
+
+    return (
+    <div className="producto-card" data-id={idStr}>
+      <div className="pv-image-top">
         <img src={foto || '/images/placeholder.png'} alt={titulo} className="pv-image" />
       </div>
 
-      <div className="pv-body pv-body-horizontal">
-        <div className="pv-main">
-          <h3 className="pv-title">{titulo}</h3>
-          <div className="pv-category">{categoriaTexto}</div>
-          <p className="pv-desc">{descripcion}</p>
+      <div className="pedido-header pv-header">
+        <div className="pedido-header-left pv-header-left">
+          <div>
+            <div className="pedido-title pv-title">{titulo}</div>
+            <div className="pedido-submeta pv-submeta">
+              <span className="pv-category">{categoriaTexto}</span>
+              <span className="meta-sep">·</span>
+              <span className="pv-price">{precio != null ? `$ ${Number(precio).toLocaleString('es-AR')}` : '—'}</span>
+            </div>
+          </div>
         </div>
-
-        <div className="pv-side">
-          <div className="pv-price">{precio != null ? `$ ${precio.toLocaleString()}` : '—'}</div>
-        </div>
+        <button type="button" className="pv-delete-btn" onClick={handleDelete} aria-label="Eliminar producto">Eliminar</button>
       </div>
     </div>
   )

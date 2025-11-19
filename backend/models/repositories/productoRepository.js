@@ -23,6 +23,10 @@ class ProductoRepository {
         return this.model.findByIdAndUpdate(productoId, productoData, { new: true }).exec();
     }
 
+    eliminar(productoId) {
+        return this.model.findByIdAndDelete(productoId).exec();
+    }
+
     ordenarProductos(query, orden) {
     if (orden == "precioAsc") {
         return this.model.find(query).sort({ precio: 1 }).exec();

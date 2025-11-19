@@ -41,6 +41,13 @@ class ProductoController {
         return this.productoService.getProductosPorVendedor(vendedorId, { page, limit }, { titulo, categoria, descripcion, precioMin, precioMax, orden })
             .then(({ data, status }) => res.status(status).json(data))
     }
+
+    deleteProducto = (req, res) => {
+        const productoId = req.params.productoId;
+        this.productoValidator.validarProductoId(productoId);
+        return this.productoService.deleteProducto(productoId)
+            .then(({ data, status }) => res.status(status).json(data))
+    }
 }
 
 export default new ProductoController();
