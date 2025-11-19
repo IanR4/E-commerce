@@ -28,7 +28,7 @@ const DropdownCategorias = () => {
   ];
 
   return (
-    <div className="dropdown" ref={dropdownRef}>
+    <div className="dropdown-categorias" ref={dropdownRef}>
       <button className="dropdown-btn" onClick={() => setOpen(!open)}>
         <h3 className="utilities-text"> Categorías ▾ </h3>
       </button>

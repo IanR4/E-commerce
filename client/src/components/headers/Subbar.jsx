@@ -104,7 +104,7 @@ const Subbar = () => {
             {user && isUserSeller(user) ? (
                 <>
                   <button className="publish-button" onClick={() => navigate('/Publicar')}><h3 className="utilities-text"> Publicar producto </h3></button>
-                  <button className="publish-button" onClick={() => navigate('/mis-productos')} style={{ marginLeft: '8px' }}><h3 className="utilities-text"> Mis productos </h3></button>
+                  <button className="publish-button" onClick={() => navigate('/mis-productos')}><h3 className="utilities-text"> Mis productos </h3></button>
                 </>
             ) : ("")}  
         </div>

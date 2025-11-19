@@ -172,11 +172,9 @@ body, main {
 /* Publish button style for sellers */
 .publish-button {
     background: transparent;
-    padding: .4rem .8rem;
     border: none;
     color: var(--primary-white);
     cursor: pointer;
-    margin-right: 0.75rem;
 }
 
 .publish-button:hover {
