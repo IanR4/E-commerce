@@ -4,6 +4,9 @@ export class MongoDBClient {
     static connect() {
         const uri = process.env.MONGODB_URI;
 
+        //TEMPORAL
+        console.log("MongoDB final URI:", process.env.MONGODB_URI);
+
         return mongoose
             .connect(uri)
             .then((conn) => {
