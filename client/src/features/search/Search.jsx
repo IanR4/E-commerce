@@ -164,7 +164,7 @@ const Search = () => {
           {!isMobile && <Filtros />}
         </div>
 
-        <div>
+        <div className="productos-section">
           <div className="dropdown" ref={dropdownRef}>
             <button className="dropdown-btn" onClick={() => setOpen(!open)}>
               Ordenar por {dropdown[filtros.indexOf(filtradoDropdown)]} ▾
