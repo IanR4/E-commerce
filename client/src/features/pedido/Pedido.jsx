@@ -99,45 +99,6 @@ const Pedido = () => {
     return items.reduce((sum, it) => sum + ((it.cantidad || 0) * (it.precioUnitario || 0)), 0);
   };
 
-  // Conversion helpers (mirrors Checkout.jsx behavior)
-  const convertirMoneda = (monto, monedaActual = 'PesoArg', monedaDeseada = 'PesoArg') => {
-    const arsTo = {
-      PesoArg: 1,
-      DolarUsa: 0.00071,
-      Real: 0.0038
-    };
-    if (!Number.isFinite(monto)) return monto;
-    if (monedaActual === monedaDeseada) return monto;
-    const fromRate = arsTo[monedaActual] ?? null;
-    const toRate = arsTo[monedaDeseada] ?? null;
-    if (fromRate == null || toRate == null) return monto;
-    return monto * (toRate / fromRate);
-  };
-
-  const monedaMap = {
-    PesoArg: { code: 'ARS', locale: 'es-AR', symbol: '$' },
-    DolarUsa: { code: 'USD', locale: 'en-US', symbol: 'US$' },
-    Real: { code: 'BRL', locale: 'pt-BR', symbol: 'R$' }
-  };
-
-  const formatCurrency = (amount, moneda = 'PesoArg') => {
-    const m = monedaMap[moneda] || monedaMap.PesoArg;
-    if (!Number.isFinite(Number(amount))) return amount;
-    return new Intl.NumberFormat(m.locale, { style: 'currency', currency: m.code, minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Number(amount));
-  };
-
-  // calculate total converting each item into the desired target currency
-  const calcTotalConverted = (items, targetMoneda = 'PesoArg') => {
-    if (!items || items.length === 0) return 0;
-    return items.reduce((sum, it) => {
-      const qty = it.cantidad || 0;
-      const precio = Number(it.precioUnitario) || 0;
-      const monedaProd = it.productoEmbebido?.moneda || it.moneda || 'PesoArg';
-      const converted = convertirMoneda(precio, monedaProd, targetMoneda);
-      return sum + (Number.isFinite(converted) ? converted * qty : 0);
-    }, 0);
-  };
-
   const [openIds, setOpenIds] = useState(new Set());
   const [editOpenId, setEditOpenId] = useState(null);
 
@@ -221,7 +182,7 @@ const Pedido = () => {
                     <div className="pedido-submeta">
                       <span className={`estado ${estadoClass}`}>Estado: {pedido.estado || '—'}</span>
                       <span className="meta-sep">·</span>
-                      <span className={`total-inline ${estadoClass}`}>{formatCurrency(calcTotalConverted(pedido.items, pedido.moneda || 'PesoArg'), pedido.moneda || 'PesoArg')}</span>
+                      <span className={`total-inline ${estadoClass}`}>{formatCurrency(calcTotal(pedido.items))}</span>
                     </div>
                   </div>
                   <div className="pedido-actions">
@@ -273,29 +234,15 @@ const Pedido = () => {
                           <tr key={idx}>
                             <td className="item-title">{it.productoEmbebido?.titulo || '—'}</td>
                             <td>{it.cantidad}</td>
-                            {
-                              (() => {
-                                const monedaProd = it.productoEmbebido?.moneda || it.moneda || 'PesoArg';
-                                const target = pedido.moneda || 'PesoArg';
-                                const precioUnit = Number(it.precioUnitario) || 0;
-                                const convertedUnit = convertirMoneda(precioUnit, monedaProd, target);
-                                const subtotal = (it.cantidad || 0) * precioUnit;
-                                const convertedSubtotal = convertirMoneda(subtotal, monedaProd, target);
-                                return (
-                                  <>
-                                    <td>{formatCurrency(convertedUnit, target)}</td>
-                                    <td>{formatCurrency(convertedSubtotal, target)}</td>
-                                  </>
-                                );
-                              })()
-                            }
+                            <td>{formatCurrency(it.precioUnitario)}</td>
+                            <td>{formatCurrency((it.cantidad || 0) * (it.precioUnitario || 0))}</td>
                           </tr>
                         ))}
                       </tbody>
                     </table>
 
                     <div className="pedido-footer">
-                      <div className="total"><strong>Total:</strong> {formatCurrency(calcTotalConverted(pedido.items, pedido.moneda || 'PesoArg'), pedido.moneda || 'PesoArg')}</div>
+                      <div className="total"><strong>Total:</strong> {formatCurrency(calcTotal(pedido.items))}</div>
                     </div>
                   </div>
                 )}
