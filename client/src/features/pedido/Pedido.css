@@ -26,14 +26,100 @@
   background: #fff;
 }
 
+.pedido-card {
+  transition: background 120ms ease, box-shadow 160ms ease, border-color 120ms ease;
+}
+
+.pedido-card:nth-child(odd) {
+  background: #ffffff;
+}
+.pedido-card:nth-child(even) {
+  background: #f6f8fa;
+}
+
+.pedido-card:hover {
+  background: #eaf4ff;
+  border-color: rgba(28,115,220,0.18);
+  box-shadow: 0 6px 18px rgba(24,39,75,0.06);
+}
+
 .pedido-header {
   display: flex;
-  gap: 1rem;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
   margin-bottom: 0.5rem;
-  font-size: 0.95rem;
 }
+
+.pedido-header-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.pedido-title {
+  font-weight: 700;
+  color: #243447;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.pedido-submeta {
+  display: inline-flex;
+  gap: 0.6rem;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #54606a;
+}
+
+.meta-sep { color: #c0c7cc; }
+
+.pedido-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.state-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.06);
+  border-radius: 6px;
+  box-shadow: 0 6px 18px rgba(24,39,75,0.06);
+  z-index: 3000;
+  display: flex;
+  flex-direction: column;
+  min-width: 160px;
+  overflow: hidden;
+}
+
+.state-item {
+  background: transparent;
+  border: none;
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: #243447;
+}
+
+.state-item:hover { background: rgba(0,0,0,0.04); }
+
+.state-item.disabled { color: #888; cursor: default; }
+
+.action-icon {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.edit-btn { color: #c47f25; }
+.toggle-btn { color: #6b7280; transition: transform 160ms ease; }
+.toggle-btn.open { transform: rotate(180deg); }
 
 .pedido-meta {
   display: flex;
@@ -81,6 +167,22 @@
   padding: 0.5rem 0.75rem;
   border-radius: 6px;
   font-weight: 600;
+}
+
+/* Estado colors */
+.estado { font-weight: 600; }
+.estado.pendiente { color: #2c3e50; }
+.estado.enviado { color: #1e90ff; }
+.estado.cancelado { color: #c0392b; text-decoration: line-through; opacity: 0.9; }
+
+/* Visual for cancelled card: slightly muted and strike total */
+.pedido-card.cancelado {
+  opacity: 0.95;
+}
+.pedido-card.cancelado .total-inline,
+.pedido-card.cancelado .total {
+  text-decoration: line-through;
+  color: rgba(0,0,0,0.45);
 }
 
 @media (max-width: 700px) {

@@ -3,17 +3,20 @@
   display: inline-flex;
   align-items: center;
   overflow: visible;
-  margin: 0 0.5rem; /* small horizontal spacing so items sit next to each other */
+  margin: 0; /* remove extra margin so icon sits closer to the label like the user button */
 }
 
 .dropdown-categorias .dropdown-btn {
   color: var(--primary-white);
   border: none;
-  padding: 8px 12px;
+  padding: 0.4rem 0.8rem; /* match login/publish button padding */
   font-size: 1rem;
   cursor: pointer;
   border-radius: 4px;
   font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 
 .dropdown-categorias .dropdown-menu {

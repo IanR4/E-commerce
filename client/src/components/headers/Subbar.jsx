@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
 import { useLocation } from 'react-router-dom';
 import './Subbar.css';
-import {FaShoppingCart} from 'react-icons/fa';
+import {FaShoppingCart, FaUser, FaBell, FaClipboardList, FaPlusCircle, FaBoxOpen} from 'react-icons/fa';
 import '../../index.css';
 import AccomodationSearchBar from "../accommodationSearchBar/AccomodationSearchBar";
 import DropdownCategorias from "../dropdown/DropdownCategorias";  
@@ -77,17 +77,19 @@ const Subbar = () => {
       <nav className="subbar">
 
         <div className="subbar-section center">
-            <DropdownCategorias/>
+          <DropdownCategorias/>
 
             {!user && location.pathname !== '/CrearCuenta' && (
-                <button className="login-button" onClick={abrirLogin}>
-                    <h3 className="utilities-text"> Iniciar sesión </h3>
-                </button>
+              <button className="login-button" onClick={abrirLogin}>
+                <FaUser className="subbar-icon" />
+                <h3 className="utilities-text"> Iniciar sesión </h3>
+              </button>
             )}
             
             {user && (
                 <div className="user-dropdown" ref={userMenuRef}>
                   <button className="login-button" onClick={() => setShowUserMenu(s => !s)}>
+                    <FaUser className="subbar-icon" />
                     <h3 className="utilities-text">{user.displayName}</h3>
                   </button>
                     {showUserMenu && (
@@ -98,16 +100,16 @@ const Subbar = () => {
                 </div>
             )}
 
-            <Link to={`/Notificaciones`} className="link-no-style"><h3 className="utilities-text"> Notificaciones </h3></Link>
+            <Link to={`/Notificaciones`} className="publish-button"><FaBell className="subbar-icon" /><h3 className="utilities-text"> Notificaciones </h3></Link>
 
             {user && (
-              <Link to={`/mis-pedidos`} className="link-no-style"><h3 className="utilities-text"> Mis pedidos </h3></Link>
+              <Link to={`/mis-pedidos`} className="publish-button"><FaClipboardList className="subbar-icon" /><h3 className="utilities-text"> Mis pedidos </h3></Link>
             )}
         
             {user && isUserSeller(user) ? (
                 <>
-                  <button className="publish-button" onClick={() => navigate('/Publicar')}><h3 className="utilities-text"> Publicar producto </h3></button>
-                  <button className="publish-button" onClick={() => navigate('/mis-productos')}><h3 className="utilities-text"> Mis productos </h3></button>
+                  <button className="publish-button" onClick={() => navigate('/Publicar')}><FaPlusCircle className="subbar-icon" /><h3 className="utilities-text"> Publicar producto </h3></button>
+                  <button className="publish-button" onClick={() => navigate('/mis-productos')}><FaBoxOpen className="subbar-icon" /><h3 className="utilities-text"> Mis productos </h3></button>
                 </>
             ) : ("")}  
         </div>

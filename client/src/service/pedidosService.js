@@ -19,3 +19,9 @@ export const postPedido = (body) => {
         .post(`${API_BASE_URL}/pedido`, body)
         .then((response) => response.data)
 }
+
+export const patchPedido = (pedidoId, body) => {
+  return axios
+    .patch(`${API_BASE_URL}/pedido/${pedidoId}`, body)
+    .then((response) => response.data)
+}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Pedido.css';
-import { getPedidoUsuario, getPedidosVendedor } from '../../service/pedidosService.js';
+import { getPedidoUsuario, getPedidosVendedor, patchPedido } from '../../service/pedidosService.js';
 
 const Pedido = () => {
   const [pedidos, setPedidos] = useState([]);
@@ -99,6 +99,71 @@ const Pedido = () => {
     return items.reduce((sum, it) => sum + ((it.cantidad || 0) * (it.precioUnitario || 0)), 0);
   };
 
+  const [openIds, setOpenIds] = useState(new Set());
+  const [editOpenId, setEditOpenId] = useState(null);
+
+  const toggleOpen = (id) => {
+    setOpenIds(prev => {
+      const copy = new Set(prev);
+      if (copy.has(id)) copy.delete(id);
+      else copy.add(id);
+      return copy;
+    });
+  };
+
+  const formatCurrency = (n) => {
+    try {
+      return `$${Number(n).toLocaleString('es-AR')}`;
+    } catch (e) {
+      return `$${n}`;
+    }
+  };
+
+  // Allowed transitions according to backend validarTransicion logic
+  const estadoTransitions = {
+    Pendiente: ['Confirmado', 'Cancelado'],
+    Confirmado: ['EnPreparacion', 'Cancelado'],
+    EnPreparacion: ['Enviado', 'Cancelado'],
+    Enviado: ['Entregado'],
+    Entregado: [],
+    Cancelado: []
+  };
+
+  const getAllowedTargets = (current) => {
+    if (!current) return [];
+    const list = estadoTransitions[current] || [];
+    // exclude same state
+    return list.filter(s => s !== current);
+  };
+
+  const handleToggleEdit = (id) => {
+    setEditOpenId(prev => (prev === id ? null : id));
+  };
+
+  const handleChangeEstado = async (pedidoId, targetEstado) => {
+    try {
+      const usuarioId = getStoredUserId();
+      if (!usuarioId) {
+        alert('Debe iniciar sesión para actualizar el estado del pedido.');
+        return;
+      }
+      await patchPedido(pedidoId, { estado: targetEstado, usuario: usuarioId });
+      // update local copy
+      setPedidos(prev => prev.map(p => {
+        const pid = p._id ? (p._id.$oid ? p._id.$oid : p._id) : String(p.id || Math.random());
+        if (String(pid) === String(pedidoId)) {
+          return { ...p, estado: targetEstado };
+        }
+        return p;
+      }));
+      setEditOpenId(null);
+    } catch (err) {
+      console.error('Error actualizando estado:', err);
+      // optionally show error to user
+      alert('No se pudo actualizar el estado: ' + (err?.response?.data?.message || err.message || ''));
+    }
+  };
+
   if (loading) return <div className="pedido-container"><p>Cargando pedidos...</p></div>;
   if (error) return <div className="pedido-container"><p className="error">{error}</p></div>;
 
@@ -109,53 +174,82 @@ const Pedido = () => {
         <p>No hay pedidos para mostrar.</p>
       ) : (
         <div className="pedidos-list">
-          {pedidos.map((pedido) => (
-            <div className="pedido-card" key={pedido._id ? (pedido._id.$oid || pedido._id) : Math.random()}>
-              <div className="pedido-header">
-                <div>
-                  <strong>ID:</strong> {pedido._id ? (pedido._id.$oid || pedido._id) : '—'}
+          {pedidos.map((pedido) => {
+            const idVal = pedido._id ? (pedido._id.$oid || pedido._id) : Math.random();
+            const idStr = String(idVal);
+            const estadoClass = pedido.estado ? pedido.estado.toLowerCase() : '';
+            const isOpen = openIds.has(idStr);
+
+            return (
+              <div className={`pedido-card ${estadoClass}`} key={idStr}>
+                <div className="pedido-header">
+                  <div className="pedido-header-left">
+                    <div className="pedido-title">Pedido #{idStr}</div>
+                    <div className="pedido-submeta">
+                      <span className={`estado ${estadoClass}`}>Estado: {pedido.estado || '—'}</span>
+                      <span className="meta-sep">·</span>
+                      <span className={`total-inline ${estadoClass}`}>{formatCurrency(calcTotal(pedido.items))}</span>
+                    </div>
+                  </div>
+                  <div className="pedido-actions">
+                    <div style={{ position: 'relative' }}>
+                      <button className="action-icon edit-btn" title="Editar" onClick={() => handleToggleEdit(idStr)}>✎</button>
+                      {editOpenId === idStr && (
+                        <div className="state-menu">
+                          {getAllowedTargets(pedido.estado).length === 0 ? (
+                            <div className="state-item disabled">No hay transiciones</div>
+                          ) : (
+                            getAllowedTargets(pedido.estado).map((s) => (
+                              <button key={s} className="state-item" onClick={() => handleChangeEstado(idStr, s)}>{s}</button>
+                            ))
+                          )}
+                        </div>
+                      )}
+                    </div>
+                    <button
+                      className={`action-icon toggle-btn ${isOpen ? 'open' : ''}`}
+                      title="Ver detalles"
+                      onClick={() => toggleOpen(idStr)}
+                    >▾</button>
+                  </div>
                 </div>
-                <div>
-                  <strong>Fecha:</strong> {formatDate(pedido.fechaCreacion)}
-                </div>
-                <div>
-                  <strong>Estado:</strong> {pedido.estado || '—'}
-                </div>
+
+                {isOpen && (
+                  <div className="pedido-body">
+                    <div className="pedido-meta">
+                      <div><strong>Moneda:</strong> {pedido.moneda || '—'}</div>
+                      <div><strong>Dirección:</strong> {pedido.direccionEntrega || '—'}</div>
+                    </div>
+
+                    <table className="items-table">
+                      <thead>
+                        <tr>
+                          <th>Producto</th>
+                          <th>Cantidad</th>
+                          <th>Precio unitario</th>
+                          <th>Subtotal</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {(pedido.items || []).map((it, idx) => (
+                          <tr key={idx}>
+                            <td className="item-title">{it.productoEmbebido?.titulo || '—'}</td>
+                            <td>{it.cantidad}</td>
+                            <td>{formatCurrency(it.precioUnitario)}</td>
+                            <td>{formatCurrency((it.cantidad || 0) * (it.precioUnitario || 0))}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+
+                    <div className="pedido-footer">
+                      <div className="total"><strong>Total:</strong> {formatCurrency(calcTotal(pedido.items))}</div>
+                    </div>
+                  </div>
+                )}
               </div>
-
-              <div className="pedido-body">
-                <div className="pedido-meta">
-                  <div><strong>Moneda:</strong> {pedido.moneda || '—'}</div>
-                  <div><strong>Dirección:</strong> {pedido.direccionEntrega || '—'}</div>
-                </div>
-
-                <table className="items-table">
-                  <thead>
-                    <tr>
-                      <th>Producto</th>
-                      <th>Cantidad</th>
-                      <th>Precio unitario</th>
-                      <th>Subtotal</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {(pedido.items || []).map((it, idx) => (
-                      <tr key={idx}>
-                        <td className="item-title">{it.productoEmbebido?.titulo || '—'}</td>
-                        <td>{it.cantidad}</td>
-                        <td>{it.precioUnitario}</td>
-                        <td>{(it.cantidad || 0) * (it.precioUnitario || 0)}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-
-                <div className="pedido-footer">
-                  <div className="total"><strong>Total:</strong> {calcTotal(pedido.items)}</div>
-                </div>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

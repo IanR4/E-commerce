@@ -1,9 +1,10 @@
 .navbar-bg {
+    z-index: 4000; 
     background-color: var(--primary-blue);
     font-size: 1.5rem;
     height: 5rem;
     padding: 0 1rem;
-    position: fixed;       /* Fijo arriba */
+    position: fixed;      /* Fijo arriba */
     top: 0;
     left: 0;
     right: 0;

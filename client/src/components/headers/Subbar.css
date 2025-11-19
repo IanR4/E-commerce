@@ -52,13 +52,13 @@
     flex: 1;
     justify-content: center;
     align-items: center;
-    gap: 3rem;
-    margin-bottom: 0.7rem;
+    gap: 1.2rem; /* reduced gap so sections are closer together */
+    margin-bottom: 0; /* remove extra bottom margin that could cause vertical shift */
 }
 .utilities{
     display: inline-flex;
-    margin: 1rem;
-    gap: 1rem;
+    margin: 0 0.5rem; /* smaller horizontal margin */
+    gap: 0.6rem; /* tighter spacing between utility items */
     position: relative;
     border-color: black;
     overflow: visible;
@@ -66,7 +66,73 @@
 .utilities-text{
     color: var(--primary-white);
     font-size: 1rem;
-    margin: 1rem;
+    margin: 0;
+    padding-left: 0; /* spacing handled by icon margin */
+    display: inline-flex; /* keep icon and text aligned */
+    align-items: center;
+    line-height: 1; /* avoid vertical jumps when font weight changes */
+}
+
+/* Icons next to subbar text */
+.subbar-icon {
+    margin-right: 0.25rem; /* bring icon closer to the label */
+    vertical-align: middle;
+    font-size: 1.05rem;
+    color: var(--primary-white);
+}
+
+.publish-button, .login-button, .link-no-style {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem; /* stable spacing between icon and text */
+}
+
+/* Remove underline for publish-style links inside the subbar */
+.subbar .publish-button {
+    text-decoration: none !important;
+    color: var(--primary-white);
+}
+.subbar .publish-button .utilities-text {
+    text-decoration: none !important;
+}
+.subbar .publish-button:hover,
+.subbar .publish-button:focus {
+    text-decoration: none !important;
+}
+
+/* Prevent small hover effects from changing layout */
+.publish-button, .publish-button *,
+.login-button, .login-button *,
+.link-no-style, .link-no-style * {
+    transition: none !important;
+}
+
+/* Ensure global .link-no-style hover in index.css doesn't remove layout inside subbar */
+.subbar .link-no-style,
+.subbar .link-no-style * {
+    /* avoid resetting all properties — restore only what's needed */
+    cursor: pointer;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.25rem !important;
+    color: var(--primary-white) !important;
+    text-decoration: none !important;
+}
+.subbar .link-no-style:hover,
+.subbar .link-no-style:focus,
+.subbar .link-no-style:active,
+.subbar .link-no-style:visited {
+    cursor: pointer;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.25rem !important;
+    color: var(--primary-white) !important;
+    text-decoration: none !important;
+}
+
+/* Ensure publish-style labels are visually prominent like the button */
+.publish-button .utilities-text {
+    font-weight: 600;
 }
 
 
