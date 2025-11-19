@@ -44,7 +44,7 @@ export default function ProductoTable({ productos, itemsPerPage = 9 }) {
           aria-label={`fila-${rowIndex}`}
         >
           {row.map((producto) => (
-            <li className="list-group-item product-cell" key={producto._id || producto.id}>
+            <li tabIndex={0} className="list-group-item product-cell" key={producto._id || producto.id} aria-label={`Celda producto ${producto.titulo}`}>
               <CarouselItem producto={producto} />
             </li>
           ))}

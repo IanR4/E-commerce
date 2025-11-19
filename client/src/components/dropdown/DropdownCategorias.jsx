@@ -29,17 +29,23 @@ const DropdownCategorias = () => {
   ];
 
   return (
-    <div className="dropdown-categorias" ref={dropdownRef}>
-      <button className="dropdown-btn" onClick={() => setOpen(!open)}>
+    <div className="dropdown-categorias" ref={dropdownRef} tabIndex={0} aria-label="Menú categorías">
+      <button
+        className="dropdown-btn"
+        onClick={() => setOpen(!open)}
+        aria-haspopup="true"
+        aria-expanded={open}
+        aria-controls="categorias-menu"
+      >
         <FaThList className="subbar-icon" />
         <h3 className="utilities-text"> Categorías ▾ </h3>
       </button>
 
       {open && (
-        <ul className={`dropdown-menu ${open ? "show" : ""}`}>
+        <ul id="categorias-menu" className={`dropdown-menu ${open ? "show" : ""}`}>
           {categories.map((cat, i) => (
-            <Link to={`/categoria/${cat}`} className="link-no-style">
-              <li key={i} className="dropdown-item">
+            <Link to={`/categoria/${cat}`} className="link-no-style" key={i}>
+              <li className="dropdown-item">
                 {cat}
               </li>
             </Link>

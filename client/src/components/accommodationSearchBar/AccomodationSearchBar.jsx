@@ -15,7 +15,7 @@ const AccomodationSearchBar = () => {
   }, [location.pathname]);
 
   return (
-    <div className="accommodation-search">
+    <div className="accommodation-search" tabIndex={0} aria-label="Barra de búsqueda">
       <div className='search-field'>
         <div className='input-wrapper'>
 

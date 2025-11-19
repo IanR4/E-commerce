@@ -7,9 +7,11 @@ const Layout = () => {
 
     return(
         <>
-          <Navbar></Navbar>
-          <Outlet className = "main" />
-          <Footer></Footer>
+          <Navbar />
+          <main id="main-content" className="main" tabIndex={0}>
+            <Outlet />
+          </main>
+          <Footer />
         </>
     )
 }

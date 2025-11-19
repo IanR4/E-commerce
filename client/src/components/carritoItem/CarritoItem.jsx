@@ -18,7 +18,7 @@ const CarritoItem = ({producto, onRemove}) => {
   };
 
   return (
-    <div key={producto._id} className="carrito-card">
+    <div key={producto._id} className="carrito-card" tabIndex={0} aria-label={`Ítem de carrito ${producto.titulo}`}>
       <div className="producto-carrito-card">
         <img
           src={producto.foto}

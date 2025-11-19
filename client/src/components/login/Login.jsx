@@ -42,9 +42,9 @@ export default function Login({ open, onClose, onLoginSuccess }) {
 
     return (
         <div className="login-modal-overlay">
-            <div className="login-modal-content">
+                <div className="login-modal-content" tabIndex={0} role="dialog" aria-modal="true" aria-label="Inicio de sesión">
 
-                <button className="login-close-btn" onClick={onClose}>X</button>
+                    <button className="login-close-btn" onClick={onClose} aria-label="Cerrar">X</button>
 
                 {showRegister ? (
                     <Register

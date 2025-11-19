@@ -57,7 +57,7 @@ const CarouselItem = ({producto}) => {
   }, []);
 
   return (
-    <div key={producto._id} className="carousel-card">
+    <div key={producto._id} className="carousel-card" tabIndex={0} aria-label={`Producto ${producto.titulo}`}>
       <div className="producto-card">
         {/* contenido que se anima al hacer hover */}
         <div className="producto-body">

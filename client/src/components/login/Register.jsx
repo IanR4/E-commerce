@@ -40,7 +40,7 @@ export default function Register({ onClose, onRegisterSuccess }) {
   };
 
   return (
-    <form className="form" onSubmit={handleSubmit}>
+    <form className="form" onSubmit={handleSubmit} tabIndex={0} aria-label="Formulario crear cuenta">
       <p className="form-title">Crear cuenta</p>
 
       <div className="input-container">

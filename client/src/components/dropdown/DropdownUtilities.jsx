@@ -24,16 +24,22 @@ const DropdownUtilities = () => {
   ];
 
   return (
-    <div className="dropdown" ref={dropdownRef}>
-      <button className="dropdown-btn" onClick={() => setOpen(!open)}>
+    <div className="dropdown" ref={dropdownRef} tabIndex={0} aria-label="Menú utilidades">
+      <button
+        className="dropdown-btn"
+        onClick={() => setOpen(!open)}
+        aria-haspopup="true"
+        aria-expanded={open}
+        aria-controls="utilidades-menu"
+      >
         ☰
       </button>
 
       {open && (
-        <ul className={`dropdown-menu ${open ? "show" : ""}`}>
+        <ul id="utilidades-menu" className={`dropdown-menu ${open ? "show" : ""}`}> 
           {utilidades.map((uti, i) => (
-            <Link to={`/${uti}`} className="link-no-style">
-                <li key={i} className="dropdown-item">
+            <Link to={`/${uti}`} className="link-no-style" key={i}>
+                <li className="dropdown-item">
                     {uti}
                 </li>
             </Link>

@@ -13,6 +13,37 @@ code {
     monospace;
 }
 
+/* Make any element with a tabindex visibly outlined when focused */
+[tabindex]:focus {
+  outline: none;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.9);
+  border-radius: 4px;
+}
+
+/* Skip link: hidden by default, visible on focus */
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.skip-link:focus {
+  left: 10px;
+  top: 10px;
+  width: auto;
+  height: auto;
+  padding: 8px 12px;
+  background: #ffffff;
+  color: #000000;
+  z-index: 1000;
+  box-shadow: 0 0 0 3px rgba(0, 188, 212, 0.9);
+  border-radius: 4px;
+  border: 2px solid #00bcd4;
+}
+
 :root {
   --primary-blue: #2f3e65;
   --primary-lightblue: #719bd5;

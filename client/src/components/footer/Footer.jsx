@@ -6,7 +6,7 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="footer-bg" anchor="bottom">
+    <footer className="footer-bg" anchor="bottom" tabIndex={0} role="contentinfo" aria-label="Pie de página">
       <nav className="footer">
         <div className="utilities">
           <Link to="/Contacto" className="link-no-style">

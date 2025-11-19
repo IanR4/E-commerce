@@ -75,7 +75,7 @@ const Navbar = () => {
 
   return (
     <>
-    <header className="navbar-bg">
+    <header className="navbar-bg" tabIndex={0}>
       <nav className="navbar">
         <div className="navbar-section left">
           <DropdownUtilities/>
@@ -113,8 +113,8 @@ const Navbar = () => {
       
     </header>
 
-    <div className="subheader">
-      <Subbar></Subbar>
+    <div className="subheader" tabIndex={0}>
+      <Subbar />
     </div>
     </>
   );
