@@ -19,6 +19,11 @@ const isUserSeller = () => {
     return false;
   }
 }
+const monedaIcons = {
+    PesoArg: "$",
+    DolarUsa: "US$",
+    Real: "R$",
+  };
 
 const conUnidades = (unidades, producto) => ({ ...producto, cantidadUnidades: unidades });
 const CarouselItem = ({producto}) => {
@@ -56,7 +61,7 @@ const CarouselItem = ({producto}) => {
             <h3 className="producto-name">{producto.titulo}</h3>
             <div className="producto-details">
               <span className="producto-price">
-                ${producto.precio.toLocaleString("es-AR")}
+                {monedaIcons[producto.moneda]}{producto.precio.toLocaleString("es-AR")}
               </span>
             </div>
           </div>

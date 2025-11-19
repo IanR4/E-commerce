@@ -28,6 +28,12 @@ const ProductoDetailPage = () => {
       return false;
     }
   });
+  
+  const monedaIcons = {
+    PesoArg: "$",
+    DolarUsa: "US$",
+    Real: "R$",
+  };
 
   useEffect(() => {
     const handleUserChanged = () => {
@@ -134,7 +140,7 @@ const ProductoDetailPage = () => {
           </div>
 
           <div className="producto-price-section">
-            <div className="producto-precio">$ {producto.precio?.toLocaleString()}</div>
+            <div className="producto-precio">{monedaIcons[producto.moneda]}{producto.precio.toLocaleString("es-AR")}</div>
             <div className="price-details">Impuestos incluidos</div>        
           </div>
         </div>
