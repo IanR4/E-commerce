@@ -5,7 +5,7 @@ import './Navbar.css';
 import {FaShoppingCart, FaPlusCircle} from 'react-icons/fa';
 import '../../index.css';
 import AccomodationSearchBar from "../accommodationSearchBar/AccomodationSearchBar"; 
-import DropdownUtilities from "../dropdown/DropdownUtilities";  
+// DropdownUtilities removed: links moved to footer per UX request
 import { useCarritoContext } from '../../store/CarritoContext.jsx'
 import Subbar from "./Subbar.jsx";
 
@@ -77,9 +77,7 @@ const Navbar = () => {
     <>
     <header className="navbar-bg">
       <nav className="navbar">
-        <div className="navbar-section left">
-          <DropdownUtilities/>
-        </div>
+        {/* left section removed - dropdown moved to footer */}
 
         <div className="navbar-section center-left">
           <div className="brand">

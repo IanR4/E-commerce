@@ -95,3 +95,28 @@
   }
 }
 
+/* Target small portrait devices (approx min 300x667) */
+@media (max-width: 420px) and (max-height: 700px) {
+  .accommodation-search {
+    width: 100%;
+    padding: 0.25rem;
+    background-color: transparent;
+  }
+  .input-wrapper {
+    padding: 0.2rem;
+    border-radius: 8px;
+  }
+  #boton {
+    min-width: 34px;
+    min-height: 28px;
+    padding: 0.15rem 0.25rem;
+  }
+  .button-icon { font-size: 1.2rem; }
+  .search-field { width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .accommodation-search { width: 100%; }
+  .button-icon { font-size: 1.3rem; }
+}
+

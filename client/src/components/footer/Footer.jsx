@@ -7,19 +7,12 @@ const Footer = () => {
 
   return (
     <footer className="footer-bg" anchor="bottom">
-      <nav className="footer">
-        <div className="utilities">
-          <Link to="/Contacto" className="link-no-style">
-            <h3 className="utilities-text">Contacto</h3>
-          </Link>
-          <Link to="/Nosotros" className="link-no-style">
-            <h3 className="utilities-text">Nosotros</h3>
-          </Link>
-          <Link to="/FAQ" className="link-no-style">
-            <h3 className="utilities-text">FAQ</h3>
-          </Link>
-        </div>
-      </nav>
+      {/* Footer links (single area used for both desktop and mobile) */}
+      <div className="footer-links" role="navigation" aria-label="Footer links">
+        <Link to="/Contacto" className="footer-link">Contacto</Link>
+        <Link to="/Nosotros" className="footer-link">Nosotros</Link>
+        <Link to="/FAQ" className="footer-link">FAQ</Link>
+      </div>
 
       <div className="footer-bottom">
         <p>&copy; {currentYear} Tienda Sol. Todos los derechos reservados.</p>

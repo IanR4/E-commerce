@@ -106,3 +106,18 @@
   justify-content: flex-start; /* left aligned */
   align-items: center;
 }
+
+/* Vertical / small screens adjustments */
+@media (max-width: 420px) and (max-height: 700px) {
+  .carousel-card { width: 100%; padding: 0.4rem; }
+  .producto-card { height: auto; border-radius: 0.75rem; }
+  .producto-image { height: 220px; }
+  .producto-info { padding-bottom: 1rem; }
+  .botones-container { position: static; margin: 0.5rem 0 0 0; justify-content: center; gap: 0.5rem; }
+  .ver-detalles, .comprar-ahora, .comprar-ahora-bloqueado { margin: 0.25rem; padding: 0.5rem 0.6rem; }
+}
+
+@media (max-width: 480px) {
+  .carousel-card { width: 100%; }
+  .producto-image { height: 200px; }
+}

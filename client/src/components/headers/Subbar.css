@@ -1,13 +1,13 @@
 .subbar-bg {
     background-color: var(--primary-blue);
     font-size: 1.2rem;
-    height: 3.4rem;
+    height: var(--subbar-height, 3.4rem);
     padding: 0 1rem;
     position: fixed;
-    top: 5rem; /* directly below the main subbar (height: 5rem) */
+    top: var(--navbar-height, 5rem); /* place directly below the main navbar */
     left: 0;
     right: 0;
-    z-index: 3999; /* sit below main subbar */
+    z-index: 3999; /* sit below main navbar */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -170,8 +170,25 @@
 
 /* Ajuste del contenido para que no quede tapado por el subbar fijo */
 /* keep page content padding so it's not hidden by fixed bars */
-body, main {
-    padding-top: 9rem; /* space for subbar (5rem) + subbar (3.4rem) + small gap */
+/* Avoid duplicating page padding here; .main padding is set in index.css */
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+    .subbar-bg {
+        top: calc(var(--navbar-height,5rem));
+        height: 3.2rem;
+        padding: 0 0.5rem;
+    }
+    .subbar-section.center {
+        gap: 0.6rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .utilities-text { display: none; }
+}
+
+@media (min-width: 901px) {
+    .subbar-bg { top: var(--navbar-height, 5rem); }
 }
 
 /* --- RESPONSIVE --- */
