@@ -76,43 +76,50 @@ const Subbar = () => {
 
   return (
     <div className="subbar-bg">
-      <nav className="subbar">
+      <nav className="subbar" aria-label="Navegación secundaria">
 
         <div className="subbar-section center">
           <DropdownCategorias/>
 
             {!user && location.pathname !== '/CrearCuenta' && (
-              <button className="login-button" onClick={abrirLogin}>
-                <FaUser className="subbar-icon" />
+              <button className="login-button" onClick={abrirLogin} aria-label="Abrir formulario de inicio de sesión">
+                <FaUser className="subbar-icon" aria-hidden="true" />
                 <h3 className="utilities-text"> Iniciar sesión </h3>
               </button>
             )}
             
             {user && (
                 <div className="user-dropdown" ref={userMenuRef}>
-                  <button className="login-button" onClick={() => setShowUserMenu(s => !s)}>
-                    <FaUser className="subbar-icon" />
+                  <button 
+                    className="login-button" 
+                    onClick={() => setShowUserMenu(s => !s)}
+                    aria-haspopup="menu"
+                    aria-expanded={showUserMenu}
+                    aria-controls="user-menu"
+                    aria-label={`Menú de usuario: ${user.displayName}`}
+                  >
+                    <FaUser className="subbar-icon" aria-hidden="true" />
                     <h3 className="utilities-text">{user.displayName}</h3>
                   </button>
                     {showUserMenu && (
-                        <div className="user-menu">
-                        <button className="user-menu-item" onClick={handleLogout}>Cerrar sesión</button>
+                        <div className="user-menu" id="user-menu" role="menu">
+                        <button className="user-menu-item" onClick={handleLogout} role="menuitem" aria-label="Cerrar sesión">Cerrar sesión</button>
                         </div>
                     )}
                 </div>
             )}
 
             {user && (
-              <Link to={`/Notificaciones`} className="publish-button"><FaBell className="subbar-icon" /><h3 className="utilities-text"> Notificaciones </h3></Link>
+              <Link to={`/Notificaciones`} className="publish-button" aria-label="Ir a notificaciones"><FaBell className="subbar-icon" aria-hidden="true" /><h3 className="utilities-text"> Notificaciones </h3></Link>
             )}
 
             {user && (
-              <Link to={`/mis-pedidos`} className="publish-button"><FaClipboardList className="subbar-icon" /><h3 className="utilities-text"> Mis pedidos </h3></Link>
+              <Link to={`/mis-pedidos`} className="publish-button" aria-label="Ver mis pedidos"><FaClipboardList className="subbar-icon" aria-hidden="true" /><h3 className="utilities-text"> Mis pedidos </h3></Link>
             )}
         
             {user && isUserSeller(user) ? (
                 <>
-                  <button className="publish-button" onClick={() => navigate('/mis-productos')}><FaBoxOpen className="subbar-icon" /><h3 className="utilities-text"> Mis productos </h3></button>
+                  <button className="publish-button" onClick={() => navigate('/mis-productos')} aria-label="Ver mis productos"><FaBoxOpen className="subbar-icon" aria-hidden="true" /><h3 className="utilities-text"> Mis productos </h3></button>
                 </>
             ) : ("")}  
         </div>

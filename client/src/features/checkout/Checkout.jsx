@@ -172,21 +172,21 @@ const Checkout = () => {
         {/* Columna Izquierda: Resumen del Carrito */}
         <Card className="resumen-column">
           <Typography variant="h6" className="resumen-title">Resumen del Pedido</Typography>
-          <div className="productos-lista">
+          <div className="productos-lista" role="region" aria-label="Resumen de productos en el pedido">
             {productosAgrupadosArray.length === 0 ? (
-              <Typography color="textSecondary">Tu carrito está vacío</Typography>
+              <Typography color="textSecondary" role="status">Tu carrito está vacío</Typography>
             ) : (
               productosAgrupadosArray.map((producto, index) => (
-                <div key={(producto._id ?? producto.id) ?? index} className="producto-item">
+                <div key={(producto._id ?? producto.id) ?? index} className="producto-item" role="listitem" aria-label={`${producto.titulo}, cantidad: ${producto.cantidadUnidades}`}>
                   <div className="producto-info">
                     <Typography variant="body2" className="producto-nombre">
                       {producto.titulo || producto.nombre}
                     </Typography>
-                    <Typography variant="caption" color="textSecondary">
+                    <Typography variant="caption" color="textSecondary" aria-label={`Cantidad: ${producto.cantidadUnidades}`}>
                       Cantidad: {producto.cantidadUnidades}
                     </Typography>
                   </div>
-                  <Typography variant="body2" className="producto-precio">
+                  <Typography variant="body2" className="producto-precio" aria-label={`Subtotal: ${monedaIcons[producto.moneda]}${producto.precio * producto.cantidadUnidades}`}>
                     {monedaIcons[producto.moneda]}{producto.precio * producto.cantidadUnidades}
                   </Typography>
                 </div>
@@ -196,7 +196,7 @@ const Checkout = () => {
           <div className="resumen-total">
             
             
-            <Typography variant="h6">Total: {
+            <Typography variant="h6" aria-live="polite">Total: {
                 (() => {
                   const targetMoneda = (campos && campos.moneda && campos.moneda.valor) ? campos.moneda.valor : 'PesoArg';
                   const totalNum = productosAgrupadosArray.reduce((acc, producto) => {
@@ -215,15 +215,18 @@ const Checkout = () => {
         {/* Columna Derecha: Formulario */}
         <Card className="form-column">
           <Typography variant="h6" className="form-title">Información de Entrega</Typography>
-          <form className="form-delivery">
+          <form className="form-delivery" role="form" aria-label="Formulario de información de entrega">
             
             {/* Moneda - Dropdown */}
             <FormControl fullWidth margin="normal" required>
-              <InputLabel>Moneda</InputLabel>
+              <InputLabel id="moneda-label">Moneda</InputLabel>
               <Select
+                labelId="moneda-label"
+                id="moneda-select"
                 value={campos.moneda.valor}
                 onChange={setValorDe('moneda')}
                 label="Moneda"
+                aria-required="true"
               >
                 <MenuItem value="PesoArg">Peso Argentino (ARS)</MenuItem>
                 <MenuItem value="Real">Real Brasileño (BRL)</MenuItem>
@@ -233,46 +236,59 @@ const Checkout = () => {
 
             {/* País */}
             <TextField
+              id="pais-input"
               label="País"
               required
               fullWidth
               margin="normal"
               value={campos.pais.valor}
               onChange={setValorDe('pais')}
+              aria-required="true"
+              aria-label="País de entrega"
             />
 
             {/* Provincia */}
             <TextField
+              id="provincia-input"
               label="Provincia"
               required
               fullWidth
               margin="normal"
               value={campos.provincia.valor}
               onChange={setValorDe('provincia')}
+              aria-required="true"
+              aria-label="Provincia de entrega"
             />
 
             {/* Ciudad */}
             <TextField
+              id="ciudad-input"
               label="Ciudad"
               required
               fullWidth
               margin="normal"
               value={campos.ciudad.valor}
               onChange={setValorDe('ciudad')}
+              aria-required="true"
+              aria-label="Ciudad de entrega"
             />
 
             {/* Calle */}
             <TextField
+              id="calle-input"
               label="Calle"
               required
               fullWidth
               margin="normal"
               value={campos.calle.valor}
               onChange={setValorDe('calle')}
+              aria-required="true"
+              aria-label="Nombre de la calle"
             />
 
             {/* Altura */}
             <TextField
+              id="altura-input"
               label="Altura"
               required
               fullWidth

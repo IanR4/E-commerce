@@ -8,7 +8,7 @@ const Layout = () => {
     return(
         <>
           <Navbar />
-          <main id="main-content" className="main" tabIndex={0}>
+          <main id="main-content" className="main">
             <Outlet />
           </main>
           <Footer />

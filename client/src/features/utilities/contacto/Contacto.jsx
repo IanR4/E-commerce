@@ -31,35 +31,42 @@ const Contacto = () => {
   return (
     <div className="root">
       <Card className="form-container">
-        <h3>¡Nos Mantenemos en Contacto!</h3>
+        <h1>¡Nos Mantenemos en Contacto!</h1>
 
         <p>Por favor, completa el siguiente formulario y nos pondremos en contacto contigo a la brevedad.</p>
         <p>Asesoramiento Lunes a Viernes 8 a 18:00, Sábado 8 a 13hrs.</p>
 
-        <p>Telefono: 1170810617</p>
+        <div aria-label="Información de contacto">
+          <p><span className="sr-only">Teléfono: </span>1170810617</p>
+          <p><span className="sr-only">Dirección: </span>Membrillar 999</p>
+          <p><span className="sr-only">Email: </span>tiendasol@gmail.com</p>
+        </div>
 
-        <p>Membrillar 999</p>
-
-        <p>tiendasol@gmail.com</p>
-
-        <form>
+        <form role="form" aria-label="Formulario de contacto">
           <TextField
+            id="nombre-input"
             label="Nombre"
             required
             fullWidth
             margin="normal"
             value={campos.nombre.valor}
             onChange={setValorDe('nombre')}
+            aria-required="true"
+            aria-label="Nombre completo"
           />
           <TextField
+            id="apellido-input"
             label="Apellido"
             required
             fullWidth
             margin="normal"
             value={campos.apellido.valor}
             onChange={setValorDe('apellido')}
+            aria-required="true"
+            aria-label="Apellido"
           />
           <TextField
+            id="email-input"
             label="Email"
             required
             fullWidth
@@ -67,15 +74,21 @@ const Contacto = () => {
             type="email"
             value={campos.email.valor}
             onChange={setValorDe('email')}
+            aria-required="true"
+            aria-label="Correo electrónico"
           />
           <TextField
+            id="mensaje-input"
             label="Dejanos un mensaje..."
             required
             fullWidth
             margin="normal"
-            type="mensaje"
+            multiline
+            minRows={4}
             value={campos.mensaje.valor}
             onChange={setValorDe('mensaje')}
+            aria-required="true"
+            aria-label="Mensaje"
           />
         </form>
         <div className="actions">
@@ -83,6 +96,7 @@ const Contacto = () => {
           <Button 
             variant="contained" 
             disabled={!camposCompletos}
+            aria-label="Enviar formulario de contacto"
           >
             Enviar
           </Button>

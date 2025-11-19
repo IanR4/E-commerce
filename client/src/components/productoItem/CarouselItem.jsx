@@ -57,19 +57,19 @@ const CarouselItem = ({producto}) => {
   }, []);
 
   return (
-    <div key={producto._id} className="carousel-card" tabIndex={0} aria-label={`Producto ${producto.titulo}`}>
+    <div key={producto._id} className="carousel-card" role="listitem" aria-label={`Producto: ${producto.titulo}, Precio: ${monedaIcons[producto.moneda]}${producto.precio.toLocaleString("es-AR")}`}>
       <div className="producto-card">
         {/* contenido que se anima al hacer hover */}
         <div className="producto-body">
           <img
             src={producto.foto}
-            alt={producto.titulo}
+            alt={`Imagen de ${producto.titulo}`}
             className="producto-image"
           />
           <div className="producto-info">
             <h3 className="producto-name">{producto.titulo}</h3>
             <div className="producto-details">
-              <span className="producto-price">
+              <span className="producto-price" aria-label={`Precio: ${monedaIcons[producto.moneda]}${producto.precio.toLocaleString("es-AR")}`}>
                 {monedaIcons[producto.moneda]}{producto.precio.toLocaleString("es-AR")}
               </span>
             </div>
@@ -80,12 +80,12 @@ const CarouselItem = ({producto}) => {
         {!seller && (
           <div className="botones-container">
             <span className="ver-detalles">
-              <Link to={`/productos/${producto._id}`} className="link-no-style">Ver Detalles</Link>
+              <Link to={`/productos/${producto._id}`} className="link-no-style" aria-label={`Ver detalles de ${producto.titulo}`}>Ver Detalles</Link>
             </span>
             {getStockInsuficiente() ? (
-              <button className="comprar-ahora-bloqueado" disabled>Stock Agotado</button>
+              <button className="comprar-ahora-bloqueado" disabled aria-label="Stock agotado">Stock Agotado</button>
             ) : (
-              <button className="comprar-ahora" id="comprarAhora" onClick={reservar}>Comprar Ahora</button>
+              <button className="comprar-ahora" id="comprarAhora" onClick={reservar} aria-label={`Agregar ${producto.titulo} al carrito`}>Comprar Ahora</button>
             )}
           </div>
         )}

@@ -41,10 +41,10 @@ export default function Login({ open, onClose, onLoginSuccess }) {
     }
 
     return (
-        <div className="login-modal-overlay">
+        <div className="login-modal-overlay" role="presentation">
                 <div className="login-modal-content" tabIndex={0} role="dialog" aria-modal="true" aria-label="Inicio de sesión">
 
-                    <button className="login-close-btn" onClick={onClose} aria-label="Cerrar">X</button>
+                    <button className="login-close-btn" onClick={onClose} aria-label="Cerrar" type="button">X</button>
 
                 {showRegister ? (
                     <Register
@@ -58,40 +58,47 @@ export default function Login({ open, onClose, onLoginSuccess }) {
                     />
                 ) : (
                 <form className="login-form" onSubmit={handleSubmit}>
-                    <p className="form-title">Ingresá tu cuenta</p>
+                    <h2 className="form-title">Ingresá tu cuenta</h2>
 
                     <div className="input-container">
+                        <label htmlFor="email-input" className="sr-only">Correo electrónico</label>
                         <input
+                            id="email-input"
                             type="email"
                             placeholder="Ingresar email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             onBlur={() => setEmailTouched(true)}
                             required
+                            aria-invalid={emailTouched && !isEmailValid}
+                            aria-describedby={emailTouched && !isEmailValid ? "email-error" : undefined}
                         />
                     </div>
                     {emailTouched && !isEmailValid && (
-                        <p className="error-text">Ingrese un email válido.</p>
+                        <p className="error-text" id="email-error" role="alert">Ingrese un email válido.</p>
                     )}
 
                     <div className="input-container">
+                        <label htmlFor="password-input" className="sr-only">Contraseña</label>
                         <input
+                            id="password-input"
                             type="password"
                             placeholder="Ingresar contraseña"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
+                            aria-describedby={error ? "login-error" : undefined}
                         />
                     </div>
 
-                    {error && <p className="error">{error}</p>}
+                    {error && <p className="error" id="login-error" role="alert">{error}</p>}
 
-                    <button type="submit" className="submit" disabled={!isValid}>
-                        Iniciar sesión
+                    <button type="submit" className="submit" disabled={!isValid} aria-busy={loading}>
+                        {loading ? 'Iniciando sesión...' : 'Iniciar sesión'}
                     </button>
 
                     <p className="login-signup-link">
-                        <a href="/CrearCuenta">Crear cuenta</a>
+                        <a href="/CrearCuenta" aria-label="Ir a crear nueva cuenta">Crear cuenta</a>
                     </p>
                 </form>
                 )}

@@ -28,11 +28,13 @@ export default function ProductoCarousel({productos}) {
       <h2 className="carousel-title">Productos Trending</h2>
 
       <div className="carousel-wrapper">
-        <div className="carousel-viewport">
+        <div className="carousel-viewport" role="region" aria-label="Carrusel de productos trending">
           <div className="carousel-track"
           style={{
               transform: `translateX(-${index * (100 / visible)}%)`,
-            }}>
+            }}
+            role="list"
+          >
             {productos.map((producto) => (
               <CarouselItem producto={producto} key={producto._id}/> 
             ))}
@@ -45,6 +47,8 @@ export default function ProductoCarousel({productos}) {
           className={`carousel-btn left-btn ${
             index === 0 ? "disabled" : ""
           }`}
+          aria-label="Productos anteriores"
+          type="button"
         >
           ◀
         </button>
@@ -55,6 +59,8 @@ export default function ProductoCarousel({productos}) {
           className={`carousel-btn right-btn ${
             index >= productos.length - visible ? "disabled" : ""
           }`}
+          aria-label="Productos siguientes"
+          type="button"
         >
           ▶
         </button>

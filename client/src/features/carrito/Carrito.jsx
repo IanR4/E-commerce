@@ -77,7 +77,7 @@ const Carrito = () => {
   return (
     <div className="root">
       <Card className="form-container">
-        <div>
+        <div role="region" aria-label="Productos en el carrito">
           {productosAgrupadosArray.map((producto, index) => (
             <div key={(producto._id ?? producto.id) ?? index}>
               <CarritoItem producto={producto} onRemove={removerDelCarrito} />
@@ -88,7 +88,7 @@ const Carrito = () => {
         { productosAgrupadosArray.length !== 0 ? (
           <div className="total">
             {/* Show total converted to Pesos (ARS) while keeping product prices in original currency */}
-            <h4>
+            <h4 aria-live="polite">
               Total: ${
                 (() => {
                   const totalNum = productosAgrupadosArray.reduce((acc, producto) => {
@@ -104,7 +104,7 @@ const Carrito = () => {
             </h4>
             <br/>
             {!userId && (
-              <p className="errorFinalizar">
+              <p className="errorFinalizar" role="alert">
                 Debe iniciar sesión para finalizar
               </p>
             )}
@@ -114,14 +114,15 @@ const Carrito = () => {
               value="Finalizar compra"
               onClick={() => navigate("/checkout")}
               disabled={!userId}
+              aria-label="Ir a finalizar compra"
               style={!userId ? { opacity: 0.6, cursor: 'not-allowed' } : {}}
             />
           </div>
         ) : (
-          <div className="carrito-vacio">
+          <div className="carrito-vacio" role="status" aria-live="polite">
             <h4>El carrito está vacío</h4>
             <br/>
-            <input type="button" className="botonExplorarProductos" value="Explorar productos!" onClick={() => navigate("/productos?titulo=")}/>
+            <input type="button" className="botonExplorarProductos" value="Explorar productos!" onClick={() => navigate("/productos?titulo=")} aria-label="Explorar productos disponibles"/>
           </div>
         )}
       </Card>

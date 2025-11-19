@@ -53,9 +53,9 @@ const ProductCard = ({ producto, onDelete }) => {
     }
 
     return (
-    <div className="producto-card" data-id={idStr}>
+    <div className="producto-card" data-id={idStr} role="article" aria-label={`Producto: ${titulo}`}>
       <div className="pv-image-top">
-        <img src={foto || '/images/placeholder.png'} alt={titulo} className="pv-image" />
+        <img src={foto || '/images/placeholder.png'} alt={`Imagen de ${titulo}`} className="pv-image" />
       </div>
 
       <div className="pedido-header pv-header">
@@ -63,18 +63,18 @@ const ProductCard = ({ producto, onDelete }) => {
           <div>
             <div className="pedido-title pv-title">{titulo}</div>
             <div className="pedido-submeta pv-submeta">
-              <span className="pv-category">{categoriaTexto}</span>
-              <span className="meta-sep">·</span>
-              <span className="pv-price">{precio != null ? `$ ${Number(precio).toLocaleString('es-AR')}` : '—'}</span>
+              <span className="pv-category" aria-label={`Categoría: ${categoriaTexto}`}>{categoriaTexto}</span>
+              <span className="meta-sep" aria-hidden="true">·</span>
+              <span className="pv-price" aria-label={`Precio: $ ${Number(precio).toLocaleString('es-AR')}`}>{precio != null ? `$ ${Number(precio).toLocaleString('es-AR')}` : '—'}</span>
             </div>
             <div className="pedido-submeta-stock">
-              <span className="pv-stock">Stock: {stock != null ? stock : '—'}</span>
+              <span className="pv-stock" aria-label={`Stock disponible: ${stock != null ? stock : 'No disponible'}`}>Stock: {stock != null ? stock : '—'}</span>
             </div>
           </div>
         </div>
         <div className="botones-product-card">
-          <button type="button" className="pv-edit-btn" onClick={actualizarStock} aria-label="Actualizar Stock">Actualizar Stock</button>
-          <button type="button" className="pv-delete-btn" onClick={handleDelete} aria-label="Eliminar producto">Eliminar</button>
+          <button type="button" className="pv-edit-btn" onClick={actualizarStock} aria-label={`Actualizar stock para ${titulo}`}>Actualizar Stock</button>
+          <button type="button" className="pv-delete-btn" onClick={handleDelete} aria-label={`Eliminar producto ${titulo}`}>Eliminar</button>
         </div>
       </div>
     </div>

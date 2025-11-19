@@ -36,15 +36,16 @@ export default function ProductoTable({ productos, itemsPerPage = 9 }) {
   }
 
   return (
-    <div className="product-table">
+    <div className="product-table" role="region" aria-label="Tabla de productos">
       {rows.map((row, rowIndex) => (
         <ul
           className={`list-group product-row`}
           key={`row-${rowIndex}`}
-          aria-label={`fila-${rowIndex}`}
+          role="list"
+          aria-label={`Fila ${rowIndex + 1} de productos`}
         >
           {row.map((producto) => (
-            <li tabIndex={0} className="list-group-item product-cell" key={producto._id || producto.id} aria-label={`Celda producto ${producto.titulo}`}>
+            <li role="listitem" className="list-group-item product-cell" key={producto._id || producto.id} aria-label={`Producto: ${producto.titulo}`}>
               <CarouselItem producto={producto} />
             </li>
           ))}

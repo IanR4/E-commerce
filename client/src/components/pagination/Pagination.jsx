@@ -15,21 +15,39 @@ const Pagination = ({ totalItems, itemsPerPage = 9, currentPage = 1, onPageChang
 
 	return (
 		<nav aria-label="Paginación de productos" className="pagination-nav">
-			<ul className="pagination justify-content-center">
-				<li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
-					<button className="page-link" onClick={() => gotoPage(currentPage - 1)} aria-label="Anterior">
+			<ul className="pagination justify-content-center" role="menubar">
+				<li className={`page-item ${currentPage === 1 ? "disabled" : ""}`} role="none">
+					<button 
+						className="page-link" 
+						onClick={() => gotoPage(currentPage - 1)} 
+						aria-label="Página anterior"
+						disabled={currentPage === 1}
+						role="menuitem"
+					>
 						Anterior
 					</button>
 				</li>
 
 				{pages.map((p) => (
-					<li key={p} className={`page-item ${p === currentPage ? "active" : ""}`}>
-						<button className="page-link" onClick={() => gotoPage(p)}>{p}</button>
+					<li key={p} className={`page-item ${p === currentPage ? "active" : ""}`} role="none">
+						<button 
+							className="page-link" 
+							onClick={() => gotoPage(p)}
+							aria-label={`Página ${p}`}
+							aria-current={p === currentPage ? "page" : undefined}
+							role="menuitem"
+						>{p}</button>
 					</li>
 				))}
 
-				<li className={`page-item ${currentPage === totalPages ? "disabled" : ""}`}>
-					<button className="page-link" onClick={() => gotoPage(currentPage + 1)} aria-label="Siguiente">
+				<li className={`page-item ${currentPage === totalPages ? "disabled" : ""}`} role="none">
+					<button 
+						className="page-link" 
+						onClick={() => gotoPage(currentPage + 1)} 
+						aria-label="Página siguiente"
+						disabled={currentPage === totalPages}
+						role="menuitem"
+					>
 						Siguiente
 					</button>
 				</li>

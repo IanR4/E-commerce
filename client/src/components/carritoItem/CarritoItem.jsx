@@ -18,25 +18,25 @@ const CarritoItem = ({producto, onRemove}) => {
   };
 
   return (
-    <div key={producto._id} className="carrito-card" tabIndex={0} aria-label={`Ítem de carrito ${producto.titulo}`}>
+    <div key={producto._id} className="carrito-card" role="article" aria-label={`Ítem de carrito: ${producto.titulo}`}>
       <div className="producto-carrito-card">
         <img
           src={producto.foto}
-          alt={producto.titulo}
+          alt={`Imagen de ${producto.titulo}`}
           className="producto-carrito-image"
         />
         <div className="producto-carrito-info">
           <h3 className="producto-name">{producto.titulo}</h3>
-          <div className="producto-carrito-details">
-            <h6 className="producto-carrito-cantidad">x{producto.cantidadUnidades}</h6>
-            <span className="producto-carrito-price">{monedaIcons[producto.moneda]}{producto.precio.toLocaleString("es-AR")}</span>
+          <div className="producto-carrito-details" aria-label="Detalles del producto">
+            <h6 className="producto-carrito-cantidad" aria-label={`Cantidad: ${producto.cantidadUnidades}`}>x{producto.cantidadUnidades}</h6>
+            <span className="producto-carrito-price" aria-label={`Precio: ${monedaIcons[producto.moneda]}${producto.precio.toLocaleString("es-AR")}`}>{monedaIcons[producto.moneda]}{producto.precio.toLocaleString("es-AR")}</span>
           </div>
           <div className="producto-carrito-eliminar">
             <button
               type="button"
               className="producto-carrito-eliminar-boton"
               onClick={handleRemove}
-              aria-label={`Eliminar ${producto.titulo}`}
+              aria-label={`Eliminar ${producto.titulo} del carrito`}
             >
               Eliminar
             </button>

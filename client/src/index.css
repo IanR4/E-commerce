@@ -93,3 +93,39 @@ html, body, #root {
   all: unset;
   cursor: pointer;
 }
+
+/* Screen reader only text - accessibility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Focus visible styles for better keyboard navigation */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid #24044e;
+  outline-offset: 2px;
+}
+
+/* Ensure disabled buttons are visually distinct */
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: more) {
+  body {
+    text-decoration-skip-ink: none;
+  }
+}

@@ -75,17 +75,17 @@ const Navbar = () => {
 
   return (
     <>
-    <header className="navbar-bg" tabIndex={0}>
-      <nav className="navbar">
+    <header className="navbar-bg" role="banner">
+      <nav className="navbar" aria-label="Navegación principal">
         <div className="navbar-section left">
           <DropdownUtilities/>
         </div>
 
         <div className="navbar-section center-left">
           <div className="brand">
-            <Link to={`/`} className="link-no-style">
+            <Link to={`/`} className="link-no-style" aria-label="Ir a inicio - Tienda Sol">
               <h1 className="brand-text"> Tienda Sol </h1>
-              <img id="brand-image" src="images/logosol.jpg" alt="Tienda Sol"/>
+              <img id="brand-image" src="images/logosol.jpg" alt="Logo de Tienda Sol"/>
             </Link>
           </div>
         </div>
@@ -96,14 +96,14 @@ const Navbar = () => {
 
         <div className="navbar-section right">
           {!seller && (
-            <button className="cart" onClick={irACarrito}>
-              <FaShoppingCart color="white"/>
-              <span className="cart-count">{cantUnidades}</span>
+            <button className="cart" onClick={irACarrito} aria-label={`Ir al carrito (${cantUnidades} productos)`}>
+              <FaShoppingCart color="white" aria-hidden="true"/>
+              <span className="cart-count" aria-label="cantidad de productos en carrito">{cantUnidades}</span>
             </button>
           )}
           {seller && (
-            <button className="publish-button1" onClick={() => navigate('/Publicar')}>
-              <FaPlusCircle className="subbar-icon" />
+            <button className="publish-button1" onClick={() => navigate('/Publicar')} aria-label="Publicar nuevo producto">
+              <FaPlusCircle className="subbar-icon" aria-hidden="true" />
               <span className="utilities-text">Publicar producto</span>
             </button>
           )}
@@ -113,7 +113,7 @@ const Navbar = () => {
       
     </header>
 
-    <div className="subheader" tabIndex={0}>
+    <div className="subheader">
       <Subbar />
     </div>
     </>

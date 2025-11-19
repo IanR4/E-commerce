@@ -15,11 +15,13 @@ const AccomodationSearchBar = () => {
   }, [location.pathname]);
 
   return (
-    <div className="accommodation-search" tabIndex={0} aria-label="Barra de búsqueda">
+    <div className="accommodation-search" role="search" aria-label="Buscar productos">
       <div className='search-field'>
         <div className='input-wrapper'>
 
+          <label htmlFor="search-input" className="sr-only">Buscar productos</label>
           <TextField
+            id="search-input"
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
             variant="standard"
@@ -30,13 +32,14 @@ const AccomodationSearchBar = () => {
                 if (e.key === 'Enter') {
                   navigate(`/productos?titulo=${searchText}`);
                 }
-              }
+              },
+              'aria-label': 'Campo de búsqueda de productos'
             }}
           />
 
-          <Link to={`/productos?titulo=${searchText}`} className="link-no-style">
-            <Button id="boton" variant="outlined">
-              <FaSearch className='button-icon' />
+          <Link to={`/productos?titulo=${searchText}`} className="link-no-style" aria-label={`Buscar: ${searchText}`}>
+            <Button id="boton" variant="outlined" aria-label="Ejecutar búsqueda" type="button">
+              <FaSearch className='button-icon' aria-hidden="true" />
             </Button>
           </Link>
 

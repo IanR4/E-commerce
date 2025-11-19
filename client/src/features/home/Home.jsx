@@ -30,9 +30,9 @@ const Home = () => {
     return (
       <>
         <div className="banner">
-          <img className="home-banner" src="/images/bannerhome.jpg" alt="Banner Principal"/>
+          <img className="home-banner" src="/images/bannerhome.jpg" alt="Banner principal de Tienda Sol"/>
         </div>
-        {!productos.length ? <div className="spinner">
+        {!productos.length ? <div className="spinner" role="status" aria-label="Cargando productos">
           <Spinner/>
         </div> :
           <div>
