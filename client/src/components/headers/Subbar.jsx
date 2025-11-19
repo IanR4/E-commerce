@@ -1,6 +1,7 @@
 import { Link } from 'react-router';
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
 import './Subbar.css';
 import {FaShoppingCart} from 'react-icons/fa';
 import '../../index.css';
@@ -9,9 +10,9 @@ import DropdownCategorias from "../dropdown/DropdownCategorias";
 import DropdownUtilities from "../dropdown/DropdownUtilities"; 
 import Login from "../login/Login";
 
-
 const Subbar = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const location = useLocation();
   const [openLogin, setOpenLogin] = useState(false);
   const [user, setUser] = useState(null);
   const [showUserMenu, setShowUserMenu] = useState(false);
@@ -78,11 +79,13 @@ const Subbar = () => {
         <div className="subbar-section center">
             <DropdownCategorias/>
 
-            {!user ? (
+            {!user && location.pathname !== '/CrearCuenta' && (
                 <button className="login-button" onClick={abrirLogin}>
                     <h3 className="utilities-text"> Iniciar sesión </h3>
                 </button>
-            ) : (
+            )}
+            
+            {user && (
                 <div className="user-dropdown" ref={userMenuRef}>
                   <button className="login-button" onClick={() => setShowUserMenu(s => !s)}>
                     <h3 className="utilities-text">{user.displayName}</h3>
@@ -109,13 +112,10 @@ const Subbar = () => {
             ) : ("")}  
         </div>
          
-        
       </nav>
       <Login open={openLogin} onClose={cerrarLogin} onLoginSuccess={handleLoginSuccess} />
     </div>
-    
   );
 };
 
 export default Subbar;
-

@@ -55,7 +55,10 @@ const Navbar = () => {
 
         <div className="navbar-section center-left">
           <div className="brand">
-            <Link to={`/`} className="link-no-style"><h1 className="brand-text"> Tienda Sol </h1><img id="brand-image" src="images/logosol.jpg"/></Link>
+            <Link to={`/`} className="link-no-style">
+              <h1 className="brand-text"> Tienda Sol </h1>
+              <img id="brand-image" src="images/logosol.jpg" alt="Tienda Sol"/>
+            </Link>
           </div>
         </div>
 

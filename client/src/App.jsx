@@ -16,6 +16,7 @@ import Publicar from './features/publicar/Publicar.jsx';
 import VisualizacionProducto from './features/visualizacionProducto/VisualizacionProducto.jsx';
 import Pedido from './features/pedido/Pedido.jsx';
 import { CarritoProvider } from './store/CarritoContext.jsx';
+import Sesion from './features/sesion/Sesion.jsx';
 
 const theme = createTheme({
   palette: {
@@ -136,6 +137,12 @@ function App() {
               path="/checkout"
               element={
                 <Checkout
+                />
+              } />
+              <Route
+              path="/CrearCuenta"
+              element={
+                <Sesion
                 />
               } />
           </Route>
