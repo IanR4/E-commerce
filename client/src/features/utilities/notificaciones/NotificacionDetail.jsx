@@ -1,5 +1,6 @@
 import React from 'react';
 import "./NotificacionDetail.css"
+import { leerNotificacion } from "../../../service/notificacionesService.js"
 
 const formatDate = (iso) => {
   if (!iso) return '—';

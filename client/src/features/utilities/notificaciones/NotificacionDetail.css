@@ -1,11 +1,10 @@
-
 /* Estilos específicos para la vista de detalle de una notificación */
 
 :root{
   --card-bg: #fff;
   --card-border: #e6e6e6;
   --muted: #666;
-  --accent: #5b21b6; /* púrpura suave */
+  --accent: var(--primary-lightblue); /* púrpura suave */
   --success: #16a34a;
   --danger: #dc2626;
 }
@@ -132,4 +131,3 @@
   .notificacion-fechas{text-align:left}
   .notificacion-row strong{min-width:72px}
 }
-
