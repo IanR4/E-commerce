@@ -25,7 +25,6 @@ export const getProductVendedor = (vendedor_id, page = 1, limit = 9) => {
     .then((response) => response.data)
 }
 
-
 export const postProduct = (vendedor, titulo, descripcion, categoria, precio, moneda, stock, foto) => {
   // backend expects `categorias` as an array and moneda to match its enum values
   const monedaMap = {
@@ -48,7 +47,11 @@ export const postProduct = (vendedor, titulo, descripcion, categoria, precio, mo
     .then((response) => response.data)
 }
 
-
+export const patchProduct = (productoId, productoData) => {
+  return axios
+    .patch(`${API_BASE_URL}/producto/${productoId}`, productoData)
+    .then((response) => response.data)
+}
 
 export const getProductsFiltered = (vendedor = "", titulo = "", categoria = "", descripcion = "", precioMin = "", precioMax = "", orden = "masVendidos") => {
   const queryFiltros = extraerFiltros(titulo, categoria, descripcion, precioMin, precioMax, orden)

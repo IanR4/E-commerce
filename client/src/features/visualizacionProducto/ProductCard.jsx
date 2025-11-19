@@ -1,6 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 import './ProductCard.css'
+import { patchProduct } from '../../service/productosService.js'
 
 const ProductCard = ({ producto, onDelete }) => {
   const {
@@ -39,6 +40,18 @@ const ProductCard = ({ producto, onDelete }) => {
       }
     }
 
+    const actualizarStock = () => {
+      const nuevoStock = prompt('Ingrese el nuevo stock para el producto:', stock != null ? stock : '0')
+      if (nuevoStock !== null) {
+        const stockNumber = parseInt(nuevoStock, 10)
+        if (!isNaN(stockNumber) && stockNumber >= 0) {
+          patchProduct(idStr, { stock: stockNumber })
+          window.location.reload(); 
+        }
+      }
+      if (nuevoStock === null) return;
+    }
+
     return (
     <div className="producto-card" data-id={idStr}>
       <div className="pv-image-top">
@@ -54,9 +67,15 @@ const ProductCard = ({ producto, onDelete }) => {
               <span className="meta-sep">·</span>
               <span className="pv-price">{precio != null ? `$ ${Number(precio).toLocaleString('es-AR')}` : '—'}</span>
             </div>
+            <div className="pedido-submeta-stock">
+              <span className="pv-stock">Stock: {stock != null ? stock : '—'}</span>
+            </div>
           </div>
         </div>
-        <button type="button" className="pv-delete-btn" onClick={handleDelete} aria-label="Eliminar producto">Eliminar</button>
+        <div className="botones-product-card">
+          <button type="button" className="pv-edit-btn" onClick={actualizarStock} aria-label="Actualizar Stock">Actualizar Stock</button>
+          <button type="button" className="pv-delete-btn" onClick={handleDelete} aria-label="Eliminar producto">Eliminar</button>
+        </div>
       </div>
     </div>
   )
