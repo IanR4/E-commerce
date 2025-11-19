@@ -82,6 +82,16 @@ const ProductoDetailPage = () => {
     }
   };
 
+  const getStockInsuficiente = () => {
+    if (!producto) return false;
+    const productoEnCarrito = carrito.find(p => 
+      (p._id && p._id === producto._id) || (p.id && p.id === producto.id)
+    );
+    const cantidadEnCarrito = productoEnCarrito?.cantidadUnidades || 0;
+    const cantidadTotal = cantidadEnCarrito + unidades;
+    return cantidadTotal > producto.stock;
+  };
+
   const reservar = () => {
     if (carrito.length === 0) {
       actualizarCarrito(conUnidades(unidades, producto));
@@ -151,7 +161,7 @@ const ProductoDetailPage = () => {
             <Button id="unidadesAComprar" disabled>{unidades}</Button>
             <Button onClick={incrementarUnidades}>+</Button>
           </ButtonGroup>
-          {unidades > 0 ? (
+          {unidades > 0 && !getStockInsuficiente() ? (
             <button className="reservar" onClick={reservar}>Agregar a carrito</button>
           ) : (
             <button className="reservar-bloqueado" disabled>Agregar a carrito</button>

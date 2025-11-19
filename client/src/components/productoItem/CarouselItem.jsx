@@ -22,8 +22,17 @@ const isUserSeller = () => {
 
 const conUnidades = (unidades, producto) => ({ ...producto, cantidadUnidades: unidades });
 const CarouselItem = ({producto}) => {
-  const { actualizarCarrito } = useCarritoContext();
+  const { actualizarCarrito, carrito } = useCarritoContext();
   const navigate = useNavigate()
+
+  const getStockInsuficiente = () => {
+    const productoEnCarrito = carrito.find(p => 
+      (p._id && p._id === producto._id) || (p.id && p.id === producto.id)
+    );
+    const cantidadEnCarrito = productoEnCarrito?.cantidadUnidades || 0;
+    const cantidadTotal = cantidadEnCarrito + 1;
+    return cantidadTotal > producto.stock;
+  };
 
   const reservar = () => {
     actualizarCarrito(conUnidades(1, producto))
@@ -68,7 +77,11 @@ const CarouselItem = ({producto}) => {
             <span className="ver-detalles">
               <Link to={`/productos/${producto._id}`} className="link-no-style">Ver Detalles</Link>
             </span>
-            <button className="comprar-ahora" id="comprarAhora" onClick={reservar}>Comprar Ahora</button>
+            {getStockInsuficiente() ? (
+              <button className="comprar-ahora-bloqueado" disabled>Stock Agotado</button>
+            ) : (
+              <button className="comprar-ahora" id="comprarAhora" onClick={reservar}>Comprar Ahora</button>
+            )}
           </div>
         )}
       </div>
