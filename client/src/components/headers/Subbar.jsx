@@ -102,7 +102,9 @@ const Subbar = () => {
                 </div>
             )}
 
-            <Link to={`/Notificaciones`} className="publish-button"><FaBell className="subbar-icon" /><h3 className="utilities-text"> Notificaciones </h3></Link>
+            {user && (
+              <Link to={`/Notificaciones`} className="publish-button"><FaBell className="subbar-icon" /><h3 className="utilities-text"> Notificaciones </h3></Link>
+            )}
 
             {user && (
               <Link to={`/mis-pedidos`} className="publish-button"><FaClipboardList className="subbar-icon" /><h3 className="utilities-text"> Mis pedidos </h3></Link>

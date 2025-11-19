@@ -81,6 +81,18 @@
   margin:0;
 }
 
+.comprar-ahora-bloqueado {
+  background-color: #ccc;
+  color: #666;
+  font-size: 0.9rem;
+  font-weight: bold;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  display: inline-block;
+  margin: 0;
+  border: none;
+}
+
 .producto-price {
   font-weight: 600;
   color: #111;
