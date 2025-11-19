@@ -13,6 +13,45 @@ const ProductoDetailPage = () => {
   const navigate = useNavigate()
   const { id } = useParams();
   const [producto, setProducto] = useState(null);
+  const [seller, setSeller] = useState(() => {
+    try {
+      const stored = localStorage.getItem('user');
+      if (!stored) return false;
+      const parsed = JSON.parse(stored);
+      const raw = parsed?.raw ?? parsed;
+      const candidates = [raw?.tipo, raw?.role, raw?.tipoUsuario, raw?.data?.tipo, raw?.data?.role, raw?.data?.tipoUsuario];
+      for (const c of candidates) {
+        if (typeof c === 'string' && c.toLowerCase().includes('vendedor')) return true;
+      }
+      return false;
+    } catch (e) {
+      return false;
+    }
+  });
+
+  useEffect(() => {
+    const handleUserChanged = () => {
+      try {
+        const stored = localStorage.getItem('user');
+        if (!stored) { setSeller(false); return; }
+        const parsed = JSON.parse(stored);
+        const raw = parsed?.raw ?? parsed;
+        const candidates = [raw?.tipo, raw?.role, raw?.tipoUsuario, raw?.data?.tipo, raw?.data?.role, raw?.data?.tipoUsuario];
+        for (const c of candidates) {
+          if (typeof c === 'string' && c.toLowerCase().includes('vendedor')) { setSeller(true); return; }
+        }
+        setSeller(false);
+      } catch (e) {
+        setSeller(false);
+      }
+    };
+    window.addEventListener('userChanged', handleUserChanged);
+    window.addEventListener('storage', handleUserChanged);
+    return () => {
+      window.removeEventListener('userChanged', handleUserChanged);
+      window.removeEventListener('storage', handleUserChanged);
+    };
+  }, []);
 
   useEffect(() => {
     const cargarProducto = () => {
@@ -105,18 +144,20 @@ const ProductoDetailPage = () => {
         Con esta compra sumás puntos
       </div>
       
-      <div className="reservar-container">
-        <ButtonGroup variant="outlined" aria-label="outlined button group">
-          <Button onClick={decrementarUnidades} disabled={unidades === 0}>-</Button>
-          <Button id="unidadesAComprar" disabled>{unidades}</Button>
-          <Button onClick={incrementarUnidades}>+</Button>
-        </ButtonGroup>
-        {unidades > 0 ? (
-          <button className="reservar" onClick={reservar}>Agregar a carrito</button>
-        ) : (
-          <button className="reservar-bloqueado" disabled>Agregar a carrito</button>
-        )}
-      </div>
+      {!seller && (
+        <div className="reservar-container">
+          <ButtonGroup variant="outlined" aria-label="outlined button group">
+            <Button onClick={decrementarUnidades} disabled={unidades === 0}>-</Button>
+            <Button id="unidadesAComprar" disabled>{unidades}</Button>
+            <Button onClick={incrementarUnidades}>+</Button>
+          </ButtonGroup>
+          {unidades > 0 ? (
+            <button className="reservar" onClick={reservar}>Agregar a carrito</button>
+          ) : (
+            <button className="reservar-bloqueado" disabled>Agregar a carrito</button>
+          )}
+        </div>
+      )}
     </div>
   );
 };

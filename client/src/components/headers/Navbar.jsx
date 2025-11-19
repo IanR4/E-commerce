@@ -2,7 +2,7 @@ import { Link } from 'react-router';
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
 import './Navbar.css';
-import {FaShoppingCart} from 'react-icons/fa';
+import {FaShoppingCart, FaPlusCircle} from 'react-icons/fa';
 import '../../index.css';
 import AccomodationSearchBar from "../accommodationSearchBar/AccomodationSearchBar"; 
 import DropdownUtilities from "../dropdown/DropdownUtilities";  
@@ -45,6 +45,34 @@ const Navbar = () => {
     setCantUnidades(cantUnidadesEnCarrito());
   }, [carrito]);
 
+  const isUserSeller = () => {
+    try {
+      const stored = localStorage.getItem('user');
+      if (!stored) return false;
+      const parsed = JSON.parse(stored);
+      const raw = parsed?.raw ?? parsed;
+      const candidates = [raw?.tipo, raw?.role, raw?.tipoUsuario, raw?.data?.tipo, raw?.data?.role, raw?.data?.tipoUsuario];
+      for (const c of candidates) {
+        if (typeof c === 'string' && c.toLowerCase().includes('vendedor')) return true;
+      }
+      return false;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  const [seller, setSeller] = useState(isUserSeller());
+
+  useEffect(() => {
+    const handleUserChanged = () => setSeller(isUserSeller());
+    window.addEventListener('userChanged', handleUserChanged);
+    window.addEventListener('storage', handleUserChanged);
+    return () => {
+      window.removeEventListener('userChanged', handleUserChanged);
+      window.removeEventListener('storage', handleUserChanged);
+    }
+  }, []);
+
   return (
     <>
     <header className="navbar-bg">
@@ -67,11 +95,18 @@ const Navbar = () => {
         </div>
 
         <div className="navbar-section right">
-          <button className="cart" onClick={irACarrito}>
-            <FaShoppingCart color="white"/>
-            <span className="cart-count">{cantUnidades}</span>
-          </button>
-          
+          {!seller && (
+            <button className="cart" onClick={irACarrito}>
+              <FaShoppingCart color="white"/>
+              <span className="cart-count">{cantUnidades}</span>
+            </button>
+          )}
+          {seller && (
+            <button className="publish-button1" onClick={() => navigate('/Publicar')}>
+              <FaPlusCircle className="subbar-icon" />
+              <span className="utilities-text">Publicar producto</span>
+            </button>
+          )}
         </div>
       </nav>
 

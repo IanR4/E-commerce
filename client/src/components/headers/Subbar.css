@@ -16,7 +16,6 @@
 
 /* BOTÓN INICIAR SESIÓN */ 
 .login-button { 
-    margin-right: 1rem; 
     color: white; 
     background: transparent; 
     border: none; 
@@ -52,7 +51,7 @@
     flex: 1;
     justify-content: center;
     align-items: center;
-    gap: 1.2rem; /* reduced gap so sections are closer together */
+    gap: 2.5rem; /* reduced gap so sections are closer together */
     margin-bottom: 0; /* remove extra bottom margin that could cause vertical shift */
 }
 .utilities{
@@ -167,10 +166,7 @@
     margin-left: 1rem;
 }
 
-.brand-text {
-    color: var(--primary-white);
-    margin-right: 1rem;
-}
+
 
 /* Ajuste del contenido para que no quede tapado por el subbar fijo */
 /* keep page content padding so it's not hidden by fixed bars */

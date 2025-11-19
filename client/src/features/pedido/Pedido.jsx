@@ -102,6 +102,8 @@ const Pedido = () => {
   const [openIds, setOpenIds] = useState(new Set());
   const [editOpenId, setEditOpenId] = useState(null);
 
+  const currentUserId = getStoredUserId();
+
   const toggleOpen = (id) => {
     setOpenIds(prev => {
       const copy = new Set(prev);
@@ -193,17 +195,22 @@ const Pedido = () => {
                   </div>
                   <div className="pedido-actions">
                     <div style={{ position: 'relative' }}>
-                      <button className="action-icon edit-btn" title="Editar" onClick={() => handleToggleEdit(idStr)}>✎</button>
-                      {editOpenId === idStr && (
-                        <div className="state-menu">
-                          {getAllowedTargets(pedido.estado).length === 0 ? (
-                            <div className="state-item disabled">No hay transiciones</div>
-                          ) : (
-                            getAllowedTargets(pedido.estado).map((s) => (
-                              <button key={s} className="state-item" onClick={() => handleChangeEstado(idStr, s)}>{s}</button>
-                            ))
+                      {/* show edit pencil only to vendedor (no mostrar al comprador) */}
+                      {pedido.items && currentUserId && pedido.items.some(it => matchesId(it.productoEmbebido?.vendedor, currentUserId)) && (
+                        <>
+                          <button className="action-icon edit-btn" title="Editar" onClick={() => handleToggleEdit(idStr)}>✎</button>
+                          {editOpenId === idStr && (
+                            <div className="state-menu">
+                              {getAllowedTargets(pedido.estado).length === 0 ? (
+                                <div className="state-item disabled">No hay transiciones</div>
+                              ) : (
+                                getAllowedTargets(pedido.estado).map((s) => (
+                                  <button key={s} className="state-item" onClick={() => handleChangeEstado(idStr, s)}>{s}</button>
+                                ))
+                              )}
+                            </div>
                           )}
-                        </div>
+                        </>
                       )}
                     </div>
                     <button

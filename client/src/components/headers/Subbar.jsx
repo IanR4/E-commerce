@@ -36,6 +36,7 @@ const Subbar = () => {
     const toStore = { displayName: name || 'Usuario', raw: userData };
     setUser(toStore);
     try { localStorage.setItem('user', JSON.stringify(toStore)); } catch (e) {}
+    try { window.dispatchEvent(new CustomEvent('userChanged', { detail: toStore })); } catch (e) {}
   }
 
   const isUserSeller = (u) => {
@@ -54,6 +55,7 @@ const Subbar = () => {
     setUser(null);
     setShowUserMenu(false);
     navigate('/');
+    try { window.dispatchEvent(new CustomEvent('userChanged', { detail: null })); } catch (e) {}
   }
 
   // close user menu when clicking outside
@@ -108,7 +110,6 @@ const Subbar = () => {
         
             {user && isUserSeller(user) ? (
                 <>
-                  <button className="publish-button" onClick={() => navigate('/Publicar')}><FaPlusCircle className="subbar-icon" /><h3 className="utilities-text"> Publicar producto </h3></button>
                   <button className="publish-button" onClick={() => navigate('/mis-productos')}><FaBoxOpen className="subbar-icon" /><h3 className="utilities-text"> Mis productos </h3></button>
                 </>
             ) : ("")}  
