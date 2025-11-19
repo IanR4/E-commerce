@@ -9,7 +9,7 @@ app.use(express.json());
 const allowedOrigins = [
     'http://localhost:3000',
     'http://localhost:3001',
-    'https://tienda-sol.netlify.app', // Reemplazar
+    'https://sol-tienda.netlify.app',
     process.env.FRONTEND_URL 
 ].filter(Boolean);
 
