@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Card, TextField, Button, MenuItem, Select, FormControl, InputLabel, Typography, Box } from '@mui/material';
 import { useNavigate } from "react-router-dom";
 import { useCarritoContext } from '../../store/CarritoContext.jsx'
@@ -22,6 +22,7 @@ const Checkout = () => {
   });
 
   const [campos, setCampos] = useState(inicializarCampos());
+  const [user, setUser] = useState(null);
 
   const camposCompletos = Object.values(campos)
     .every(campo => campo && campo.valor && campo.valor.trim() !== '');
@@ -63,9 +64,30 @@ const Checkout = () => {
     navigate("/")
   };
 
+  useEffect(() => {
+      try {
+        const stored = localStorage.getItem('user');
+        if (stored) setUser(JSON.parse(stored));
+      } catch (e) {
+        // ignore parse errors
+      }
+    }, []);
+
+    let userId = null
+        try {
+            const stored = localStorage.getItem('user')
+            if (stored) {
+                const parsed = JSON.parse(stored)
+                const raw = parsed?.raw ?? parsed
+                userId = raw?._id
+            }
+        } catch (err) {
+            // ignore parse errors
+      }
+
   const construirPedido = () => {
     return {
-      "comprador": "69024e8389d2ba46d57e0c3e",
+      "comprador": userId,
       "items": productosAgrupadosArray.map(producto => ({
         "producto": producto._id ?? producto.id,
         "cantidad": producto.cantidadUnidades,
