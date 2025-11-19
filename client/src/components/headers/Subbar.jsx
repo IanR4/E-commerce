@@ -115,6 +115,7 @@ const Subbar = () => {
                   <button className="publish-button" onClick={() => navigate('/mis-productos')}><FaBoxOpen className="subbar-icon" /><h3 className="utilities-text"> Mis productos </h3></button>
                 </>
             ) : ("")}  
+            {/* filters icon removed from subbar - moved into product table header */}
         </div>
          
       </nav>

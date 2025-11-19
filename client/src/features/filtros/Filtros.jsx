@@ -10,7 +10,7 @@ import { getUsuario } from '../../service/usuariosService.js';
 import './Filtros.css';
 
 
-const Filtros = () => {
+const Filtros = ({ drawer = false }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -67,7 +67,7 @@ const Filtros = () => {
 
   return (
     <>
-      <aside className="filter-drawer" aria-label="Filtros de productos">
+      <aside className={`filter-drawer ${drawer ? 'drawer-mode' : ''}`} aria-label="Filtros de productos">
         <h2 gutterBottom className="filtros-title">Filtros</h2>
         <Divider />
 
@@ -159,7 +159,7 @@ const Filtros = () => {
         </List>
       </aside>
 
-      <div className="filter-spacer" aria-hidden="true" />
+      { !drawer && <div className="filter-spacer" aria-hidden="true" /> }
     </>
   );
 };

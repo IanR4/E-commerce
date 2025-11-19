@@ -11,6 +11,16 @@
   z-index: 3000;    /* still above page content but below navbar */
 }
 
+/* When rendered inside an off-canvas drawer, render as normal block (not sticky) */
+.filter-drawer.drawer-mode {
+  position: static !important;
+  top: auto !important;
+  width: 100%;
+  max-width: 100%;
+  padding: 12px 12px 24px 12px;
+  box-shadow: none;
+}
+
 /* spacer used inside the flow to reserve space for the fixed sidebar */
 .filter-spacer {
   width: 280px;
@@ -100,9 +110,11 @@
     background-color: #ffffff;
 }
 
-/* Responsive: hide permanent sidebar on small screens so it doesn't cover content */
+/* Responsive: hide permanent sidebar on small screens so it doesn't cover content
+   but allow drawer-mode to remain available when embedded in an off-canvas panel */
 @media (max-width: 900px) {
-  .filter-drawer, .filter-spacer { display: none; }
+  .filter-spacer { display: none; }
+  .filter-drawer:not(.drawer-mode) { display: none; }
 }
 
 @media (max-height: 800px) {

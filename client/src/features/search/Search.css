@@ -72,3 +72,83 @@
     color: var(--primary-white); 
 }
 
+/* Layout for the ordenar + filter controls */
+.dropdown{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 0.5rem;
+}
+
+/* Make both buttons share the same height and visual scale */
+.dropdown-btn, .filter-button{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    padding: 0 12px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    box-sizing: border-box;
+}
+
+/* push the filter button to the extreme right of the controls area */
+.filter-button{
+    margin-left: auto;
+}
+
+/* Off-canvas filters drawer for mobile */
+.filters-overlay{
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 200ms ease;
+    z-index: 2500;
+}
+.filters-overlay.show{
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.filters-drawer{
+    position: fixed;
+    left: 0;
+    top: var(--navbar-height, 5rem);
+    bottom: 0;
+    width: 320px;
+    max-width: 86%;
+    background: #fff;
+    box-shadow: 2px 0 12px rgba(0,0,0,0.2);
+    transform: translateX(-110%);
+    transition: transform 260ms ease;
+    z-index: 2600;
+    overflow: auto;
+}
+.filters-drawer.open{
+    transform: translateX(0);
+}
+.filters-drawer-header{ display:flex; justify-content:flex-end; padding: 0.5rem; }
+.filters-close{ background: transparent; border:none; font-size:1.25rem; padding: 0.25rem 0.5rem; cursor:pointer; }
+.filters-drawer-body{ padding: 0 0.5rem 2rem 0.5rem; }
+
+@media (min-width: 901px){
+    .filters-overlay, .filters-drawer { display: none; }
+}
+
+/* Filter button placed next to the ordenar dropdown */
+.filter-button{
+    margin-left: 0.5rem;
+    background: var(--primary-blue);
+    color: var(--primary-white);
+    border: none;
+    padding: 0.35rem 0.6rem;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.filter-button svg{ width: 1rem; height: 1rem; }
+

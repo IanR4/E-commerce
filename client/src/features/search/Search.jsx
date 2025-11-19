@@ -5,12 +5,15 @@ import { useParams, useSearchParams, useNavigate, useLocation } from "react-rout
 import ProductoTable from "../../components/productoTable/ProductoTable.jsx";
 import Filtros from "../filtros/Filtros.jsx";
 import React, { useState, useRef, useEffect } from "react";
+import { FaFilter } from 'react-icons/fa';
 import { getProductsFiltered } from "../../service/productosService.js"
 
 const Search = () => {
   const outlet = useOutletContext();
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(typeof window !== 'undefined' ? window.innerWidth <= 900 : false);
   const navigate = useNavigate();
   const location = useLocation();  // <--- Aquí
   const { searchText, categoriaName, vendedorId } = useParams();
@@ -101,6 +104,20 @@ const Search = () => {
   };
 
   useEffect(() => {
+    const onOpenFilters = () => setFiltersOpen(true);
+    const onCloseFilters = () => setFiltersOpen(false);
+    const onResize = () => setIsMobile(window.innerWidth <= 900);
+    window.addEventListener('openFilters', onOpenFilters);
+    window.addEventListener('closeFilters', onCloseFilters);
+    window.addEventListener('resize', onResize);
+    return () => {
+      window.removeEventListener('openFilters', onOpenFilters);
+      window.removeEventListener('closeFilters', onCloseFilters);
+      window.removeEventListener('resize', onResize);
+    };
+  }, []);
+
+  useEffect(() => {
     const fetchProductos = async () => {
       setLoading(true);
       try {
@@ -150,7 +167,8 @@ const Search = () => {
     <>
       <div className="ResultadoBusqueda">
         <div>
-          <Filtros />
+          {/* On mobile the filters live in an off-canvas drawer; on desktop they appear inline */}
+          {!isMobile && <Filtros />}
         </div>
 
         <div>
@@ -158,6 +176,12 @@ const Search = () => {
             <button className="dropdown-btn" onClick={() => setOpen(!open)}>
               Ordenar por {dropdown[filtros.indexOf(filtradoDropdown)]} ▾
             </button>
+
+            {isMobile && (
+              <button className="filter-button" title="Filtros" onClick={() => setFiltersOpen(true)} aria-label="Abrir filtros">
+                <FaFilter />
+              </button>
+            )}
 
             {open && (
               <ul className={`dropdown-menu ${open ? "show" : ""}`}>
@@ -176,6 +200,20 @@ const Search = () => {
 
           <ProductoTable productos={productosFiltrados} />
         </div>
+        {/* Mobile drawer + overlay for filters */}
+        {isMobile && (
+          <>
+            <div className={`filters-overlay ${filtersOpen ? 'show' : ''}`} onClick={() => setFiltersOpen(false)} />
+            <aside className={`filters-drawer ${filtersOpen ? 'open' : ''}`} role="dialog" aria-modal="true">
+              <div className="filters-drawer-header">
+                <button className="filters-close" onClick={() => setFiltersOpen(false)} aria-label="Cerrar filtros">✕</button>
+              </div>
+              <div className="filters-drawer-body">
+                <Filtros drawer={true} />
+              </div>
+            </aside>
+          </>
+        )}
       </div>
     </>
   );
