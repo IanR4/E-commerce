@@ -1,0 +1,43 @@
+form{
+    max-width: 80%;
+}
+
+.MuiPaper-root{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.total {
+    margin: 2rem 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+    align-items: center;
+    text-align: center;
+}
+
+.carrito-vacio {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin: 2rem 0;
+}
+
+.botonExplorarProductos {
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  min-width: 150px;
+}
+
+.botonFinalizarCompra {
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.875rem;
+  min-width: 150px;
+}

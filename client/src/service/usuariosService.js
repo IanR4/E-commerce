@@ -13,3 +13,10 @@ export const register = (email, password, nombre, tipo, telefono) => {
     .post(`${API_BASE_URL}/register`, { email, password, nombre, tipo, telefono })
     .then((response) => response.data)
 }
+
+export const getUsuario = (id) => {
+  return axios
+    .get(`${API_BASE_URL}/usuario/${id}`)
+    .then((response) => response.data)
+    .catch((error) => { return null });
+}

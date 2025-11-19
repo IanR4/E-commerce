@@ -2,22 +2,35 @@ import ProductoCarousel from "../../components/productoCarousel/ProductoCarousel
 import "./Search.css";
 import { useOutletContext } from "react-router";
 import { useParams } from "react-router-dom";
-import { getProductosSlowly } from "../../service/productosService.js";
+// Use backend filtering helper; remove incorrect/unused import
 import ProductoTable from "../../components/productoTable/ProductoTable.jsx";
 import Filtros from "../filtros/Filtros.jsx";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import React, { useState, useRef, useEffect } from "react";
+import { getProductsFiltered } from "../../service/productosService.js"
 
 const Search = () => {
   const outlet = useOutletContext();
-  const productos = outlet?.productos || [];
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const { searchText } = useParams();
-  const { categoriaName } = useParams();
-  const [productosFiltrados, setProductosFiltrados] = useState(null); // null = not loaded yet
+  const { searchText, categoriaName, vendedorId } = useParams();
+  const [productosFiltrados, setProductosFiltrados] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  const [filtradoDropdown, setFiltradoDropdown] = useState("");
+
+  const [searchParams] = useSearchParams();
+
+  const categoria = searchParams.get("categoria");
+  const titulo = searchParams.get("titulo");
+  const descripcion = searchParams.get("descripcion");
+  const precioMin = searchParams.get("precioMin");
+  const precioMax = searchParams.get("precioMax");
+  const vendedor = searchParams.get("vendedor");
+  const orden = searchParams.get("orden");
+
+  const [productos, setProductos] = useState([]);
+  
   const dropdown = [
     "Menor Precio",
     "Mayor Precio",
@@ -30,45 +43,103 @@ const Search = () => {
     "masVendidos",
   ];
 
-  const filtrarProductos = (searchText, categoriaName) => {
-    // Normalize inputs to avoid crashes when params are undefined
-    const q = (searchText || "").toString();
-    const cat = (categoriaName || "").toString();
 
-    if (cat == "Ver Todos") {
-      setProductosFiltrados(productos);
-      return;
+  // Permite pasar una lista base de productos para filtrar (por defecto usa el estado productos)
+  const filtrarProductos = (searchText, categoriaName, productosBase = null) => {
+    // Build filter inputs giving precedence to explicit search params
+    const q = (titulo || searchText || "").toString();
+    const cat = (categoria || categoriaName || "").toString();
+    const desc = (descripcion || "").toString();
+    const minP = precioMin ? Number(precioMin) : null;
+    const maxP = precioMax ? Number(precioMax) : null;
+    const vend = vendedor || null;
+    
+    // Usa productosBase si se provee, si no usa el estado productos
+    let results = Array.isArray(productosBase)
+      ? productosBase.slice()
+      : (Array.isArray(productos) ? productos.slice() : []);
+
+    // Category filter
+    if (cat && cat.trim() !== "") {
+      if (cat === "Ver Todos") {
+        // keep all
+      } else {
+        results = results.filter((producto) =>
+          Array.isArray(producto.categorias) && producto.categorias.some(c => c.toLowerCase().includes(cat.toLowerCase()))
+        );
+      }
     }
 
-    if (cat.trim() !== "") {
-      const filtered = productos.filter((producto) =>
-        producto.categorias.some(c => c.toLowerCase().includes(cat.toLowerCase()))
+    // Title / quick search filter
+    if (q && q.trim() !== "") {
+      results = results.filter((producto) =>
+        producto.titulo && producto.titulo.toLowerCase().includes(q.toLowerCase())
       );
-      setProductosFiltrados(filtered);
-      return;
     }
 
-    // If search text is empty (or not provided) show all productos
-    if (q.trim() === "") {
-      setProductosFiltrados(productos);
-      return;
+    // Description filter
+    if (desc && desc.trim() !== "") {
+      results = results.filter((producto) =>
+        producto.descripcion && producto.descripcion.toLowerCase().includes(desc.toLowerCase())
+      );
     }
 
-    // Otherwise filter by title
-    const filtered = productos.filter((producto) =>
-      producto.titulo.toLowerCase().includes(q.toLowerCase())
-    );
-    setProductosFiltrados(filtered);
+    // Vendedor filter (works with string or object)
+    if (vend && vend.trim() !== "") {
+      results = results.filter((producto) => {
+        if (!producto.vendedor) return false;
+        if (typeof producto.vendedor === 'string') {
+          return producto.vendedor.toLowerCase().includes(vend.toLowerCase());
+        }
+        // try common object shapes
+        const nombre = producto.vendedor.nombre || producto.vendedor.username || producto.vendedor.email || '';
+        return nombre.toLowerCase().includes(vend.toLowerCase());
+      });
+    }
+
+    // Price range filter
+    if (minP !== null) {
+      results = results.filter((producto) => Number(producto.precio) >= minP);
+    }
+    if (maxP !== null) {
+      results = results.filter((producto) => Number(producto.precio) <= maxP);
+    }
+
+    setProductosFiltrados(results);
   };
 
  
-
-  // Filtrar automáticamente cuando cambia el searchText o los productos
+  
+  // Filtrar automáticamente cuando cambia el searchText o params
   useEffect(() => {
-    // Always attempt to filter when params or productos change.
-    // filtrarProductos handles empty/undefined inputs and will show all productos when searchText is empty.
-    filtrarProductos(searchText, categoriaName);
-  }, [searchText, categoriaName, productos]);
+    const fetchProductos = async () => {
+      setLoading(true);
+      try {
+        const productosBackend = await getProductsFiltered(
+          vendedorId,
+          titulo,
+          categoria,
+          descripcion,
+          precioMin,
+          precioMax,
+          orden
+        );
+        const lista = Array.isArray(productosBackend) ? productosBackend : [];
+        setProductos(lista);
+        // Apply client-side filters on the fetched list to avoid race conditions
+        filtrarProductos(searchText, categoriaName, lista);
+      } catch (err) {
+        console.error("Error fetching productos:", err);
+        setProductos([]);
+        filtrarProductos(searchText, categoriaName, []);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProductos();
+  }, [searchText, categoriaName, searchParams.toString(), vendedorId]);
+  
 
   // Render states: loading spinner, no results, or table
   if (loading || productosFiltrados === null) {
@@ -99,21 +170,24 @@ const Search = () => {
         <div>
           <div className="dropdown" ref={dropdownRef}>
             <button className="dropdown-btn" onClick={() => setOpen(!open)}>
-              Ordenar por ▾
+              Ordenar por {dropdown[filtros.indexOf(filtradoDropdown)]} ▾
             </button>
             {open && (
                 <ul className={`dropdown-menu ${open ? "show" : ""}`}>
                   {dropdown.map((cat, i) => (
-                    <Link to={`/productos/${filtros[i]}`} className="link-no-style">
+                    <button onClick={() => setFiltradoDropdown(filtros[i])} key={i} className="dropdown-item">
+                      {cat}
+                    </button>
+                    /*<Link to={`/productos/${filtros[i]}`} className="link-no-style">
                       <li key={i} className="dropdown-item">
                         {cat}
                       </li>
-                    </Link>
+                    </Link>*/
                   ))}
                 </ul>
               )}
           </div>
-          <ProductoTable productos={productosFiltrados} />
+          <ProductoTable productos={productosFiltrados} filtradoDropdown={filtradoDropdown} />
         </div>
       </div>
     </>

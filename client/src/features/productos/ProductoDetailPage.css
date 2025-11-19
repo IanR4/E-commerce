@@ -134,7 +134,21 @@ body {
 .reservar-container{
   display: flex;
   justify-content: right;
+}
 
+.reservar-bloqueado{
+  background-color: var(--primary-green);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  min-width: 50px;
+  margin-right: 1rem;
+  opacity: 0.5;
+  cursor: default;
+  filter: grayscale(30%);
 }
 
 #unidadesAComprar{

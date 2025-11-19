@@ -3,11 +3,29 @@ import {Spinner} from "react-bootstrap";
 import React from "react";
 import './Home.css';
 import { useOutletContext } from 'react-router';
+import { useState, useEffect } from "react";
+import { getProductsFiltered } from "../../service/productosService.js";  
 
 
 const Home = () => {
   const outlet = useOutletContext();
-  const productos = outlet?.productos || [];
+  const [productos, setProductos] = useState([]);
+
+  const cargarProductos = () => {
+    return getProductsFiltered()
+      .then((productosCargados) => {
+        setProductos(productosCargados);
+      })
+      .catch((error) => {
+        console.error('Error cargando productos en Layout:', error);
+        setProductos([]);
+      });
+  }
+
+  // Para que cuando se monte el componente los cargue
+  useEffect(() => {
+    cargarProductos()
+  }, [])
 
     return (
       <>
@@ -18,7 +36,7 @@ const Home = () => {
           <Spinner/>
         </div> :
           <div>
-            <ProductoCarousel productos={productos} />
+            <ProductoCarousel productos={productos}/>
           </div>
         }
       </>

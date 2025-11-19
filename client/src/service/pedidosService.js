@@ -13,3 +13,9 @@ export const getPedidosVendedor = (vendedorId) => {
     .get(`${API_BASE_URL}/vendedores/${vendedorId}/pedidos`)
     .then((response) => response.data)
 }
+
+export const postPedido = (body) => {
+    return axios
+        .post(`${API_BASE_URL}/pedido`, body)
+        .then((response) => response.data)
+}

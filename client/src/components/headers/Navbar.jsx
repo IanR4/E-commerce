@@ -4,13 +4,13 @@ import { useNavigate } from "react-router-dom";
 import './Navbar.css';
 import {FaShoppingCart} from 'react-icons/fa';
 import '../../index.css';
-import AccomodationSearchBar from "../accommodationSearchBar/AccomodationSearchBar";
-import DropdownCategorias from "../dropdown/DropdownCategorias";  
-import DropdownUtilities from "../dropdown/DropdownUtilities"; 
-import Login from "../login/Login";
+import AccomodationSearchBar from "../accommodationSearchBar/AccomodationSearchBar"; 
+import DropdownUtilities from "../dropdown/DropdownUtilities";  
+import { useCarritoContext } from '../../store/CarritoContext.jsx'
 import Subbar from "./Subbar.jsx";
 
-const Navbar = ({carrito}) => {
+const Navbar = () => {
+  const { carrito } = useCarritoContext();
   const navigate = useNavigate()
   const [cantUnidades, setCantUnidades] = useState(0);
   const [showUserMenu, setShowUserMenu] = useState(false);
@@ -29,8 +29,8 @@ const Navbar = ({carrito}) => {
     return () => document.removeEventListener('click', onDocClick);
   }, [showUserMenu]);
 
-  const irAChekout = () => {
-    navigate("/checkout")
+  const irACarrito = () => {
+    navigate("/carrito")
   }
 
   const cantUnidadesEnCarrito = () => {
@@ -64,7 +64,7 @@ const Navbar = ({carrito}) => {
         </div>
 
         <div className="navbar-section right">
-          <button className="cart" onClick={irAChekout}>
+          <button className="cart" onClick={irACarrito}>
             <FaShoppingCart color="white"/>
             <span className="cart-count">{cantUnidades}</span>
           </button>

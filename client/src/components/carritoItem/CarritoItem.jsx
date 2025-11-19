@@ -1,6 +1,7 @@
 import "./CarritoItem.css";  
 import "../../index.css"
 
+
 const CarritoItem = ({producto, onRemove}) => {
   const handleRemove = () => {
     // Some product objects use `_id` (from backend) while others may use `id`.

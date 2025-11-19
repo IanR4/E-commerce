@@ -5,6 +5,7 @@ import Layout from './features/layout/Layout.jsx';
 import ProductoDetailPage from './features/productos/ProductoDetailPage.jsx';
 import Search from './features/search/Search.jsx';
 import {createTheme, ThemeProvider} from "@mui/material"
+import Carrito from './features/carrito/Carrito.jsx';
 import Checkout from './features/checkout/Checkout.jsx';
 import React, {useState} from "react";
 import Contacto from './features/utilities/contacto/Contacto.jsx';
@@ -14,6 +15,7 @@ import Notificaciones from './features/utilities/notificaciones/Notificaciones.j
 import Publicar from './features/publicar/Publicar.jsx';
 import VisualizacionProducto from './features/visualizacionProducto/VisualizacionProducto.jsx';
 import Pedido from './features/pedido/Pedido.jsx';
+import { CarritoProvider } from './store/CarritoContext.jsx';
 
 const theme = createTheme({
   palette: {
@@ -26,8 +28,8 @@ const theme = createTheme({
 function App() {
   const [carrito, setCarrito] = useState([]);
 
-  const actualizarCarrito = (hotel) => {
-    setCarrito([...carrito, hotel]);
+  const actualizarCarrito = (producto) => {
+    setCarrito([...carrito, producto]);
   };
 
   const limpiarCarrito = () => {
@@ -41,29 +43,25 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
+      <CarritoProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Layout  carrito={carrito}/>} >
-            <Route index element={<Home />} />
+          <Route path="/" element={<Layout/>} >
+            <Route index element={<Home/>} />
             <Route 
               path="/productos/:id" 
               element={
                 <ProductoDetailPage
-                  carrito={carrito}
-                  actualizarCarrito={actualizarCarrito}
                 />
               } 
             />
             <Route 
-              path="/checkout" 
+              path="/carrito" 
               element={
-              <Checkout 
-                carrito={carrito}
-                limpiarCarrito={limpiarCarrito}
-                removerDelCarrito={removerDelCarrito}
+              <Carrito 
               />} />
             <Route 
-              path="/busqueda/:searchText" 
+              path="/busqueda/:searchText/" 
               element={
                 <Search
                 />
@@ -80,6 +78,20 @@ function App() {
                 <Search
                 />
               } />
+              <Route
+              path="/productos"
+              element={
+                <Search
+                />
+              }
+              />
+              <Route
+              path="/vendedores/:vendedorId/productos"
+              element={
+                <Search
+                />
+              }
+              />
               <Route 
               path="/Contacto" 
               element={
@@ -120,9 +132,16 @@ function App() {
               element={
                 <Pedido />
               } />
+              <Route
+              path="/checkout"
+              element={
+                <Checkout
+                />
+              } />
           </Route>
         </Routes>
       </BrowserRouter>
+      </CarritoProvider>
     </ThemeProvider>
   );
 }

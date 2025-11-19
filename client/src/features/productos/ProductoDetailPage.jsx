@@ -5,9 +5,11 @@ import { useNavigate } from "react-router-dom";
 import { ButtonGroup, Button } from '@mui/material';
 import "./ProductoDetailPage.css"
 import { getProductById } from "../../service/productosService.js"
+import {useCarritoContext} from '../../store/CarritoContext.jsx'
 
 const conUnidades = (cantidadUnidades, producto) => ({...producto, cantidadUnidades})
-const ProductoDetailPage = ({ carrito, actualizarCarrito }) => {
+const ProductoDetailPage = () => {
+  const { carrito, actualizarCarrito } = useCarritoContext();
   const navigate = useNavigate()
   const { id } = useParams();
   const [producto, setProducto] = useState(null);
@@ -42,8 +44,22 @@ const ProductoDetailPage = ({ carrito, actualizarCarrito }) => {
   };
 
   const reservar = () => {
-    actualizarCarrito(conUnidades(unidades, producto))  
-    navigate("/")
+    if (carrito.length === 0) {
+      actualizarCarrito(conUnidades(unidades, producto));
+      navigate(-1);
+      return;
+    }
+
+    const vendedorCarrito = carrito[0]?.vendedor;
+    const vendedorProducto = producto.vendedor;
+
+    if (vendedorCarrito && vendedorProducto && vendedorCarrito === vendedorProducto) {
+      actualizarCarrito(conUnidades(unidades, producto));
+      navigate(-1);
+    } 
+    else {
+      alert("No se pueden agregar productos de diferentes vendedores al carrito.");
+    }
   }
 
   if (!producto) {
@@ -95,7 +111,11 @@ const ProductoDetailPage = ({ carrito, actualizarCarrito }) => {
           <Button id="unidadesAComprar" disabled>{unidades}</Button>
           <Button onClick={incrementarUnidades}>+</Button>
         </ButtonGroup>
-        <button className="reservar" onClick={reservar}>Agregar a carrito</button>
+        {unidades > 0 ? (
+          <button className="reservar" onClick={reservar}>Agregar a carrito</button>
+        ) : (
+          <button className="reservar-bloqueado" disabled>Agregar a carrito</button>
+        )}
       </div>
     </div>
   );
