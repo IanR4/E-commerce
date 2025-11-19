@@ -53,6 +53,7 @@ const Filtros = ({ drawer = false }) => {
       getUsuario(vendedor.trim()).then((user) => {
         if (user) {
           navigate(`/vendedores/${user._id}/productos?${params.toString()}`);
+          if (drawer) window.dispatchEvent(new Event('closeFilters'));
           return;
         }
         else {
@@ -63,6 +64,7 @@ const Filtros = ({ drawer = false }) => {
     }
 
     navigate(`/productos?${params.toString()}`);
+    if (drawer) window.dispatchEvent(new Event('closeFilters'));
   };
 
   return (

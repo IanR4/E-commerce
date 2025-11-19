@@ -155,13 +155,6 @@ const Search = () => {
     );
   }
 
-  if (!productosFiltrados.length) {
-    return (
-      <div className="busquedaFallida">
-        <h1>404: Producto no encontrado</h1>
-      </div>
-    );
-  }
 
   return (
     <>
