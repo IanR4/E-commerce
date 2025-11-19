@@ -57,6 +57,12 @@ const Checkout = () => {
     0
   );
 
+  const monedaIcons = {
+    PesoArg: "$",
+    DolarUsa: "US$",
+    Real: "R$",
+  };
+
   const handleEnviar = () => {
     const pedido = construirPedido();
     // require user to be logged in
@@ -123,16 +129,41 @@ const Checkout = () => {
     }
   }; 
 
-  const convertirMoneda = (monto, moneda) => {
-    switch(moneda) {
-      case 'PesoArg':
-        return monto;
-      case 'Real':
-        return monto * 0.0038;
-      case 'DolarUsa':
-        return monto * 0.00071;
+  const convertirMoneda = (monto, monedaActual = 'PesoArg', monedaDeseada = 'PesoArg') => {
+    // rates expressed as value of 1 ARS in target currency
+    const arsTo = {
+      PesoArg: 1,
+      DolarUsa: 0.00071, // 1 ARS = 0.00071 USD
+      Real: 0.0038 // 1 ARS = 0.0038 BRL
     }
-    return monto;
+
+    if (!Number.isFinite(monto)) return monto;
+    if (monedaActual === monedaDeseada) return monto;
+
+    const fromRate = arsTo[monedaActual] ?? null;
+    const toRate = arsTo[monedaDeseada] ?? null;
+
+    // If unknown currency, return original amount
+    if (fromRate == null || toRate == null) return monto;
+
+    // Convert amount from `monedaActual` to ARS, then to `monedaDeseada`.
+    // amount_in_ars = monto / (1 ARS in monedaActual) = monto / fromRate
+    // amount_in_desired = amount_in_ars * (1 ARS in monedaDeseada) = monto * (toRate / fromRate)
+    const converted = monto * (toRate / fromRate);
+    return converted;
+  }
+
+  // currency map for formatting
+  const monedaMap = {
+    PesoArg: { code: 'ARS', locale: 'es-AR', symbol: '$' },
+    DolarUsa: { code: 'USD', locale: 'en-US', symbol: 'US$' },
+    Real: { code: 'BRL', locale: 'pt-BR', symbol: 'R$' }
+  };
+
+  const formatCurrency = (amount, moneda = 'PesoArg') => {
+    const m = monedaMap[moneda] || monedaMap.PesoArg;
+    if (!Number.isFinite(Number(amount))) return amount;
+    return new Intl.NumberFormat(m.locale, { style: 'currency', currency: m.code, minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Number(amount));
   }
 
   return (
@@ -156,14 +187,28 @@ const Checkout = () => {
                     </Typography>
                   </div>
                   <Typography variant="body2" className="producto-precio">
-                    ${convertirMoneda((producto.precio || 0) * (producto.cantidadUnidades ?? 1), campos.moneda.valor).toLocaleString("es-AR")}
+                    {monedaIcons[producto.moneda]}{producto.precio * producto.cantidadUnidades}
                   </Typography>
                 </div>
               ))
             )}
           </div> 
           <div className="resumen-total">
-            <Typography variant="h6">Total: ${convertirMoneda(totalCarritoAgrupado, campos.moneda.valor).toLocaleString("es-AR")}</Typography>
+            
+            
+            <Typography variant="h6">Total: {
+                (() => {
+                  const targetMoneda = (campos && campos.moneda && campos.moneda.valor) ? campos.moneda.valor : 'PesoArg';
+                  const totalNum = productosAgrupadosArray.reduce((acc, producto) => {
+                    const qty = producto.cantidadUnidades ?? 1;
+                    const precio = Number(producto.precio) || 0;
+                    const monedaProd = producto.moneda || 'PesoArg';
+                    const converted = convertirMoneda(precio * qty, monedaProd, targetMoneda);
+                    return acc + (Number.isFinite(converted) ? converted : 0);
+                  }, 0);
+                  return formatCurrency(totalNum, targetMoneda);
+                })()
+              }</Typography>
           </div>
         </Card>
 

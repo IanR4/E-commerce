@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { Moneda } from '../models/entities/moneda.js';
 
 export const itemPedidoSchema = new mongoose.Schema({
     productoId: {
@@ -23,11 +24,17 @@ export const itemPedidoSchema = new mongoose.Schema({
         foto: {
             type: String
         },
+        moneda: {
+            type: String,
+            required: true,
+            enum: Object.values(Moneda)
+        },
         vendedor: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Usuario',
             required: true
         }
+        
     },
     cantidad: {
         type: Number,

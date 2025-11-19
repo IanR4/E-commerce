@@ -7,6 +7,7 @@ export class ItemPedido {
             descripcion: producto.descripcion,
             categorias: producto.categorias || [],
             fotos: producto.fotos || [],
+            moneda: producto.moneda,
             vendedor: producto.vendedor
         };
         

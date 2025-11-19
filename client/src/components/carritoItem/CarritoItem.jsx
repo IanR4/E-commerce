@@ -10,6 +10,13 @@ const CarritoItem = ({producto, onRemove}) => {
     if (typeof onRemove === 'function') onRemove(identifier);
   }
 
+
+  const monedaIcons = {
+    PesoArg: "$",
+    DolarUsa: "US$",
+    Real: "R$",
+  };
+
   return (
     <div key={producto._id} className="carrito-card">
       <div className="producto-carrito-card">
@@ -22,7 +29,7 @@ const CarritoItem = ({producto, onRemove}) => {
           <h3 className="producto-name">{producto.titulo}</h3>
           <div className="producto-carrito-details">
             <h6 className="producto-carrito-cantidad">x{producto.cantidadUnidades}</h6>
-            <span className="producto-carrito-price">$ {producto.precio.toLocaleString("es-AR")}</span>
+            <span className="producto-carrito-price">{monedaIcons[producto.moneda]}{producto.precio.toLocaleString("es-AR")}</span>
           </div>
           <div className="producto-carrito-eliminar">
             <button
