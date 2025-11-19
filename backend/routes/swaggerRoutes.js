@@ -1,11 +1,16 @@
 import express from "express";
 import swaggerUiExpress from "swagger-ui-express";
 import { readFile } from "node:fs/promises";
+import path from "path";
 
 export default function swaggerRoutes() {
     const router = express.Router();
 
-    return readFile(new URL("../docs/otra-docs.json", import.meta.url))
+    // Use an explicit path based on the current working directory so tests
+    // running under Jest (which may not support import.meta) don't fail.
+    const docsPath = path.join(process.cwd(), "docs", "otra-docs.json");
+
+    return readFile(docsPath)
         .then((data) => {
             const swaggerDocument = JSON.parse(data);
 

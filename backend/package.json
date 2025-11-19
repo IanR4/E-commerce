@@ -22,7 +22,8 @@
   },
   "devDependencies": {
     "@babel/preset-env": "^7.28.3",
-    "jest": "^30.1.3"
+    "jest": "^30.1.3",
+    "supertest": "^7.1.4"
   },
   "swaggerDependenciesAdded": true,
   "dependenciesSwaggerNote": "Se agregan dependencias para documentacion Swagger",

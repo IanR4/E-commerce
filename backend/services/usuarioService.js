@@ -23,6 +23,7 @@ export default class UsuarioService {
             usuarioData.nombre,
             usuarioData.email,
             usuarioData.telefono,
+            usuarioData.password ?? null,
             usuarioData.tipo,
         )
         return this.usuarioRepository.crearUsuario(nuevoUsuario)
