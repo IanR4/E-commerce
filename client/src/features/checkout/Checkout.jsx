@@ -35,6 +35,27 @@ const Checkout = () => {
 
   const totalCarrito = carrito.reduce((sum, producto) => sum + (producto.precio || 0), 0);
 
+  // Agrupar productos por identificador (`_id` o `id`) y sumar las cantidades
+  const productosAgrupadosArray = Object.values(
+    (carrito || []).reduce((acc, producto) => {
+      const identifier = producto._id ?? producto.id ?? JSON.stringify(producto);
+      if (!acc[identifier]) {
+        acc[identifier] = {
+          ...producto,
+          cantidadUnidades: producto.cantidadUnidades ?? 1,
+        };
+      } else {
+        acc[identifier].cantidadUnidades += producto.cantidadUnidades ?? 1;
+      }
+      return acc;
+    }, {})
+  );
+
+  const totalCarritoAgrupado = productosAgrupadosArray.reduce(
+    (sum, producto) => sum + ((producto.precio || 0) * (producto.cantidadUnidades ?? 1)),
+    0
+  );
+
   const handleEnviar = () => {
     const pedido = construirPedido();
     postPedido(pedido);
@@ -45,14 +66,14 @@ const Checkout = () => {
   const construirPedido = () => {
     return {
       "comprador": "69024e8389d2ba46d57e0c3e",
-      "items": carrito.map(producto => ({
-        "producto": producto._id,
+      "items": productosAgrupadosArray.map(producto => ({
+        "producto": producto._id ?? producto.id,
         "cantidad": producto.cantidadUnidades,
       })),
       "moneda": campos.moneda.valor,
       "direccionEntrega": campos.pais.valor + ", " + campos.provincia.valor + ", " + campos.ciudad.valor + ", " + campos.calle.valor + " " + campos.altura.valor + ", CP: " + campos.codigoPostal.valor
     }
-  };
+  }; 
 
   const convertirMoneda = (monto, moneda) => {
     switch(moneda) {
@@ -73,11 +94,11 @@ const Checkout = () => {
         <Card className="resumen-column">
           <Typography variant="h6" className="resumen-title">Resumen del Pedido</Typography>
           <div className="productos-lista">
-            {carrito.length === 0 ? (
+            {productosAgrupadosArray.length === 0 ? (
               <Typography color="textSecondary">Tu carrito está vacío</Typography>
             ) : (
-              carrito.map((producto, index) => (
-                <div key={index} className="producto-item">
+              productosAgrupadosArray.map((producto, index) => (
+                <div key={(producto._id ?? producto.id) ?? index} className="producto-item">
                   <div className="producto-info">
                     <Typography variant="body2" className="producto-nombre">
                       {producto.titulo || producto.nombre}
@@ -87,14 +108,14 @@ const Checkout = () => {
                     </Typography>
                   </div>
                   <Typography variant="body2" className="producto-precio">
-                    ${convertirMoneda(producto.precio, campos.moneda.valor).toLocaleString("es-AR")}
+                    ${convertirMoneda((producto.precio || 0) * (producto.cantidadUnidades ?? 1), campos.moneda.valor).toLocaleString("es-AR")}
                   </Typography>
                 </div>
               ))
             )}
-          </div>
+          </div> 
           <div className="resumen-total">
-            <Typography variant="h6">Total: ${convertirMoneda(totalCarrito, campos.moneda.valor).toLocaleString("es-AR")}</Typography>
+            <Typography variant="h6">Total: ${convertirMoneda(totalCarritoAgrupado, campos.moneda.valor).toLocaleString("es-AR")}</Typography>
           </div>
         </Card>
 
