@@ -10,9 +10,15 @@ const formatDate = (iso) => {
     return iso;
   }
 }
+  
 
-const NotificacionDetail = ({ notificacion = {} }) => {
+const NotificacionDetail = ({ notificacion = {}, onChange }) => {
   const { _id, usuario, mensaje, leida, fechaLeida, fecha, __v } = notificacion;
+
+  const marcarComoLeida = async () => {
+    await leerNotificacion(_id);
+    onChange?.();   // <-- actualiza las notificaciones del padre
+  };
 
   return (
     <div className={`notificacion-card ${leida ? 'leida' : 'no-leida'}`} key={_id}>
@@ -42,6 +48,11 @@ const NotificacionDetail = ({ notificacion = {} }) => {
             <pre className="mensaje-pre">{mensaje || ''}</pre>
           </div>
         </div>
+        { !leida && (
+        <div className={`notificacion-row ${leida ? '' : 'show'}`}>
+          <button className="leer" onClick={marcarComoLeida}>Marcar como leida</button>
+        </div>
+        )}
       </div>
     </div>
   )

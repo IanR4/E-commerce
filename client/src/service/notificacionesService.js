@@ -14,8 +14,8 @@ export const getNotificacionesNoLeidas = (id) => {
     .then((response) => response.data)
 }
 
-export const leerNotificacion = (id) => {
+export function leerNotificacion (id) {
   return axios
-    .get(`${API_BASE_URL}/notificacion/${id}`)
+    .patch(`${API_BASE_URL}/notificacion/${id}`)
     .then((response) => response.data)
 }

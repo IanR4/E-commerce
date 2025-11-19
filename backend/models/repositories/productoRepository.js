@@ -24,44 +24,68 @@ class ProductoRepository {
     }
 
     ordenarProductos(query, orden) {
-        if (orden == "precioAsc") {
-            return this.model.find(query).sort({ precio: 1 }).exec();
-        } else if (orden == "precioDesc") {
-            return this.model.find(query).sort({ precio: -1 }).exec();
-        } else if (orden == "masVendidos") {
-            return this.model.aggregate([
-                { $match: query },
-                {
-                    $lookup: {
-                        from: 'pedidos',
-                        let: { productoId: '$_id' },
-                        pipeline: [
-                            { $unwind: '$items' },
-                            { $match: { $expr: { $eq: ['$items.producto', '$$productoId'] } } },
-                            {
-                                $group: {
-                                    _id: '$items.producto',
-                                    totalVentas: { $sum: { $multiply: ['$items.cantidad', '$items.precioUnitario'] } }
+    if (orden == "precioAsc") {
+        return this.model.find(query).sort({ precio: 1 }).exec();
+    } else if (orden == "precioDesc") {
+        return this.model.find(query).sort({ precio: -1 }).exec();
+    } else if (orden == "masVendidos") {
+        return this.model.aggregate([
+            { $match: query },
+
+            {
+                $lookup: {
+                    from: 'pedidos',
+                    let: { productoId: '$_id' },
+                    pipeline: [
+                        { $unwind: '$items' },
+
+                        // ⬅️ CORREGIDO: antes items.producto, ahora items.productoId
+                        { 
+                            $match: { 
+                                $expr: { 
+                                    $eq: ['$items.productoId', '$$productoId'] 
+                                } 
+                            } 
+                        },
+
+                        {
+                            $group: {
+                                _id: '$items.productoId',
+                                totalVentas: { 
+                                    $sum: { 
+                                        $multiply: ['$items.cantidad', '$items.precioUnitario'] 
+                                    } 
                                 }
                             }
-                        ],
-                        as: 'ventas'
-                    }
-                },
-                {
-                    $addFields: {
-                        ventasTotal: { $ifNull: [{ $arrayElemAt: ['$ventas.totalVentas', 0] }, 0] }
-                    }
-                },
-                { $sort: { ventasTotal: -1 } }
-            ]).exec().then(results => {
-                if (typeof this.model.hydrate === 'function') {
-                    return results.map(r => this.model.hydrate(r));
+                        }
+                    ],
+                    as: 'ventas'
                 }
-                return results;
-            });
-        }
-        return this.model.find(query).exec();
+            },
+
+            {
+                $addFields: {
+                    ventasTotal: { 
+                        $ifNull: [
+                            { $arrayElemAt: ['$ventas.totalVentas', 0] },
+                            0
+                        ] 
+                    }
+                }
+            },
+
+            { $sort: { ventasTotal: -1 } }
+        ])
+        .exec()
+        .then(results => {
+            if (typeof this.model.hydrate === 'function') {
+                return results.map(r => this.model.hydrate(r));
+            }
+            return results;
+        });
+    }
+
+    return this.model.find(query).exec();
     }
 
     findByVendedor(vendedorId, filtros) {

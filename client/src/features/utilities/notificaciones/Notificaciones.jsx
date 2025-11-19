@@ -1,78 +1,93 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./Notificaciones.css";
-import { Link } from 'react-router';
 import NotificacionDetail from "./NotificacionDetail.jsx";
-import { getNotificacionesLeidas } from "../../../service/notificacionesService.js"
-import { getNotificacionesNoLeidas } from "../../../service/notificacionesService.js"
+import { getNotificacionesLeidas, getNotificacionesNoLeidas } from "../../../service/notificacionesService.js";
 
 const Notificaciones = () => {
   const [notificacionesLeidas, setNotificacionesLeidas] = useState([]);
   const [notificacionesNoLeidas, setNotificacionesNoLeidas] = useState([]);
 
+  // 1. Función para cargar NO leídas
   const cargarNotificacionesNoLeidas = (vendedorId) => {
     return getNotificacionesNoLeidas(vendedorId)
-      .then((notificacionesCargados) => {
-        console.log("Notificaciones cargados:", notificacionesCargados);
-        setNotificacionesNoLeidas(notificacionesCargados);
+      .then((notificacionesCargadas) => {
+        setNotificacionesNoLeidas(notificacionesCargadas);
       })
       .catch((error) => {
-        console.error('Error cargando notificaciones en Layout:', error);
+        console.error("Error cargando notificaciones NO leídas:", error);
         setNotificacionesNoLeidas([]);
       });
-  }
+  };
+
+  // 2. Función para cargar LEÍDAS
   const cargarNotificacionesLeidas = (vendedorId) => {
     return getNotificacionesLeidas(vendedorId)
-      .then((notificacionesCargados) => {
-        console.log("Notificaciones cargados:", notificacionesCargados);
-        setNotificacionesLeidas(notificacionesCargados);
+      .then((notificacionesCargadas) => {
+        setNotificacionesLeidas(notificacionesCargadas);
       })
       .catch((error) => {
-        console.error('Error cargando notificaciones en Layout:', error);
+        console.error("Error cargando notificaciones leídas:", error);
         setNotificacionesLeidas([]);
       });
-  }
+  };
 
-  
-  useEffect(() => {
-    let vendedorId = null
+  // 3. Función combinada para recargar ambas listas después de marcar una como leída
+  const recargarNotificaciones = async () => {
+    let vendedorId = null;
+
     try {
-      const stored = localStorage.getItem('user')
+      const stored = localStorage.getItem("user");
       if (stored) {
-        const parsed = JSON.parse(stored)
-        const raw = parsed?.raw ?? parsed
-        vendedorId = raw?._id
+        const parsed = JSON.parse(stored);
+        vendedorId = parsed?.raw?._id ?? parsed?._id;
       }
     } catch (err) {
-      // ignore parse errors
+      console.error("Error leyendo usuario del localStorage");
     }
-      cargarNotificacionesNoLeidas(vendedorId)
-      cargarNotificacionesLeidas(vendedorId)
-    }, [])
+
+    await cargarNotificacionesNoLeidas(vendedorId);
+    await cargarNotificacionesLeidas(vendedorId);
+  };
+
+  // 4. Cargar notificaciones al inicio
+  useEffect(() => {
+    recargarNotificaciones();
+  }, []);
 
   return (
     <div className="notificaciones-container">
-        <ul className="notificaciones-list">
-          {notificacionesNoLeidas.length === 0 ? (
-            <li className="no-notificaciones">No hay notificaciones no leidas</li>
-          ) : (
-            notificacionesNoLeidas.map((notificacion) => (
-              <li key={notificacion._id}>
-                <NotificacionDetail notificacion={notificacion} />
-              </li>
-            ))
-          )}
-        </ul>
-        <ul className="notificaciones-list">
-          {notificacionesLeidas.length === 0 ? (
-            <li className="no-notificaciones">No hay notificaciones leidas</li>
-          ) : (
-            notificacionesLeidas.map((notificacion) => (
-              <li key={notificacion._id}>
-                <NotificacionDetail notificacion={notificacion} />
-              </li>
-            ))
-          )}
-        </ul>
+
+      {/* NOTIFICACIONES NO LEÍDAS */}
+      <ul className="notificaciones-list">
+        {notificacionesNoLeidas.length === 0 ? (
+          <li className="no-notificaciones">No hay notificaciones no leídas</li>
+        ) : (
+          notificacionesNoLeidas.map((notificacion) => (
+            <li key={notificacion._id}>
+              <NotificacionDetail 
+                notificacion={notificacion}
+                onChange={recargarNotificaciones}   // <── callback para refrescar
+              />
+            </li>
+          ))
+        )}
+      </ul>
+
+      {/* NOTIFICACIONES LEÍDAS */}
+      <ul className="notificaciones-list">
+        {notificacionesLeidas.length === 0 ? (
+          <li className="no-notificaciones">No hay notificaciones leídas</li>
+        ) : (
+          notificacionesLeidas.map((notificacion) => (
+            <li key={notificacion._id}>
+              <NotificacionDetail 
+                notificacion={notificacion}
+                onChange={recargarNotificaciones}   // <── callback para refrescar
+              />
+            </li>
+          ))
+        )}
+      </ul>
     </div>
   );
 };
