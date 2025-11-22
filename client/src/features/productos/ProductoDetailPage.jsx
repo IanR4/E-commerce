@@ -6,6 +6,7 @@ import { ButtonGroup, Button } from '@mui/material';
 import "./ProductoDetailPage.css"
 import { getProductById } from "../../service/productosService.js"
 import {useCarritoContext} from '../../store/CarritoContext.jsx'
+import {Spinner} from "react-bootstrap";
 
 const conUnidades = (cantidadUnidades, producto) => ({...producto, cantidadUnidades})
 const ProductoDetailPage = () => {
@@ -13,6 +14,7 @@ const ProductoDetailPage = () => {
   const navigate = useNavigate()
   const { id } = useParams();
   const [producto, setProducto] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [seller, setSeller] = useState(() => {
     try {
       const stored = localStorage.getItem('user');
@@ -60,11 +62,16 @@ const ProductoDetailPage = () => {
   }, []);
 
   useEffect(() => {
-    const cargarProducto = () => {
-      return getProductById(id)
-        .then((data) => {
-          setProducto(data);
-        })
+    const cargarProducto = async () => {
+      setLoading(true);
+      try {
+        const data = await getProductById(id);
+        setProducto(data);
+      } catch (err) {
+        setProducto(null);
+      } finally {
+        setLoading(false);
+      }
     };
     cargarProducto();
   }, [id]);
@@ -117,6 +124,20 @@ const ProductoDetailPage = () => {
     }
   }
 
+  if (loading) {
+    return (
+      <div className="producto-detail-container">
+        <div className="producto-header">
+          <div className="spinner">
+            <Spinner animation="border" role="status">
+              <span className="visually-hidden">Cargando...</span>
+            </Spinner>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (!producto) {
     return (
       <div className="producto-detail-container">
@@ -126,7 +147,7 @@ const ProductoDetailPage = () => {
         </div>
       </div>
     );
-  } 
+  }
 
   return (
     <div className="producto-detail-container">

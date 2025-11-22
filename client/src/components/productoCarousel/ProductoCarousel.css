@@ -123,7 +123,7 @@
 }
 
 /* Responsive: switch carousel to vertical stacked items for small portrait devices */
-@media (max-width: 420px) and (max-height: 700px) {
+@media (max-width: 350px) {
   .carousel-container { padding: 0.5rem; }
   .carousel-title { font-size: 1.2rem; margin-bottom: 0.6rem; }
   .carousel-viewport { overflow: visible; }

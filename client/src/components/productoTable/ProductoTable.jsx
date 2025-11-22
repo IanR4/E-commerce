@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./ProductoTable.css";
-import CarouselItem from "../productoItem/CarouselItem";
+import ProductoItem from "../productoItem/ProductoItem";
 import Pagination from "../pagination/Pagination";
 
 export default function ProductoTable({ productos, itemsPerPage = 9 }) {
@@ -45,7 +45,7 @@ export default function ProductoTable({ productos, itemsPerPage = 9 }) {
         >
           {row.map((producto) => (
             <li className="list-group-item product-cell" key={producto._id || producto.id}>
-              <CarouselItem producto={producto} />
+              <ProductoItem producto={producto} />
             </li>
           ))}
         </ul>

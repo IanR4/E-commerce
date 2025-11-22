@@ -8,7 +8,7 @@ export default function notificacionRoutes() {
     router.get(`${pathNotificaciones}/leidas`, (req, res, next) => {
         NotificacionController
             .getNotificacionesLeidasUsuario(req, res)
-            .catchext;
+            .catch(next);
     });
 
     router.get(`${pathNotificaciones}/noleidas`, (req, res, next) => {

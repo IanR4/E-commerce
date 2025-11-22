@@ -14,16 +14,22 @@
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
-	gap: 1rem;
+	gap: 1.3rem;
 	justify-content: center;
 }
 
 .product-cell {
- 	padding: 0;
- 	margin: 0;
+	padding: 0;
+	margin: 0;
 	box-sizing: border-box;
-	flex: 0 0 320px;
-	max-width: 320px;
+	/* Allow the cell to be flexible while preventing it from
+	   shrinking to zero. Parent rows and media queries still
+	   control the number of columns, but this prevents fixed
+	   320px widths from forcing overlap. */
+	flex: 1 1 320px;
+	min-width: 240px;
+	max-width: 380px;
+	width: auto;
 	display: flex;
 	flex-direction: column;
 	align-items: stretch;
@@ -32,7 +38,7 @@
 /* Asegurar que el contenido del CarouselItem ocupe todo el ancho de la celda */
 .product-cell .carousel-card,
 .product-cell .producto-card {
-	width: 100%;
+	
 	box-sizing: border-box;
 }
 
