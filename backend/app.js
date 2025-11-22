@@ -7,10 +7,9 @@ const app = express();
 app.use(express.json());
 
 const allowedOrigins = [
-    'http://localhost:3000',
-    'http://localhost:3001',
-    'https://sol-tienda.netlify.app',
-    process.env.FRONTEND_URL 
+    process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : null,
+    process.env.NODE_ENV === 'development' ? 'http://localhost:3001' : null,
+    process.env.FRONTEND_URL
 ].filter(Boolean);
 
 const corsOptions = {
