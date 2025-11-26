@@ -1,6 +1,6 @@
 describe('Login E2E', () => {
   const EMAIL = 'nico@gmail.com'
-  const PASSWORD = 'nico'
+  const PASSWORD = 'abc'
 
   it('inicia sesión correctamente y muestra el usuario', () => {
 

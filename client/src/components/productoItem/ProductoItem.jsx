@@ -41,8 +41,22 @@ const ProductoItem = ({producto}) => {
   };
 
   const reservar = () => {
-    actualizarCarrito(conUnidades(1, producto))
-    navigate("/carrito")
+    if (carrito.length === 0) {
+      actualizarCarrito(conUnidades(1, producto));
+      navigate("/carrito");
+      return;
+    }
+
+    const vendedorCarrito = carrito[0]?.vendedor;
+    const vendedorProducto = producto.vendedor;
+
+    if (vendedorCarrito && vendedorProducto && vendedorCarrito === vendedorProducto) {
+      actualizarCarrito(conUnidades(1, producto));
+      navigate("/carrito");
+    } 
+    else {
+      alert("No se pueden agregar productos de diferentes vendedores al carrito.");
+    }
   }
 
   const [seller, setSeller] = useState(isUserSeller());

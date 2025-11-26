@@ -127,6 +127,7 @@ const Publicar = () => {
 				<div className="publicar-col">
 					<label className="publicar-label">Categoría</label>
 					<select className="publicar-input" name="categoria" value={form.categoria} onChange={handleChange}>
+						<option value="">Sin Categoria</option>
 						<option value="Limpieza">Limpieza</option>
 						<option value="Cocina">Cocina</option>
 						<option value="Vehiculos">Vehiculos</option>

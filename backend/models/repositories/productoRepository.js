@@ -42,8 +42,6 @@ class ProductoRepository {
                     let: { productoId: '$_id' },
                     pipeline: [
                         { $unwind: '$items' },
-
-                        // ⬅️ CORREGIDO: antes items.producto, ahora items.productoId
                         { 
                             $match: { 
                                 $expr: { 
