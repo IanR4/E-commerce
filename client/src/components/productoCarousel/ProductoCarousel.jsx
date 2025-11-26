@@ -9,9 +9,11 @@ export default function ProductoCarousel({productos}) {
   }, [productos]);
 
   const [index, setIndex] = useState(0);
-  const [isVertical, setIsVertical] = useState(false);
-  const visible = isVertical ? 1 : 3;
-  const productosLimitados = productos.slice(0, 6);
+  const [visible, setVisible] = useState(3);
+  // vertical layout when only one item is visible (mobile stacked view)
+  const isVertical = visible === 1;
+  // On small screens we want to show all products stacked; otherwise limit to 6
+  const productosLimitados = isVertical ? productos : productos.slice(0, 6);
 
   const siguiente = () => {
     if (index < productosLimitados.length - visible) setIndex(index + 1);
@@ -22,15 +24,18 @@ export default function ProductoCarousel({productos}) {
   };
 
   useEffect(() => {
-    const checkVertical = () => {
+    const updateVisible = () => {
       const w = window.innerWidth;
-      const h = window.innerHeight;
-      // target small portrait devices: minimum 300x667 -> treat as vertical layout
-      setIsVertical(w <= 420 && h <= 700);
+      // breakpoints: mobile -> 1, small tablet -> 2, desktop -> 3
+      if (w <= 480) setVisible(1);
+      else if (w <= 768) setVisible(2);
+      else setVisible(3);
+      // make sure index stays in range after visible changes
+      setIndex((i) => Math.max(0, Math.min(i, Math.max(0, productosLimitados.length - (w <= 480 ? 1 : (w <= 768 ? 2 : 3))))));
     };
-    checkVertical();
-    window.addEventListener('resize', checkVertical);
-    return () => window.removeEventListener('resize', checkVertical);
+    updateVisible();
+    window.addEventListener('resize', updateVisible);
+    return () => window.removeEventListener('resize', updateVisible);
   }, []);
 
   if (!Array.isArray(productos) || productos.length === 0) {
@@ -43,17 +48,17 @@ export default function ProductoCarousel({productos}) {
 
       <div className="carousel-wrapper">
         <div className="carousel-viewport">
-          <div className="carousel-track"
-          style={isVertical ? {} : {
-              transform: `translateX(-${index * (100 / visible)}%)`,
-            }}>
+          <div
+            className={`carousel-track ${isVertical ? 'vertical' : ''}`}
+            style={isVertical ? { '--visible': visible } : { transform: `translateX(-${index * (100 / visible)}%)`, '--visible': visible }}
+          >
             {productosLimitados.map((producto) => (
               <CarouselItem producto={producto} key={producto._id}/> 
             ))}
           </div>
         </div>
 
-        {!isVertical && (
+        {!(isVertical) && (
           <>
             <button
               onClick={anterior}

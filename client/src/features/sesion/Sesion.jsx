@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import './Sesion.css';
 import { register } from '../../service/usuariosService.js';
 
-const Sesion = () => {
+const Sesion = ({ onClose, onRegisterSuccess }) => {
     // use `tipo` state below for user type (Comprador / Vendedor)
     const [email, setEmail] = useState("");
     const [nombre, setNombre] = useState("");
@@ -38,10 +38,14 @@ const Sesion = () => {
         }
         setLoading(true);
         try {
-                    const resp = await register(email, password, nombre, tipo, telefono);
-          setLoading(false);
-          setSuccess('Cuenta creada correctamente');
-          navigate('/');
+            const resp = await register(email, password, nombre, tipo, telefono);
+            setLoading(false);
+            setSuccess('Cuenta creada correctamente');
+            if (onRegisterSuccess) onRegisterSuccess(resp?.data ?? resp);
+            setTimeout(() => {
+                if (onClose) onClose();
+            }, 800);
+        //   navigate('/');
         } catch (err) {
           setLoading(false);
           let message = 'Error al crear la cuenta';

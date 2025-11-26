@@ -29,27 +29,15 @@ export default function ProductoTable({ productos, itemsPerPage = 9 }) {
   const end = start + itemsPerPage;
   const pageItems = sorted.slice(start, end);
 
-  // Agrupar pageItems de a 3 para formar filas
-  const rows = [];
-  for (let i = 0; i < pageItems.length; i += 3) {
-    rows.push(pageItems.slice(i, i + 3));
-  }
-
   return (
     <div className="product-table">
-      {rows.map((row, rowIndex) => (
-        <ul
-          className={`list-group product-row`}
-          key={`row-${rowIndex}`}
-          aria-label={`fila-${rowIndex}`}
-        >
-          {row.map((producto) => (
-            <li className="list-group-item product-cell" key={producto._id || producto.id}>
-              <ProductoItem producto={producto} />
-            </li>
-          ))}
-        </ul>
-      ))}
+      <ul className={`list-group product-row`} aria-label={`productos`}> 
+        {pageItems.map((producto) => (
+          <li className="list-group-item product-cell" key={producto._id || producto.id}>
+            <ProductoItem producto={producto} />
+          </li>
+        ))}
+      </ul>
 
       <Pagination
         totalItems={totalItems}

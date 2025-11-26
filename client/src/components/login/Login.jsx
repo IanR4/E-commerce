@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Login.css";
 import { login } from "../../service/usuariosService.js";
 import Register from './Register';
+import Sesion from "../../features/sesion/Sesion.jsx";
 
 export default function Login({ open, onClose, onLoginSuccess }) {
     const [email, setEmail] = useState("");
@@ -9,6 +10,16 @@ export default function Login({ open, onClose, onLoginSuccess }) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [showRegister, setShowRegister] = useState(false);
+    // when modal opens, always show the login form (not the register form)
+    useEffect(() => {
+        if (open) {
+            setShowRegister(false);
+            setEmail("");
+            setPassword("");
+            setError(null);
+            setEmailTouched(false);
+        }
+    }, [open]);
     const [emailTouched, setEmailTouched] = useState(false);
     const isEmailValid = /^\S+@\S+\.\S+$/.test(email);
     const isValid = isEmailValid && password.trim() !== "";
@@ -47,8 +58,8 @@ export default function Login({ open, onClose, onLoginSuccess }) {
                 <button className="login-close-btn" onClick={onClose}>X</button>
 
                 {showRegister ? (
-                    <Register
-                        onClose={() => { setShowRegister(false); if (onClose) onClose(); }}
+                    <Sesion
+                        onClose={() => { setShowRegister(false); if (onClose) {setShowRegister(false); onClose(); } }}
                         onRegisterSuccess={(userData) => {
                             // propagate to Navbar so it shows the user immediately
                             if (onLoginSuccess) onLoginSuccess(userData);
@@ -91,7 +102,7 @@ export default function Login({ open, onClose, onLoginSuccess }) {
                     </button>
 
                     <p className="login-signup-link">
-                        <a href="/CrearCuenta">Crear cuenta</a>
+                         <a href="#" onClick={(e) => { e.preventDefault(); setShowRegister(true); }}>Crear cuenta</a>
                     </p>
                 </form>
                 )}

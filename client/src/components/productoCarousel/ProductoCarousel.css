@@ -26,8 +26,17 @@
   flex-wrap: nowrap;
 }
 
+/* vertical stacked layout when only 1 item is visible (mobile) */
+.carousel-track.vertical {
+  flex-direction: column;
+  transform: none !important;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .carousel-card {
-  width: 33.3333%;
+  /* width is responsive: depends on how many items are visible (CSS variable set from React) */
+  width: calc(100% / var(--visible, 3));
   padding: 0.5rem;
   box-sizing: border-box;
   flex-shrink: 0;
@@ -144,4 +153,5 @@
 @media (max-width: 480px) {
   .carousel-track { gap: 0.5rem; }
   .carousel-card { width: 100%; }
+
 }
