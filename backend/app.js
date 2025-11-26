@@ -7,16 +7,32 @@ const app = express();
 app.use(express.json());
 
 const allowedOrigins = [
-    process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : null,
-    process.env.NODE_ENV === 'development' ? 'http://localhost:3001' : null,
-    process.env.FRONTEND_URL
+    process.env.FRONTEND_URL,
+    // Include common local dev origins when NOT running in production.
+    ...(process.env.NODE_ENV === 'development' ? [] : ['http://localhost:3000', 'http://localhost:3001'])
 ].filter(Boolean);
 
 const corsOptions = {
     origin: function (origin, callback) {
+        // Log the origin we received to help debugging CORS rejections
         // Permitir requests sin origin (como Postman o curl)
+        // No Origin header (curl/postman) -> allow
         if (!origin) return callback(null, true);
-        
+
+        // Browsers loading pages via file:// often send Origin as the string 'null'
+        // or a file:// URL. Allow those in development or when explicitly enabled.
+        if (origin === 'null' || origin.startsWith('file://')) {
+            if (process.env.NODE_ENV === 'production' && process.env.ALLOW_FILE_ORIGINS !== 'true') {
+                return callback(new Error('Not allowed by CORS'));
+            }
+            return callback(null, true);
+        }
+
+        // Allow all origins in development if explicitly requested (convenience)
+        if (process.env.NODE_ENV === 'development' && process.env.ALLOW_ALL_CORS === 'true') {
+            return callback(null, true);
+        }
+
         if (allowedOrigins.indexOf(origin) !== -1) {
             callback(null, true);
         } else {
