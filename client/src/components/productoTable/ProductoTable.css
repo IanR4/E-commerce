@@ -15,17 +15,13 @@
 	flex-direction: row;
 	flex-wrap: wrap;
 	gap: 1.3rem;
-	justify-content: center;
+	justify-content: flex-start;
 }
 
 .product-cell {
 	padding: 0;
 	margin: 0;
 	box-sizing: border-box;
-	/* Allow the cell to be flexible while preventing it from
-	   shrinking to zero. Parent rows and media queries still
-	   control the number of columns, but this prevents fixed
-	   320px widths from forcing overlap. */
 	flex: 1 1 320px;
 	min-width: 240px;
 	max-width: 380px;
@@ -48,9 +44,7 @@
 	color: #555;
 }
 
-/* Small devices: 1 column (default) */
 @media (min-width: 480px) {
- 	/* 2 columns on small tablets/large phones */
  	.product-cell {
  		flex: 0 0 calc(50% - 0.75rem);
  		max-width: calc(50% - 0.75rem);
@@ -58,17 +52,12 @@
 }
 
 @media (min-width: 900px) {
- 	/* 3 columns on desktop/tablet landscape */
  	.product-cell {
  		flex: 0 0 calc(33.333% - 1rem);
  		max-width: calc(33.333% - 1rem);
  	}
 }
 
-
-/* no additional rules for md/lg needed; rows are already configured to display horizontally at sm+ */
-
-/* Small visual polish */
 .list-group-item {
 	background: transparent;
 	border: none;

@@ -2,16 +2,14 @@
   width: 280px;
   box-sizing: border-box;
   padding: 8px 16px 16px 16px;
-  /* Use sticky so the sidebar stays visible while scrolling but remains in the page flow.
-     This lets the footer naturally sit below the filters (no overlap). */
-  position: sticky;
-  top: 8rem;       /* distance from top (header height + gap) */
-  /*max-height: calc(100vh - 6rem); /* keep room for header and footer */
-  overflow: auto;  /* internal scroll when filters exceed available height */
-  z-index: 3000;    /* still above page content but below navbar */
+  position: sticky; /* Usa posicionamiento sticky para mantenerlo visible durante el scroll */
+  top: 8rem;       /* distancia desde arriba (altura del header + espacio) */
+  align-self: flex-start; /* CRÍTICO: previene el estiramiento y lo mantiene al inicio */
+  flex-shrink: 0;  /* evita que el sidebar se comprima */
+  overflow: auto;  /* scroll interno cuando los filtros exceden la altura disponible */
+  z-index: 3000;   /* por encima del contenido pero debajo del navbar */
 }
 
-/* When rendered inside an off-canvas drawer, render as normal block (not sticky) */
 .filter-drawer.drawer-mode {
   position: static !important;
   top: auto !important;
@@ -19,9 +17,9 @@
   max-width: 100%;
   padding: 12px 12px 24px 12px;
   box-shadow: none;
+  align-self: auto;
 }
 
-/* spacer used inside the flow to reserve space for the fixed sidebar */
 .filter-spacer {
   width: 280px;
   flex: 0 0 280px;
@@ -80,7 +78,6 @@
   z-index: 1001;
 }
 
-
 .dropdown-item {
   color: var(--primary-white);
   cursor: pointer;
@@ -110,8 +107,8 @@
     background-color: #ffffff;
 }
 
-/* Responsive: hide permanent sidebar on small screens so it doesn't cover content
-   but allow drawer-mode to remain available when embedded in an off-canvas panel */
+/* Responsive: ocultar sidebar permanente en pantallas pequeñas para que no cubra el contenido
+   pero permitir que el drawer-mode siga disponible cuando está embebido en un panel off-canvas */
 @media (max-width: 900px) {
   .filter-spacer { display: none; }
   .filter-drawer:not(.drawer-mode) { display: none; }
@@ -119,6 +116,6 @@
 
 @media (max-height: 800px) {
   .filter-drawer {
-    /*max-height: calc(100vh - 6rem); /* keep room for header and footer */
+    /* Ajustar si es necesario para pantallas muy cortas */
   }
 }
